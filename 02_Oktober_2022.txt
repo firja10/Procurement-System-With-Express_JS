@@ -1,0 +1,4 @@
+Progress Berikutnya : 
+1. Membuat Dropdown masing2 bahan baku dan produk jadi terdiri dari data masuk, data keluar, dan data stock 
+2. Membuat Table untuk setiap fitur yang sudah ada
+3. Membuat User dengan hak akses masing - masing
