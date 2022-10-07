@@ -92,7 +92,71 @@ module.exports = {
 
         });
 
+    },
+
+
+
+    updateData: (req, res) => {
+
+        const {nama_bahan, no_part, stock} = req.body;
+
+        var form_data = {
+            nama_bahan,
+            no_part,
+            stock
+        }
+
+        let id = req.params.id;
+
+
+        BahanBaku.updateData(req.conn,form_data,id,(err,rows)=>{
+
+            if (err) {
+
+                req.flash('error', 'Tidak Bisa Update Data');
+                res.redirect('/bahan_baku');
+                
+            }
+
+            else {
+                req.flash('success', 'Data Berhasil Diupdate');
+                res.redirect('/bahan_baku');
+            }
+
+
+
+        });
+
+
+    },
+
+
+    deleteData : (req,res) => {
+
+        let id = req.params.id;
+
+        BahanBaku.deleteData(req.conn,id,(err,rows)=>{
+
+            if (err) {
+
+                req.flash('error','Data Tidak Berhasil Dihapus');
+                res.redirect('/bahan_baku');           
+            }
+
+            else {
+                req.flash('success', 'Data Berhasil Dihapus');
+                res.redirect('/bahan_baku');
+            }
+
+        });      
+
+
     }
+
+
+
+
+
 
 
 

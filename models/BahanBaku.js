@@ -17,18 +17,13 @@ module.exports = {
 
         conn.query("UPDATE bahan_baku SET ? WHERE id = " + id, data, callback);
 
-
     },
+
 
     deleteData: (conn, id, callback) => {
 
-        conn.query("DELETE bahan_baku WHERE id = " + id, callback);
+        conn.query("DELETE FROM bahan_baku WHERE id = " + id, callback);
 
     }
-
-
-    
-
-
 
 }

@@ -3,7 +3,8 @@ var koneksi = mysql.createConnection({
     host:'localhost',
     user:'root',
     password:'',
-    database:'projek_ahmad_db'
+    database:'projek_ahmad_db',
+    acquireTimeout:6000000
 });
 
 koneksi.connect(function(err) {

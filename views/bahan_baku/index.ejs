@@ -75,7 +75,17 @@
                                                         <button type = "submit" class = "btn btn-primary">Edit Data</button>
                                                     </form> -->
                                                     <a href="../bahan_baku/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
-                                                    <button class = "btn btn-danger">Hapus Data</button>
+
+                                                    <a href="../bahan_baku/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
+                                                    
+
+                                                    <!-- <form action="/bahan_baku/delete/<%= data[i].id %>" method = "get"> 
+
+                                                        <button type = "submit" class = "btn btn-danger mt-3" >Hapus Data</button>
+
+                                                    </form> -->
+
+
                                                 </td>
                                             </tr>
                                         <% } %>

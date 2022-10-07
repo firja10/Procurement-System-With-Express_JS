@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var expressValidator = require('express-validator');
 
 var expressLayouts = require('express-ejs-layouts');
 
@@ -25,7 +26,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var BahanBakuRouter = require('./routes/bahan_baku');
-
+var ProdukJadiRouter = require('./routes/produk_jadi');
+const { urlencoded } = require('body-parser');
 
 
 
@@ -70,6 +72,10 @@ app.use(flash());
 
 app.use(method_override("_method"));
 
+app.use(express.json());
+
+app.use(urlencoded({extended:true}));
+
 
 
 
@@ -83,6 +89,8 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '/public')));
 
+// app.use(expressValidator());
+
 
 
 
@@ -90,6 +98,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/bahan_baku',BahanBakuRouter);
+app.use('/produk_jadi',ProdukJadiRouter);
 
 
 
