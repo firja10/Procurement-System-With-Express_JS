@@ -27,7 +27,11 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var BahanBakuRouter = require('./routes/bahan_baku');
 var ProdukJadiRouter = require('./routes/produk_jadi');
+var ScheduleDetailRouter = require('./routes/schedule');
 const { urlencoded } = require('body-parser');
+const http = require('http');
+let encodeUrl = bodyParser.urlencoded({extended:false});
+
 
 
 
@@ -101,6 +105,11 @@ app.use('/bahan_baku',BahanBakuRouter);
 app.use('/produk_jadi',ProdukJadiRouter);
 
 
+app.use('/produk_jadi',ProdukJadiRouter);
+
+
+
+app.use('/schedule', ScheduleDetailRouter);
 
 
 
@@ -115,7 +124,7 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // render the error pag
   res.status(err.status || 500);
   res.render('error');
 });

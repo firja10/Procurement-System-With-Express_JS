@@ -10,6 +10,10 @@ var conn = require('../database');
 // });
 
 
+
+
+// 
+
 router.get('/', function(req, res, next) {
   // res.render('dashboard', { title: 'Dashboard' });
 
@@ -21,7 +25,9 @@ router.get('/', function(req, res, next) {
 
   else {
     // res.send('Silakan lakukan log in ulang !');
-    res.redirect('/login')
+    // res.redirect('/login')
+
+    res.render('dashboard', { title: 'Dashboard' });
   }
 
 });
@@ -60,13 +66,13 @@ router.get('/register',function(req,res,next){
 
 router.post('/auth',function (req, res) {
 
-  let name = req.body.name;
+  let nama = req.body.nama;
   let password = req.body.password;
 
 
-  if (name && password) {
+  if (nama && password) {
     
-  conn.query("SELECT * FROM users WHERE name ? AND password ?", [name,password], function(err,results,fields) {
+  conn.query(`SELECT * FROM users WHERE nama = '${nama}' AND password = '${password}'`,  function(err,results,fields) {
 
     if (err) {
 
@@ -77,7 +83,7 @@ router.post('/auth',function (req, res) {
     if (results.length > 0) {
 
       req.session.loggedin = true;
-      req.session.name = name;
+      req.session.nama = nama;
       
       res.redirect('/');
 
@@ -85,7 +91,7 @@ router.post('/auth',function (req, res) {
     }
 
     else {
-      res.send('Username dan Password Salah ! ')
+      res.send('Usernama dan Password Salah ! ')
     }
 
 
@@ -96,7 +102,7 @@ router.post('/auth',function (req, res) {
   }
 
   else {
-    res.send('Masukkan Username dan Password !');
+    res.send('Masukkan Usernama dan Password !');
     // res.redirect('/');
     res.end();
   }
@@ -105,16 +111,120 @@ router.post('/auth',function (req, res) {
 
 
 
+
+router.post('/auth_register', function(req,res) {
+
+  
+  let nama = req.body.nama;
+  let email = req.body.email ;
+  let password = req.body.password;
+
+
+
+
+
+
+  conn.connect(function(err) {
+    if (err){
+        console.log(err);
+    };
+    // checking user already registered or no
+    conn.query(`SELECT * FROM users WHERE nama = '${nama}' AND password  = '${password}'`, function(err, result){
+        if(err){
+            console.log(err);
+        };
+        if(Object.keys(result).length > 0){
+            res.sendFile(__dirnama + '/failReg.html');
+        }else{
+        //creating user page in userPage function
+        function userPage(){
+            // We create a session for the dashboard (user page) page and save the user data to this session:
+            req.session.user = {
+                nama: nama,
+                email: email,
+                password: password 
+            };
+
+            res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <title>Login and register form with Node.js, Express.js and MySQL</title>
+                <meta charset="UTF-8">
+                <meta nama="viewport" content="width=device-width, initial-scale=1">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+            </head>
+            <body>
+                <div class="container">
+                    <h3>Hi, ${req.session.user.nama}</h3>
+                    <a href="/">Log out</a>
+                </div>
+            </body>
+            </html>
+            `);
+        }
+            // inserting new user data
+            var sql = `INSERT INTO users (nama, email, password) VALUES ('${nama}', '${email}', '${password}')`;
+            conn.query(sql, function (err, result) {
+                if (err){
+                    console.log(err);
+                }else{
+                    // using userPage function for creating user page
+                    userPage();
+                };
+            });
+
+    }
+
+    });
+});
+  
+
+
+
+
+
+
+
+
+  
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 router.post('/post_register', function (req,res,next) {
  
 
-  // req.assert('name','Nama Diperlukan').notEmpty()
+  // req.assert('nama','Nama Diperlukan').notEmpty()
 
   // req.assert('password', 'Password Jangan Kosong').notEmpty()
 
   // req.assert('email','Email Tolong Isi !').isEmail()
 
-  req.checkBody('name','Nama Diperlukan').notEmpty()
+  req.checkBody('nama','Nama Diperlukan').notEmpty()
 
   req.checkBody('password', 'Password Jangan Kosong').notEmpty()
 
@@ -127,7 +237,7 @@ router.post('/post_register', function (req,res,next) {
 
   var user = {
 
-    name :req.sanitize('name').escape().trim(),
+    nama :req.sanitize('nama').escape().trim(),
     email:reqsanitize('email').escape().trim(),
     password :req.sanitize('password').escape().trim(),
 
@@ -165,7 +275,7 @@ router.post('/post_register', function (req,res,next) {
     res.render('/register',
     {
       title:'Register Page',
-      name:req.body.name,
+      nama:req.body.nama,
       email:req.body.email,
       password:'',
     }

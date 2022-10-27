@@ -35,6 +35,7 @@ module.exports = {
         const {nama_bahan, no_part, stock} = req.body;
         var form_data = {
             nama_bahan,
+         
             no_part,
             stock,
         }
