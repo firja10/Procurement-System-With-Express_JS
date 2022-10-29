@@ -180,7 +180,8 @@
                           <li class="user-profile header-notification">
                               <a href="#!" class="waves-effect waves-light">
                                   <img src="/assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
-                                  <span>John Doe</span>
+                                  <!-- <span>John Doe</span> -->
+                                  <span><%= session.nama  %></span>
                                   <i class="ti-angle-down"></i>
                               </a>
                               <ul class="show-notification profile-notification">
@@ -348,24 +349,12 @@
                                         </a>
                                     </li>
                          
-              
+                                                  
                                 </ul>
                             </li>
 
                             
                             
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- 
@@ -422,6 +411,15 @@
                                 </a>
                             </li>
 
+
+
+                            <li>
+                                <a href="/logout" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-bar-chart"></i><b></b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Logout</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
 
 
                            

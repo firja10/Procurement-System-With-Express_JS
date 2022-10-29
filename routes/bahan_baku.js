@@ -24,6 +24,8 @@ router.get('/delete/(:id)', BahanBakuController.deleteData);
 
 
 
+//// DATA MASUK BAHAN BAKU
+
 // GET DATA MASUK BAHAN BAKU
 
 router.get('/data_masuk', function (req,res) {
@@ -49,32 +51,112 @@ router.get('/data_masuk', function (req,res) {
 
 
 
+// STORE DATA MASUK BAHAN BAKU
+
+
+
+
+
+
+
+// INSERT PRODUK JADI 
+
+router.post('/data_masuk/store', function (req, res) {
+   
+
+    const {no_surat, kode_transaksi, tanggal, nama_bahan, id_bahan, no_part, stok, status_bahan_baku} = req.body;
+
+    var form_data = {
+        no_surat, kode_transaksi, tanggal, nama_bahan, id_bahan, no_part, stok, status_bahan_baku
+    }
+
+
+    conn.query(`INSERT INTO bahan_baku_transaksi SET ?`, form_data, function (err, results) {
+    
+        if (err) {
+            req.flash('Pertambahan Data Masuk Bahan Baku Error');
+
+            res.redirect('/bahan_baku/data_masuk');            
+
+        }
+
+        else {
+
+            req.flash('Data Masuk Bahan Baku sudah ditambahkan');
+
+            res.redirect('/bahan_baku/data_masuk');    
+
+        }
+        
+    });
+    
+ });
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // GET DATA KELUAR BAHAN BAKU
 router.get('/data_keluar', function (req,res) {
+  
+
+
+
+    const {no_surat, kode_transaksi, tanggal, nama_bahan, id_bahan, no_part, stok, status_bahan_baku} = req.body;
+
+    var form_data = {
+        no_surat, kode_transaksi, tanggal, nama_bahan, id_bahan, no_part, stok, status_bahan_baku
+    }
+
+
+    conn.query(`INSERT INTO bahan_baku_transaksi SET ?`, form_data, function (err, results) {
     
-    conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'keluar'`, function (err, results) {
-
         if (err) {
+            req.flash('Pertambahan Data Keluar Bahan Baku Error');
 
-            req.flash('Tidak Dapat menampilkan Data Masuk');
-            res.render('bahan_baku/data_keluar', {title:'Error Bahan Baku Masuk', data:''});
-            
+            res.redirect('/bahan_baku/data_keluar');            
+
         }
 
-        res.render('bahan_baku/data_keluar', {title:'Data Bahan Baku Yang Masuk', data:results});
+        else {
+
+            req.flash('Data Kelur Bahan Baku sudah ditambahkan');
+
+            res.redirect('/bahan_baku/data_keluar');    
+
+        }
+
+
         
-    })
+    });
+
+
+
 
 });
-
-
-
-
-
-
-
 
 
 

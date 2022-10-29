@@ -1,22 +1,29 @@
 <!-- Modal -->
-<div class="modal fade" id="exampleProdukJadi" tabindex="-1" role="dialog" aria-labelledby="exampleProdukJadiLabel" aria-hidden="true">
+<div class="modal fade" id="examplePASchedule" tabindex="-1" role="dialog" aria-labelledby="examplePAScheduleLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleProdukJadiLabel">Modal Produk Jadi</h5>
+          <h5 class="modal-title" id="examplePAScheduleLabel">Modal Schedule Detail</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         
-        <form action="/produk_jadi/store" method="post">
+        <form action="/pa_schedule/store" method="post">
 
         <div class="modal-body">
           
 
+            <div class="form-group">
+                <label for="tanggal">Tanggal</label>
+                <input type="date" name="tanggal" id="tanggal" class = "form-control">
+            </div>
+
+
+
                 <div class="form-group">
-                    <label for="nama_bahan">Nama Produk</label>
-                    <input type="text" name="nama_produk" id="nama_produk" class = "form-control">
+                    <label for="produk">Nama Produk</label>
+                    <input type="text" name="produk" id="produk" class = "form-control">
                 </div>
 
                 
@@ -27,8 +34,8 @@
 
 
                 <div class="form-group">
-                    <label for="stock">Stok</label>
-                    <input type="number" name="stock" id="stock" class = "form-control">
+                    <label for="plan_produksi">Plan Produksi</label>
+                    <input type="text" name="plan_produksi" id="plan_produksi" class = "form-control">
                 </div>
 
 

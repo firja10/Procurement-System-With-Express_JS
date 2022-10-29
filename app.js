@@ -25,9 +25,19 @@ var logger = require('morgan');
 //ROUTER
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+
 var BahanBakuRouter = require('./routes/bahan_baku');
+var BahanBakuTransaksiRouter = require('./routes/bahan_baku_transaksi');
+
 var ProdukJadiRouter = require('./routes/produk_jadi');
 var ScheduleDetailRouter = require('./routes/schedule');
+var PAScheduleRouter = require('./routes/pa_schedule');
+
+
+
+
+
+
 const { urlencoded } = require('body-parser');
 const http = require('http');
 let encodeUrl = bodyParser.urlencoded({extended:false});
@@ -86,6 +96,21 @@ app.use(urlencoded({extended:true}));
 
 
 
+// Body Parser
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
+
+
+
+
+
+
+
+
+
+
+
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -101,15 +126,29 @@ app.use(express.static(path.join(__dirname, '/public')));
 //REALISASI ROUTER
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+
 app.use('/bahan_baku',BahanBakuRouter);
-app.use('/produk_jadi',ProdukJadiRouter);
+app.use('/bahan_baku_transaksi', BahanBakuTransaksiRouter);
+
+
+
+
+
+
 
 
 app.use('/produk_jadi',ProdukJadiRouter);
 
 
+app.use('/produk_jadi',ProdukJadiRouter);
 
 app.use('/schedule', ScheduleDetailRouter);
+
+app.use('/pa_schedule', PAScheduleRouter);
+
+
+
 
 
 

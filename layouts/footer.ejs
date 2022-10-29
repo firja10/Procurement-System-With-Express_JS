@@ -53,6 +53,29 @@
     <!-- Warning Section Ends -->
     
     <!-- Required Jquery -->
+
+
+    <script>
+        $(function() {
+            
+            var current = location.pathname;
+            $('nav li a').each( function () {    
+                var $this = $(this);
+                if($this.attr('href').indexOf(current) !== -1){
+                    $this.addClass('active');
+                }
+
+            }
+
+            )
+
+
+        })
+    </script>
+
+
+
+
     <script type="text/javascript" src="/assets/js/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/assets/js/jquery-ui/jquery-ui.min.js "></script>
     <script type="text/javascript" src="/assets/js/popper.js/popper.min.js"></script>
