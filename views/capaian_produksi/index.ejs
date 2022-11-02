@@ -1,0 +1,127 @@
+<%- include('../../layouts/header.ejs') %>
+
+        <!-- Page-header start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10"><%= title %></h5>
+                            <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="index.html"> <i class="ti ti-harddrive"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!"><%= title %></a>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page-header end -->
+        <div class="pcoded-inner-content">
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        <!-- Basic table card start -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Tabel Capaian Produksi</h5>
+                                <!-- <span>use class <code>table</code> inside table element</span> -->
+                                <br> <br>
+
+                                <button class = "btn btn-primary" data-target = "#exampleCapaianProduksi" data-toggle = "modal">Tambah Data</button>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama Produk</th>
+                                                <th>Nomor Part</th>
+                                                <th>Plan Produksi</th>
+                                                <th>Hasil Produksi</th>
+                                                <th>Sisa Produksi</th>
+                                                <th>Capaian Produksi</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <% for(var i = 0; i < data.length; i++){ %>
+                                            <tr>
+                                                <th scope="row"><%=  (i+1)  %></th>
+                                                <td><%= data[i].produk %></td>
+                                                <td><%= data[i].no_part %></td>
+                                                <td><%= data[i].plan_produksi %></td>
+                                                <td><%= data[i].hasil_produksi %></td>
+                                                <td><%= data[i].sisa_produksi %></td>
+                                                <td><%= data[i].capaian_produksi %></td>
+
+
+
+                                                <td> 
+                                                    <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
+
+                                                    <!-- <form action="/capaian_produksi/getid?_method=GET" method = "get">
+                                                        <button type = "submit" class = "btn btn-primary">Edit Data</button>
+                                                    </form> -->
+                                                    <a href="../capaian_produksi/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
+
+                                                    <a href="../capaian_produksi/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
+                                                    
+
+                                                    <!-- <form action="/capaian_produksi/delete/<%= data[i].id %>" method = "get"> 
+
+                                                        <button type = "submit" class = "btn btn-danger mt-3" >Hapus Data</button>
+
+                                                    </form> -->
+
+
+                                                </td>
+                                            </tr>
+                                        <% } %>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Basic table card end -->
+                      
+            
+                       
+                    </div>
+                    <!-- Page-body end -->
+                </div>
+          
+
+
+
+
+
+
+
+
+<%- include('../../layouts/modal_capaian_produksi.ejs') %>
+
+
+
+<%- include('../../layouts/footer.ejs') %>

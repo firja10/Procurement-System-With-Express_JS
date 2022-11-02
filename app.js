@@ -3,13 +3,14 @@ var express = require('express');
 var expressValidator = require('express-validator');
 
 var expressLayouts = require('express-ejs-layouts');
+const flash = require('connect-flash');
 
 var mysql = require('mysql');
 var conn = require('./database');
 
 
 
-var flash = require('express-flash');
+// var flash = require('express-flash');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var method_override = require('method-override');
@@ -32,6 +33,8 @@ var BahanBakuTransaksiRouter = require('./routes/bahan_baku_transaksi');
 var ProdukJadiRouter = require('./routes/produk_jadi');
 var ScheduleDetailRouter = require('./routes/schedule');
 var PAScheduleRouter = require('./routes/pa_schedule');
+
+var CapaianProduksi = require('./routes/capaian_produksi');
 
 
 
@@ -77,7 +80,7 @@ app.use(session({
   secret:'secret',
   resave:false,
   saveUninitialized:true,
-  cookie:{maxAge:6000}
+  cookie:{maxAge:60*60*60*7}
 
 }));
 
@@ -147,6 +150,8 @@ app.use('/schedule', ScheduleDetailRouter);
 
 app.use('/pa_schedule', PAScheduleRouter);
 
+app.use('/capaian_produksi', CapaianProduksi);
+
 
 
 
@@ -156,6 +161,19 @@ app.use('/pa_schedule', PAScheduleRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+
+// Flash message req
+
+app.use(function(req, res, next){
+  res.locals.message = req.flash();
+  next();
+});
+
+
+
+
+
 
 // error handler
 app.use(function(err, req, res, next) {

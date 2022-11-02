@@ -17,12 +17,22 @@ var bodyParser = require('body-parser');
 
 // 
 
+
+
+
+
+
+
+
+
+
 router.get('/', function(req, res, next) {
   // res.render('dashboard', { title: 'Dashboard' });
 
   if (req.session.nama) {
 
-    res.render('dashboard', { title: 'Dashboard' });
+    // res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama });
+    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama });
     
   }
 
@@ -53,8 +63,73 @@ router.get('/home', function(req, res, next) {
 
 router.get('/dashboard', function(req, res, next) {
   // res.render('dashboard', { title: 'Dashboard', layout:'./layouts/template' });
-  res.render('dashboard', { title: 'Dashboard'});
+
+  if (req.session.nama) {
+    
+    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama});
+  }
+  else {
+    res.redirect('/login');
+  }
+
 });
+
+
+
+
+
+
+/// Bahan Baku Router 
+
+
+// router.get('/bahan_baku/data_masuk', function (req,res) {
+    
+//   if (req.session.nama) {
+     
+//   conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'`, function (err, results) {
+
+//       if (err) {
+
+//           req.flash('Tidak Dapat menampilkan Data Masuk');
+//           res.render('bahan_baku/data_masuk', {title:'Error Bahan Baku Masuk', data:'', user_name:req.session.nama});
+//           // next();
+
+
+//       }
+
+//       res.render('bahan_baku/data_masuk', {title:'Data Bahan Baku Yang Masuk', data:results, user_name:req.session.nama});
+
+//       // next();
+      
+//   })
+
+// }
+
+
+// else {
+
+//   res.redirect('/login');
+
+// }
+
+
+
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -68,7 +143,7 @@ router.get('/login', function(req, res, next) {
 
 router.get('/register',function(req,res,next){
 
-  res.render('register',{title:'Registrasi'});
+  res.render('register',{title:'Registrasi', message:''});
 
 });
 
@@ -125,10 +200,16 @@ router.post('/register', function (req, res, next) {
         };       
       });
 
-      var message = "Kamu Sukses Registrasi";
+      var messages = "Kamu Sukses Registrasi, Silakan Login";
 
+      // req.session.message = message;
       // res.redirect('/register', {alert_message:message});
-      res.redirect('/register');
+    //  var messages = req.flash('message','Data Berhasil Didaftarkan');
+
+    //  req.flash('message','Data Berhasil Didaftarkan');
+    //  res.redirect('/register');
+
+      res.render('register',{title:'Registrasi', message:messages});
 
     }
 
@@ -199,6 +280,7 @@ router.post('/login', function(request, response, next){
                       // req.session.loggedin = true;
                       
                       response.redirect("/");
+                      // response.render("dashboard", {user_name:request.session.nama});
                   }
                   else
                   {
@@ -226,41 +308,12 @@ router.post('/login', function(request, response, next){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 router.get('/logout', function (req, res, next) {
   
   req.session.destroy();
   res.redirect('/');
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -303,43 +356,6 @@ router.get('/logout', function (req, res, next) {
 
   
 // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -478,25 +494,6 @@ router.get('/logout', function (req, res, next) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // router.post('/post_register', function (req,res,next) {
  
 
@@ -568,6 +565,22 @@ router.get('/logout', function (req, res, next) {
 
   
 // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -2,6 +2,8 @@ const ProdukJadiController = require('../controllers/ProdukJadiController');
 const router = require('express').Router();
 
 var conn = require('../database');
+var session = require('express-session');
+var bodyParser = require('body-parser'); 
 
 
 
@@ -20,11 +22,17 @@ var conn = require('../database');
 router.get('/', function (req,res, ) {
     
 
+
     conn.query('SELECT * FROM produk_jadi', function (err,results) {
-        
-        
+        if (req.session.nama) {
+    
+      
         console.log(results);
-        res.render('produk_jadi/index', {title:'Produk Jadi', data:results});
+        res.render('produk_jadi/index', {title:'Produk Jadi', data:results, user_name:req.session.nama});
+
+    } else {
+        res.redirect('/login');
+    }
 
     });
    
@@ -44,13 +52,21 @@ router.get('/get_id/(:id)', function (req,res, ) {
         // conn.query('SELECT * FROM produk_jadi WHERE id = ?', id, function (err,results) {
 
 
+    if (req.session.nama) {
+        
+
+
         if (err) {
-            res.redirect('/produk_jadi',{title:'Error Ini Mah'});
+            res.redirect('/produk_jadi',{title:'Error Ini Mah', user_name:req.session.nama});
         }
         
         
         console.log(results);
-        res.render('produk_jadi/get_id', {title:`Produk Jadi ${results[0].nama_produk}`, data:results[0]});
+        res.render('produk_jadi/get_id', {title:`Produk Jadi ${results[0].nama_produk}`, data:results[0], user_name:req.session.nama});
+
+    } else {
+
+    }
 
     });
    
@@ -183,15 +199,21 @@ router.get('/get_id/(:id)', function (req,res, ) {
  router.get('/data_masuk', function (req,res) {
 
 
-    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE produk_jadi_transaksi = 'masuk'`, function (err,results) {
+    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk = 'masuk'`, function (err,results) {
+
+
+      if (req.session.nama) {
+        
 
 
         if (err) {
             
             req.flash('produk_jadi/data_masuk');
-            res.render('produk_jadi/data_masuk', {title:'Data Masuk Belum Ditemukan', data:''})
+            res.render('produk_jadi/data_masuk', {title:'Data Masuk Belum Ditemukan', data:'', user_name:req.session.nama})
 
         }
+
+
 
     //    if (results.length <0 || results.length == undefined) {
         
@@ -199,7 +221,11 @@ router.get('/get_id/(:id)', function (req,res, ) {
 
     //    }
 
-        res.render('produk_jadi/data_masuk', {title:'Data Masuk Produk Jadi', data:results});
+        res.render('produk_jadi/data_masuk', {title:'Data Masuk Produk Jadi', data:results, user_name:req.session.nama});
+
+    } else {
+        res.redirect('/login');
+    }
         
     })
    
@@ -216,16 +242,22 @@ router.get('/data_masuk/(:id)', function (req,res) {
 
     conn.query(`SELECT * FROM produk_jadi_transaksi WHERE id = '${id}' AND status_produk = 'masuk'`, function (err,results) {
         
+
+    if (req.session.nama) {
+        
+   
         if (err) {
 
             req.flash('data_error_masuk_id');
 
-            res.render('produk_jadi/data_masuk_id', {title:`Transaksi Data Masuk dengan Id = ${id} Error`, data:''});
+            res.render('produk_jadi/data_masuk_id', {title:`Transaksi Data Masuk dengan Id = ${id} Error`, data:'', user_name:req.session.nama});
         }
 
-        res.render('produk_jadi/data_masuk_id', {title:`Transaksi Data Masuk ${results[0].nama_produk}`, data:results[0]});
+        res.render('produk_jadi/data_masuk_id', {title:`Transaksi Data Masuk ${results[0].nama_produk}`, data:results[0], user_name:req.session.nama});
 
-
+    } else {
+        res.redirect('/login');
+    }
 
     })
 
@@ -261,15 +293,19 @@ router.get('/data_masuk/(:id)', function (req,res) {
   router.get('/data_keluar', function (req,res) {
 
 
-    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE produk_jadi_transaksi = 'keluar'`, function (err,results) {
-
+    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk = 'keluar'`, function (err,results) {
+    if (req.session.nama) {    
         if (err) {
             
-            req.flash('/produk_jadi', {title:'Error Ini Mah', data : ''});
+            req.flash('/produk_jadi/data_keluar', {title:'Error Ini Mah', data : '', user_name:req.session.nama});
 
         }
 
-        res.render('produk_jadi/data_keluar', {title:'Data Keluar Produk Jadi', data:results});
+        res.render('produk_jadi/data_keluar', {title:'Data Keluar Produk Jadi', data:results, user_name:req.session.nama});
+
+    } else {
+        res.redirect('/login');
+     }
         
     })
 

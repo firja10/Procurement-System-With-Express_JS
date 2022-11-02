@@ -180,8 +180,9 @@
                           <li class="user-profile header-notification">
                               <a href="#!" class="waves-effect waves-light">
                                   <img src="/assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
-                                  <!-- <span>John Doe</span> -->
-                                  <span><%= session.nama  %></span>
+                                  <!-- <span>fairuz</span> -->
+                                  <span><%= user_name %></span>
+                             
                                   <i class="ti-angle-down"></i>
                               </a>
                               <ul class="show-notification profile-notification">
@@ -226,7 +227,9 @@
                               <div class="main-menu-header">
                                   <img class="img-80 img-radius" src="/assets/images/avatar-4.jpg" alt="User-Profile-Image">
                                   <div class="user-details">
-                                      <span id="more-details">John Doe<i class="fa fa-caret-down"></i></span>
+                                      <!-- <span id="more-details">fairuz<i class="fa fa-caret-down"></i></span> -->
+                                      <span id="more-details"><%= user_name %><i class="fa fa-caret-down"></i></span>
+                                  
                                   </div>
                               </div>
         
@@ -252,7 +255,8 @@
                           <div class="pcoded-navigation-label" data-i18n="nav.category.navigation">Menu</div>
                           <ul class="pcoded-item pcoded-left-item">
 
-                             <li class="active">
+                             <!-- <li class="active"> -->
+                                <li>
                                   <a href="/" class="waves-effect waves-dark">
                                       <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                                       <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
@@ -295,13 +299,13 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    <li class=" ">
+                                    <!-- <li class=" ">
                                         <a href="button.html" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                             <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Stok</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
-                                    </li>
+                                    </li> -->
                          
               
                                 </ul>
@@ -328,26 +332,26 @@
                                     </li>
 
                                     <li class=" ">
-                                        <a href="accordion.html" class="waves-effect waves-dark">
+                                        <a href="/produk_jadi/data_masuk" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                             <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Masuk</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li class=" ">
-                                        <a href="breadcrumb.html" class="waves-effect waves-dark">
+                                        <a href="/produk_jadi/data_keluar" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                             <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Data Keluar</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
-                                    <li class=" ">
+                                    <!-- <li class=" ">
                                         <a href="button.html" class="waves-effect waves-dark">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                             <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Stok</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
-                                    </li>
+                                    </li> -->
                          
                                                   
                                 </ul>
@@ -377,7 +381,7 @@
 
 
                             <li>
-                                <a href="index.html" class="waves-effect waves-dark">
+                                <a href="/users" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-user"></i><b></b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Users</span>
                                     <span class="pcoded-mcaret"></span>
@@ -385,8 +389,10 @@
                             </li>
 
 
+
+
                             <li>
-                                <a href="index.html" class="waves-effect waves-dark">
+                                <a href="/schedule" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-calendar"></i><b></b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Schedule</span>
                                     <span class="pcoded-mcaret"></span>
@@ -395,7 +401,7 @@
 
 
                             <li>
-                                <a href="index.html" class="waves-effect waves-dark">
+                                <a href="/pa_schedule" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-book"></i><b></b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Laporan PA & Schedule</span>
                                     <span class="pcoded-mcaret"></span>
@@ -404,7 +410,7 @@
 
 
                             <li>
-                                <a href="index.html" class="waves-effect waves-dark">
+                                <a href="/capaian_produksi" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-bar-chart"></i><b></b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Capaian Produksi</span>
                                     <span class="pcoded-mcaret"></span>

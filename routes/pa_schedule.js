@@ -1,7 +1,9 @@
+
 const router = require('express').Router();
 
 var conn = require('../database');
-
+var session = require('express-session');
+var bodyParser = require('body-parser'); 
 
 
 
@@ -9,9 +11,19 @@ var conn = require('../database');
 // GET ALL DATA
 router.get('/', function (req,res) {
 
+
+
     conn.query('SELECT * FROM pa_schedule', function (err,results) {
 
-        res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results});
+        if(req.session.nama)
+
+        {
+
+        res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results, user_name:req.session.nama});
+
+        } else {
+            res.redirect('/login');
+        }
         
      });
     
@@ -32,13 +44,21 @@ router.get('/get_id/(:id)', function (req,res) {
     conn.query(`SELECT * FROM pa_schedule WHERE id = ${id}`, function (err, results) {
         
 
+        if (req.session.nama) {
+            
+
+
         if (err) {
             res.redirect('/pa_schedule',{title:'Error Ini Mah'});
         }
         
         
         console.log(results);
-        res.render('pa_schedule/get_id', {title:`Detail PA Schedule ${results[0].produk}`, data:results[0]});
+        res.render('pa_schedule/get_id', {title:`Detail PA Schedule ${results[0].produk}`, data:results[0], user_name:req.session.nama});
+
+    } else {
+        res.redirect('/login');
+    }
 
 
     });
@@ -100,6 +120,9 @@ router.post('/update/(:id)', function (req, res) {
 
     conn.query(`UPDATE pa_schedule SET ? WHERE id = ${id}`, form_data, function (err,results) {
         
+
+        
+
         if (err) {
             req.flash('Update Schedule Error');
 

@@ -1,0 +1,126 @@
+<%- include('../../layouts/header.ejs') %>
+
+        <!-- Page-header start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10"><%= title %></h5>
+                            <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="index.html"> <i class="ti ti-harddrive"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!"><%= title %></a>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page-header end -->
+        <div class="pcoded-inner-content">
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        <!-- Basic table card start -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Tambah Data User</h5>
+                                <!-- <span>use class <code>table</code> inside table element</span> -->
+                                <br> <br>
+
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                               
+
+
+                                    <!-- <form action="/bahan_baku/update/<%= data.id %>" method = "POST"> -->
+                                    
+                                    <form action="/users/update/<%= data.id %>" method = "POST">
+
+                                        <div class="form-group">
+                                            <label for="nama_bahan">Nama</label>
+                                            <input type="text" name="nama" id="nama" class = "form-control" value = "<%= data.nama %>">
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" name="email" id="email" class = "form-control" value = "<%= data.email %>">
+                                        </div>   
+                        
+                                        
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input type="password" name="password" id="password" class = "form-control"  value = "<%= data.password %>">
+                                        </div>
+
+                                    <div class="form-group">
+                                        <label for="posisi">Posisi</label>
+
+                                        <select name="posisi" id="posisi" class = "form-control">
+                                            <option value="<%= data.password %>">== <%= data.password %> ==</option>
+                                            <option value="sales">Sales</option>
+                                            <option value="ppic">PPIC</option>
+                                            <option value="store">Store</option>
+                                            <option value="manajerial">Manajerial</option>
+                                            <option value="produksi">Produksi</option>
+                                        </select>
+
+                                    </div>
+               
+                        
+                        
+     
+                                        
+                                        <div class="form-group">
+                                            <button type = "submit" class = "btn btn-primary">Update Data</button>
+                                        </div>
+
+
+                                    </form>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Basic table card end -->
+                      
+            
+                       
+                    </div>
+                    <!-- Page-body end -->
+                </div>
+          
+
+
+
+
+
+
+
+
+<!-- <%- include('../../layouts/modal_bahan_baku.ejs') %> -->
+
+
+
+<%- include('../../layouts/footer.ejs') %>

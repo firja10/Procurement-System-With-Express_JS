@@ -11,7 +11,16 @@ router.get('/', function (req,res) {
 
     conn.query('SELECT * FROM schedule_detail', function (err,results) {
 
-        res.render('schedule/detail', {title:'Data Detail Schedule', data:results});
+     if (req.session.nama) {
+    
+        res.render('schedule/detail', {title:'Data Detail Schedule', data:results, user_name:req.session.nama});
+
+
+    } else {
+
+        res.redirect('/login');
+    }
+
         
      });
     
@@ -32,13 +41,20 @@ router.get('/get_id/(:id)', function (req,res) {
     conn.query(`SELECT * FROM schedule_detail WHERE id = ${id}`, function (err, results) {
         
 
+        if (req.session.nama) {
+            
         if (err) {
             res.redirect('/schedule_detail',{title:'Error Ini Mah'});
         }
-        
-        
-        console.log(results);
-        res.render('schedule_detail/get_id', {title:`Detail Schedule ${results[0].produk}`, data:results[0]});
+           
+        // console.log(results);
+        res.render('schedule_detail/get_id', {title:`Detail Schedule ${results[0].produk}`, data:results[0], user_name:req.session.nama});
+
+    } else {
+
+        res.redirect('/login');
+
+    }
 
 
     });

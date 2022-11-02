@@ -1,0 +1,126 @@
+<%- include('../../layouts/header.ejs') %>
+
+        <!-- Page-header start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10"><%= title %></h5>
+                            <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="index.html"> <i class="ti ti-harddrive"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!"><%= title %></a>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page-header end -->
+        <div class="pcoded-inner-content">
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        <!-- Basic table card start -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Tabel Data User</h5>
+                                <!-- <span>use class <code>table</code> inside table element</span> -->
+                                <br> <br>
+
+                                <button class = "btn btn-primary" data-target = "#exampleUser" data-toggle = "modal">Tambah Data</button>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama</th>
+                                                <th>Email</th>
+                                                <th>Posisi</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <% for(var i = 0; i < data.length; i++){ %>
+                                            <tr>
+                                                <th scope="row"><%=  (i+1)  %></th>
+                                                <td><%= data[i].nama %></td>
+                                                <td><%= data[i].email %></td>
+                                              <% if(data[i].is_sales==1 || data[i].posisi=='sales') { %>  
+                                                 <td>Sales</td>
+                                              <% } else if(data[i].is_ppic ==1 || data[i].posisi=='ppic') { %>  
+                                                    <td>PPIC</td>
+                                              <% } else if(data[i].is_ppic ==1 || data[i].posisi=='store') { %>  
+                                                    <td>Store</td>
+                                              <% } else if(data[i].is_manajerial ==1 || data[i].posisi=='manajerial') { %>  
+                                                    <td>Manajerial</td>
+                                             <% } else { %>  
+                                                <td>Belum Dapat Posisi</td>
+
+                                                <% } %> 
+
+                                                <td> 
+                                                    <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
+
+                                                    <!-- <form action="/bahan_baku/getid?_method=GET" method = "get">
+                                                        <button type = "submit" class = "btn btn-primary">Edit Data</button>
+                                                    </form> -->
+                                                    <a href="../users/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
+
+                                                    <a href="../users/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
+                                                    
+
+                                                    <!-- <form action="/bahan_baku/delete/<%= data[i].id %>" method = "get"> 
+
+                                                        <button type = "submit" class = "btn btn-danger mt-3" >Hapus Data</button>
+
+                                                    </form> -->
+
+
+                                                </td>
+                                            </tr>
+                                        <% } %>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Basic table card end -->
+                      
+            
+                       
+                    </div>
+                    <!-- Page-body end -->
+                </div>
+          
+
+
+
+
+                <%- include('../../layouts/modal_user.ejs') %>
+
+
+
+<%- include('../../layouts/footer.ejs') %>

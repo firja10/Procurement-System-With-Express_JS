@@ -97,24 +97,38 @@
                 <div class="col-sm-12">
                     <form class="md-float-material form-material" method ="post" action = "/register" >
                         <div class="text-center">
-                            <img src="assets/images/logo.png" alt="logo.png">
+                            <img src="assets/images/logo_1_removed.png" alt="logo.png">
                         </div>
                         <div class="auth-box card">
                             <div class="card-block">
                                 <div class="row m-b-20">
                                     <div class="col-md-12">
-                                        <h3 class="text-center txt-primary">Sign up</h3>
+                                        <h3 class="text-center txt-primary">Registrasi</h3>
                                     </div>
                                 </div>
+
+
+
+
+                            <% if(message !=''){ %>
+
+                                <div class="alert alert-success bg-success alert-block">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>	
+                                    <span style = "color:white"><strong>  <%= message %></strong></span> 
+                                  </div>
+
+                            <% }%>
+
+
                                 <div class="form-group form-primary">
                                     <input type="text" name="nama" class="form-control" required="">
                                     <span class="form-bar"></span>
-                                    <label class="float-label">Choose Username</label>
+                                    <label class="float-label">Silakan Pilih Username</label>
                                 </div>
                                 <div class="form-group form-primary">
                                     <input type="text" name="email" class="form-control" required="">
                                     <span class="form-bar"></span>
-                                    <label class="float-label">Your Email Address</label>
+                                    <label class="float-label">Ketik Email Anda</label>
                                 </div>
                                 <div class="row">
                                     <!-- <div class="col-sm-6"> -->
@@ -167,17 +181,18 @@
                                 </div> -->
                                 <div class="row m-t-30">
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Sign up now</button>
+                                        <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Daftar Sekarang</button>
                                     </div>
                                 </div>
                                 <hr/>
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <p class="text-inverse text-left m-b-0">Thank you.</p>
-                                        <p class="text-inverse text-left"><a href="index.html"><b>Back to website</b></a></p>
+                                        <!-- <p class="text-inverse text-left m-b-0">Thank you.</p> -->
+                                        <!-- <p class="text-inverse text-left"><a href="index.html"><b>Back to website</b></a></p> -->
+                                        <a href="/login"><b>Sudah Punya Akun? Silakan Ke Laman Login</b></a>
                                     </div>
                                     <div class="col-md-2">
-                                        <img src="assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">
+                                        <!-- <img src="assets/images/auth/Logo-small-bottom.png" alt="small-logo.png"> -->
                                     </div>
                                 </div>
                             </div>

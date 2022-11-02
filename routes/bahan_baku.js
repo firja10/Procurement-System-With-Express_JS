@@ -1,5 +1,8 @@
 var conn = require('../database');
 
+var session = require('express-session');
+var bodyParser = require('body-parser'); 
+
 
 const BahanBakuController = require('../controllers/BahanBakuController');
 
@@ -28,20 +31,35 @@ router.get('/delete/(:id)', BahanBakuController.deleteData);
 
 // GET DATA MASUK BAHAN BAKU
 
-router.get('/data_masuk', function (req,res) {
+router.get('/data_masuk', function (req,res, next) {
     
+    if (req.session.nama) {
+       
     conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'`, function (err, results) {
 
         if (err) {
 
             req.flash('Tidak Dapat menampilkan Data Masuk');
-            res.render('bahan_baku/data_masuk', {title:'Error Bahan Baku Masuk', data:''});
-            
+            res.render('bahan_baku/data_masuk', {title:'Error Bahan Baku Masuk', data:'', user_name:req.session.nama});
+            // next();
+
+
         }
 
-        res.render('bahan_baku/data_masuk', {title:'Data Bahan Baku Yang Masuk', data:results});
+        res.render('bahan_baku/data_masuk', {title:'Data Bahan Baku Yang Masuk', data:results, user_name:req.session.nama});
+
+        // next();
         
     })
+
+}
+
+
+else {
+
+    res.redirect('/login');
+
+}
 
 
 
@@ -133,7 +151,9 @@ router.get('/data_keluar', function (req,res) {
 
 
     conn.query(`INSERT INTO bahan_baku_transaksi SET ?`, form_data, function (err, results) {
-    
+
+    if (req.session.nama) {
+        
         if (err) {
             req.flash('Pertambahan Data Keluar Bahan Baku Error');
 
@@ -145,10 +165,12 @@ router.get('/data_keluar', function (req,res) {
 
             req.flash('Data Kelur Bahan Baku sudah ditambahkan');
 
-            res.redirect('/bahan_baku/data_keluar');    
-
+            res.render('bahan_baku/data_keluar', {title:'Data Bahan Baku Yang Keluar', data:results, user_name:req.session.nama});
         }
 
+    } else {
+        res.redirect('/login');
+    }
 
         
     });

@@ -1,5 +1,9 @@
 const flash = require('express-flash');
 const BahanBaku = require('../models/BahanBaku');
+var session = require('express-session');
+var bodyParser = require('body-parser'); 
+
+
 
 
 
@@ -11,19 +15,29 @@ module.exports = {
         
         BahanBaku.fetchData(req.conn, (err,rows)=>{
 
+        if (req.session.nama) {
+            
+   
             if (err) {
                 req.flash('error', `${error.message}`);
-                res.render('bahan_baku/index', {data:'', title:'Error'});
+                res.render('bahan_baku/index', {data:'', title:'Error', user_name:req.session.nama});
                 // res.render('bahan_baku', {data:'', title:'Error'});
             }
 
             else {
 
-                res.render('bahan_baku/index',{data:rows, title:'Data Bahan Baku'});
+                res.render('bahan_baku/index',{data:rows, title:'Data Bahan Baku', user_name:req.session.nama});
 
                 // res.render('bahan_baku',{data:rows, title:'Data Bahan Baku'});
 
             }
+
+        } else {
+
+            res.redirect('/login');
+
+        }
+
 
 
         })
@@ -75,19 +89,25 @@ module.exports = {
 
         BahanBaku.getById(req.conn,id,(err,rows)=>{
 
-  
+        if (req.session.nama) {
+            
             if (err) {
                 req.flash('error', `${error.message}`);
-                res.render('bahan_baku/get_id', {data:'', title:'Error'});
+                res.render('bahan_baku/get_id', {data:'', title:'Error', user_name:req.session.nama});
                 // res.render('bahan_baku', {data:'', title:'Error'});
             }
 
             else {
 
-                res.render('bahan_baku/get_id',{data:rows[0], title:'Data Bahan Baku Spesial'});
+                res.render('bahan_baku/get_id',{data:rows[0], title:'Data Bahan Baku Spesial', user_name:req.session.nama});
                 // res.render('bahan_baku',{data:rows, title:'Data Bahan Baku'});
             }
 
+        }
+
+        else {
+            res.redirect('/login');
+        }
         
 
 
