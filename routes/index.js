@@ -29,18 +29,64 @@ var bodyParser = require('body-parser');
 router.get('/', function(req, res, next) {
   // res.render('dashboard', { title: 'Dashboard' });
 
-  if (req.session.nama) {
+  var q = "SELECT (SELECT COUNT(*) FROM bahan_baku) AS count_bahan_baku, (SELECT COUNT(*) FROM produk_jadi) AS count_produk_jadi, (SELECT COUNT(*) FROM capaian_produksi) AS count_capaian_produksi, (SELECT COUNT(*) FROM users) AS count_users, (SELECT posisi FROM users WHERE nama = '" + req.session.nama + "') AS jabatan_user ;";
+  // var q = "SELECT (SELECT COUNT(*) FROM bahan_baku) AS count_bahan_baku";
 
-    // res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama });
-    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama });
-    
+  // var jabatan = "SELECT posisi FROM users WHERE nama = " + "'" + req.session.nama + "'";
+
+  // console.log(jabatan);
+
+  let jabatan_sekarang
+
+  let count, count2, count3, count4        
+conn.query(q, function(err, results){
+  if (req.session.nama) {
+  if(err) throw err;
+    // //count the results
+    count = results[0].count_bahan_baku; 
+    count2 = results[0].count_produk_jadi;
+    count3 = results[0].count_capaian_produksi;
+    count4 = results[0].count_users;
+   jabatan_sekarang = results[0].jabatan_user;
+
+  
+
+
+    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, jabatan:jabatan_sekarang, count: count, count2: count2, count3: count3, count4: count4  })
+    // res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, count: count})  
+   
   }
 
   else {
     res.redirect('/login');
   }
 
+
+
+});
+
+
+
+
   // res.render('dashboard', { title: 'Dashboard' });
+
+
+
+
+  // if (req.session.nama) {
+
+
+
+  //   // res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama });
+  //   res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama });
+    
+  // }
+
+  // else {
+  //   res.redirect('/login');
+  // }
+
+  // // res.render('dashboard', { title: 'Dashboard' });
 
 
 

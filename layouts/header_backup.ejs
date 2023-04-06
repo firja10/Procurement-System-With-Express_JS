@@ -36,30 +36,6 @@
         <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
       <!-- Style.css -->
       <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-
-
-      <link rel="stylesheet" href="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.min.css">
-
-      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-  
-
-
-
-<!-- <script>
-    $(document).ready(function() {
-        data = {
-            'labels': [01, 02, 03, 04],
-            'series': [
-                [0, 2, 5, 6]
-            ]
-        };
-        new Chartist.Line('.ct-chart', data, {
-            showPoint: true,
-        });
-    });
-</script> -->
-
-
   </head>
 
   <body>
@@ -205,8 +181,7 @@
                               <a href="#!" class="waves-effect waves-light">
                                   <img src="/assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
                                   <!-- <span>fairuz</span> -->
-                                  <span><%= user_name %></span> 
-                
+                                  <span><%= user_name %></span>
                              
                                   <i class="ti-angle-down"></i>
                               </a>
@@ -254,7 +229,6 @@
                                   <div class="user-details">
                                       <!-- <span id="more-details">fairuz<i class="fa fa-caret-down"></i></span> -->
                                       <span id="more-details"><%= user_name %><i class="fa fa-caret-down"></i></span>
-                                      <p id="more-details"><%= jabatan %></p>
                                   
                                   </div>
                               </div>
@@ -283,7 +257,7 @@
 
                              <!-- <li class="active"> -->
 
-                            
+                                
                             <li>
                                   <a href="/" class="waves-effect waves-dark">
                                       <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
@@ -292,58 +266,10 @@
                                   </a>
                               </li>
 
-                              <% if(jabatan == 'sales') { %>
-
-                                <li>
-                                    <a href="/pa_schedule" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-book"></i><b></b></span>
-                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Laporan PA & Schedule</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-
-
-
-                                
-                              <% } else if(jabatan == 'ppc') { %>
-
-
-                                <li>
-                                    <a href="/schedule" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-calendar"></i><b></b></span>
-                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Schedule Produksi</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-
-  
-
-
-                              <% } else if(jabatan == 'produksi') { %>
-
-                                <li>
-                                    <a href="/capaian_produksi" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-bar-chart"></i><b></b></span>
-                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Capaian Produksi</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>    
-                                
-                                <li>
-                                    <a href="/capaian_produksi" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-bar-chart"></i><b></b></span>
-                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Quality</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>   
-                                
-                            <% } else if(jabatan == 'store') {  %>
 
 
 
 
-
-                                
                             <li class="pcoded-hasmenu">
                                 <a href="javascript:void(0)" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-harddrive"></i></span>
@@ -391,62 +317,47 @@
 
 
 
-                                
+                            <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-harddrives"></i></span>
+                                    <span class="pcoded-mtext"  data-i18n="nav.basic-components.main">Produk Jadi</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
 
-                                <li class="pcoded-hasmenu">
-                                    <a href="javascript:void(0)" class="waves-effect waves-dark">
-                                        <span class="pcoded-micon"><i class="ti-harddrives"></i></span>
-                                        <span class="pcoded-mtext"  data-i18n="nav.basic-components.main">Produk Jadi</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                    <ul class="pcoded-submenu">
-    
-                                        <li class=" ">
-                                            <a href="/produk_jadi" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Keseluruhan</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-    
-                                        <li class=" ">
-                                            <a href="/produk_jadi/data_masuk" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Masuk</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class=" ">
-                                            <a href="/produk_jadi/data_keluar" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Data Keluar</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <!-- <li class=" ">
-                                            <a href="button.html" class="waves-effect waves-dark">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Stok</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li> -->
-                             
-                                                      
-                                    </ul>
-                                </li>
+                                    <li class=" ">
+                                        <a href="/produk_jadi" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Keseluruhan</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
 
-                            
-                              <% } else {  %>
-
-
-
-
-                              <% }%>
-
-
-
-
-
+                                    <li class=" ">
+                                        <a href="/produk_jadi/data_masuk" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Masuk</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/produk_jadi/data_keluar" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Data Keluar</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class=" ">
+                                        <a href="button.html" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Data Stok</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li> -->
+                         
+                                                  
+                                </ul>
+                            </li>
 
                             
                             
@@ -471,23 +382,43 @@
                             </li> -->
 
 
-                            <!-- <li>
+                            <li>
                                 <a href="/users" class="waves-effect waves-dark">
                                     <span class="pcoded-micon"><i class="ti-user"></i><b></b></span>
                                     <span class="pcoded-mtext" data-i18n="nav.dash.main">Users</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
-                            </li> -->
+                            </li>
 
 
 
 
-  
+                            <li>
+                                <a href="/schedule" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-calendar"></i><b></b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Schedule</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
 
 
+                            <li>
+                                <a href="/pa_schedule" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-book"></i><b></b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Laporan PA & Schedule</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
 
 
-          
+                            <li>
+                                <a href="/capaian_produksi" class="waves-effect waves-dark">
+                                    <span class="pcoded-micon"><i class="ti-bar-chart"></i><b></b></span>
+                                    <span class="pcoded-mtext" data-i18n="nav.dash.main">Capaian Produksi</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+
 
 
                             <li>
@@ -506,5 +437,7 @@
 
                           </ul>
                           
+                          
+
                   </nav>
                   <div class="pcoded-content">

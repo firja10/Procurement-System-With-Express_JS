@@ -19,77 +19,28 @@ router.get('/', function (req,res) {
     let data_1, jabatan;
 
 
-
-
-    // execute the query to select all rows from table1
-conn.query('SELECT * FROM pa_schedule', function (error, results1, fields) {
-    if (error) throw error;
-  
-    // execute the query to select all rows from table2
-    conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
-
+        conn.query(q, function (err,results) {
 
         if(req.session.nama)
 
         {
 
-      if (error) throw error;
-  
-      // combine the results from both queries into a single array
-      const combinedResults = results1.concat(results2);
-  
-      data_1 = results1;
-      jabatan = results2[0].posisi;
+            if(err) throw err;
+
+            data_1 = results[0].pa_schedules;
+            jabatan = results[0].jabatan_user;
 
 
 
-  // res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results, user_name:req.session.nama});
+        // res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results, user_name:req.session.nama});
 
-  res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+        res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:data_1, jabatan:jabatan, user_name:req.session.nama});
 
-    } else {
-        res.redirect('/login');
-    }
-
-
-
-
-    });
-  });
-
-
-
-
-
-
-
-
-    //     conn.query(q, function (err,results) {
-
-    //     if(req.session.nama)
-
-    //     {
-
-    //         if(err) throw err;
-
-    //         data_1 = results[0].pa_schedules;
-    //         jabatan = results[0].jabatan_user;
-
-
-
-    //     // res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results, user_name:req.session.nama});
-
-    //     res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:data_1, jabatan:jabatan, user_name:req.session.nama});
-
-    //     } else {
-    //         res.redirect('/login');
-    //     }
+        } else {
+            res.redirect('/login');
+        }
         
-    //  });
-
-
-
-
+     });
     
 });
 
@@ -105,61 +56,34 @@ conn.query('SELECT * FROM pa_schedule', function (error, results1, fields) {
 // GET ALL DATA
 router.get('/laporan', function (req,res) {
 
-    let q = "SELECT (SELECT * FROM pa_schedule) AS pa_schedules, (SELECT posisi FROM users WHERE nama = '" + req.session.nama + "') AS jabatan_user ;";
+
+    let q = "SELECT (SELECT * FROM pa_schedule) AS pa_schedule, (SELECT posisi FROM users WHERE nama = '" + req.session.nama + "') AS position";
+
     // conn.query('SELECT * FROM pa_schedule', function (err,results) {
+
     let data_1, jabatan;
 
-    // execute the query to select all rows from table1
-    conn.query('SELECT * FROM pa_schedule', function (error, results1, fields) {
-    if (error) throw error;
-  
-    // execute the query to select all rows from table2
-    conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+    conn.query(q, function (err,results) {
+
 
         if(req.session.nama)
 
         {
 
-      if (error) throw error;
-  
-      // combine the results from both queries into a single array
-      const combinedResults = results1.concat(results2);
-  
-      data_1 = results1;
-      jabatan = results2[0].posisi;
+            data_1 = results[0].pa_schedule;
+            jabatan = results[0].position;
 
 
+        res.render('schedule/laporan_pa', {title:'Data Detail Laporan PA Schedule', data:data_1, user_name:req.session.nama, jabatan:jabatan});
 
-  // res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results, user_name:req.session.nama});
-
-  res.render('schedule/laporan_pa', {title:'Data Detail Laporan PA Schedule', data:data_1, jabatan:jabatan, user_name:req.session.nama});
-
-    } else {
-        res.redirect('/login');
-    }
-
-
-
-
-    });
-  });
-
-
-
-
+        } else {
+            res.redirect('/login');
+        }
+        
+     });
     
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 

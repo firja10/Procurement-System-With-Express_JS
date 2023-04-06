@@ -50,11 +50,45 @@
                             </div>
                             <div class="card-block table-border-style">
                                 <div class="table-responsive">
-                                    <table class="table">
+
+
+                                    <div class="row">
+                                       
+
+                                        <!-- <div class="col-md-3">
+                                            <label for="TanggalInput">Tanggal :</label>
+                                            <input type="date" id="TanggalInput" onkeyup="filterTable()" placeholder="Tanggal" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label for="ProdukInput">Produk :</label>
+                                            <input type="text" id="ProdukInput" onkeyup="filterTable()" placeholder="Produk" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label for="NoPartInput">No Part :</label>
+                                            <input type="text" id="NoPartInput" onkeyup="filterTable()" placeholder="No Part" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label for="PlanProduksiInput">Plan Produksi :</label>
+                                            <input type="text" id="PlanProduksiInput" onkeyup="filterTable()" placeholder="Plan Produksi" class="form-control">
+                                        </div> -->
+
+
+
+                                    </div>
+
+                                    <br>
+
+
+                                    <table class="table" id="Table_Schedule">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Id</th>
+
+             
+
+
                                                 <th>Tanggal</th>
                                                 <th>Produk</th>
                                                 <th>No Part</th>
@@ -66,8 +100,7 @@
 
                                         <% for(var i = 0; i < data.length; i++){ %>
                                             <tr>
-                                                <th scope="row"><%=  (i+1)  %></th>
-                                                <td><%= data[i].id %></td>
+                      
                                                 <td><%= data[i].tanggal %></td>
                                                 <td><%= data[i].produk %></td>
                                                 <td><%= data[i].no_part %></td>

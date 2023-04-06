@@ -55,7 +55,7 @@
     <!-- Required Jquery -->
 
 
-    <script>
+    <!-- <script>
         $(function() {
             
             var current = location.pathname;
@@ -71,13 +71,184 @@
 
 
         })
-    </script>
+    </script> -->
+
+
+<script>
+
+let lokasi = window.location.pathname ;
+
+console.log(lokasi);
+
+
+if (lokasi == '/pa_schedule') {
+console.log('pa_schedule');
+    
+} else {
+    console.log('nope');
+}
+
+
+
+</script>
+
+
+<script type="text/javascript" src="/assets/js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery-ui/jquery-ui.min.js "></script>
+
+
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+<script src="https://cdn.datatables.net/fixedheader/3.2.3/js/dataTables.fixedHeader.min.js"></script>
 
 
 
 
-    <script type="text/javascript" src="/assets/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/assets/js/jquery-ui/jquery-ui.min.js "></script>
+<script>
+
+// $(document).ready( function () {
+//     $('#Table_Schedule').DataTable();
+// } );
+// </script>
+
+
+
+
+<script>
+
+
+    $(document).ready(function () {
+    // Setup - add a text input to each footer cell
+    $('#Table_Schedule thead tr')
+        .clone(true)
+        .addClass('filters')
+        .appendTo('#Table_Schedule thead');
+ 
+    var table = $('#Table_Schedule').DataTable({
+        orderCellsTop: true,
+        fixedHeader: true,
+        initComplete: function () {
+            var api = this.api();
+ 
+            // For each column
+            api
+                .columns()
+                .eq(0)
+                .each(function (colIdx) {
+                    // Set the header cell to contain the input element
+                    var cell = $('.filters th').eq(
+                        $(api.column(colIdx).header()).index()
+                    );
+                    var title = $(cell).text();
+                    $(cell).html('<input class="form-control" type="text" placeholder="' + title + '" />');
+ 
+                    // On every keypress in this input
+                    $(
+                        'input',
+                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                    )
+                        .off('keyup change')
+                        .on('change', function (e) {
+                            // Get the search value
+                            $(this).attr('title', $(this).val());
+                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+ 
+                            var cursorPosition = this.selectionStart;
+                            // Search the column for that value
+                            api
+                                .column(colIdx)
+                                .search(
+                                    this.value != ''
+                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                        : '',
+                                    this.value != '',
+                                    this.value == ''
+                                )
+                                .draw();
+                        })
+                        .on('keyup', function (e) {
+                            e.stopPropagation();
+ 
+                            $(this).trigger('change');
+                            $(this)
+                                .focus()[0]
+                                .setSelectionRange(cursorPosition, cursorPosition);
+                        });
+                });
+        },
+    });
+});
+
+
+
+</script>
+
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+
+
+
+
+                                   <script>
+
+    //                                                 function filterTable() {
+    //   // Declare variables
+    //   var TanggalInput, ProdukInput, NoPartInput, PlanProduksiInput,  TanggalFilter, ProdukFilter, NoPartFilter, PlanProduksiFilter, table, tr, tdTanggal, tdProduk, tdNoPart, tdPlanProduksi, i, txtValueName, txtValueAge;
+    //   TanggalInput = document.getElementById("TanggalInput");
+    //   ProdukInput = document.getElementById("ProdukInput");
+    //   NoPartInput = document.getElementById("NoPartInput");
+    //   PlanProduksiInput = document.getElementById("PlanProduksiInput");
+
+
+    //   TanggalFilter = TanggalInput.value.toUpperCase();
+    //   ProdukFilter = ProdukInput.value.toUpperCase();
+    //   NoPartFilter = NoPartFilter.value.toUpperCase(); 
+    //   PlanProduksiFilter = PlanProduksiFilter.value.toUpperCase();                                                       
+
+
+    //   table = document.getElementById("Table_Schedule");
+    //   tr = table.getElementsByTagName("tr");
+
+    //   // Loop through all table rows, and hide those that don't match the search query
+    //   for (i = 0; i < tr.length; i++) {
+    //     tdTanggal = tr[i].getElementsByTagName("td")[0];
+    //     tdProduk = tr[i].getElementsByTagName("td")[1];
+    //     tdNoPart = tr[i].getElementsByTagName("td")[2];
+    //     tdPlanProduksi = tr[i].getElementsByTagName("td")[3];
+
+    //     if (tdTanggal && tdProduk && tdNoPart && tdPlanProduksi) {
+    //       txtValueTanggal = tdTanggal.textContent || tdTanggal.innerText;
+    //       txtValueProduk = tdProduk.textContent || tdProduk.innerText;
+    //       txtValueNoPart = tdNoPart.textContent || tdNoPart.innerText;
+    //       txtValuePlanProduksi = tdPlanProduksi.textContent || tdPlanProduksi.innerText;
+
+
+    //       if (txtValueTanggal.toUpperCase().indexOf(TanggalFilter) > -1 && txtValueProduk.toUpperCase().indexOf(ProdukFilter) > -1 && txtValueNoPart.toUpperCase().indexOf(NoPartFilter) > -1 && txtValuePlanProduksi.toUpperCase().indexOf(PlanProduksiFilter) > -1) {
+    //         tr[i].style.display = "";
+    //       } else {
+    //         tr[i].style.display = "none";
+    //       }
+    //     }
+    //   }
+    // }
+
+
+
+                                                </script>
+
+
+
+
+
+
+<script src="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.min.js"></script>
+
+
+
+
+
+
     <script type="text/javascript" src="/assets/js/popper.js/popper.min.js"></script>
     <script type="text/javascript" src="/assets/js/bootstrap/js/bootstrap.min.js "></script>
     <script type="text/javascript" src="/assets/pages/widget/excanvas.js "></script>
