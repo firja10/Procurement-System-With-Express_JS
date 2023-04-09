@@ -152,6 +152,59 @@ router.get('/laporan', function (req,res) {
 
 
 
+/// Get Data JSON Untuk Chart Under Bracket
+router.get('/under_bracket', function (req,res) {
+
+    conn.query(`SELECT bulan, COUNT(*) as produks FROM pa_schedule where produk='UNDER BRACKET' GROUP BY bulan`, function (err,results1, fields) {
+        // conn.query('SELECT bulan FROM pa_schedule', function (err,results1, fields) {
+    
+            // console.log(results1);
+        res.json(results1);
+        
+    });
+    
+    
+});
+
+
+
+/// Get Data JSON Untuk Chart Inner Tube
+router.get('/inner_tube', function (req,res) {
+
+    conn.query(`SELECT bulan, COUNT(*) as produks FROM pa_schedule where produk='INNER TUBE' GROUP BY bulan`, function (err,results1, fields) {
+        // conn.query('SELECT bulan FROM pa_schedule', function (err,results1, fields) {
+    
+            // console.log(results1);
+        res.json(results1);
+        
+    });
+    
+    
+});
+
+
+
+
+
+/// Get Data JSON Untuk Chart Inner Tube
+router.get('/total', function (req,res) {
+
+    conn.query(`SELECT bulan, COUNT(*) as produks FROM pa_schedule GROUP BY bulan`, function (err,results1, fields) {
+        // conn.query('SELECT bulan FROM pa_schedule', function (err,results1, fields) {
+    
+            // console.log(results1);
+        res.json(results1);
+        
+    });
+    
+    
+});
+
+
+
+
+
+
 
 
 

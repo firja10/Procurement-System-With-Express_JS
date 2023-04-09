@@ -22,22 +22,141 @@ var bodyParser = require('body-parser');
 router.get('/', function (req,res, ) {
     
 
+    let data_1, jabatan;
+    
+    conn.query('SELECT * FROM capaian_produksi', function (err,results1, fields) {
 
-    conn.query('SELECT * FROM capaian_produksi', function (err,results) {
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+
         if (req.session.nama) {
     
+        data_1 = results1;
+        jabatan = results2[0].posisi;
       
-        console.log(results);
-        res.render('capaian_produksi/index', {title:'Capaian Produksi', data:results, user_name:req.session.nama});
+        console.log(results1);
+        res.render('capaian_produksi/index', {title:'Capaian Produksi', data:results1, jabatan:jabatan, user_name:req.session.nama});
 
     } else {
         res.redirect('/login');
     }
 
+
+    
+
+
+        });
+
     });
    
 
-})
+});
+
+
+
+
+
+
+
+
+
+// Get Capaian Produksi Jadi
+router.get('/quality', function (req,res, ) {
+    
+
+    let data_1, jabatan;
+    
+    conn.query('SELECT * FROM quality', function (err,results1, fields) {
+
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+
+        if (req.session.nama) {
+    
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+      
+        console.log(results1);
+        res.render('capaian_produksi/quality', {title:'Quality', data:results1, jabatan:jabatan, user_name:req.session.nama});
+
+    } else {
+        res.redirect('/login');
+    }
+
+
+
+        });
+
+    });
+   
+
+});
+
+
+
+
+
+
+
+router.post('/quality/store', function (req, res) {
+   
+
+    const {tanggal, shift, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng} = req.body;
+
+    var form_data = {
+        tanggal, shift, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng
+    }
+
+
+    conn.query(`INSERT INTO quality SET ?`, form_data, function (err, results) {
+    
+        if (err) {
+            req.flash('Pertambahan Data Quality Error');
+
+            res.redirect('/capaian_produksi/quality');            
+
+        }
+
+        else {
+
+            req.flash('Quality sudah ditambahkan');
+
+            res.redirect('/capaian_produksi/quality');
+
+        }
+
+
+        
+    });
+    
+ });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

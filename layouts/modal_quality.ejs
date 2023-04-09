@@ -1,0 +1,70 @@
+<!-- Modal -->
+<div class="modal fade" id="modalQuality" tabindex="-1" role="dialog" aria-labelledby="modalQualityLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalQuality">Modal Tambah Data Quality</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <form action="/capaian_produksi/quality/store" method="post">
+
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label for="tanggal">Tanggal</label>
+                <input type="date" name="tanggal" id="tanggal" class = "form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="shift">Shift</label>
+                <input type="text" name="shift" id="shift" class = "form-control">
+            </div>
+
+
+                <div class="form-group">
+                    <label for="produk">Produk</label>
+                    <input type="text" name="produk" id="produk" class = "form-control">
+                </div>
+
+
+
+                
+                <div class="form-group">
+                    <label for="no_part">Nomor Part</label>
+                    <input type="text" name="no_part" id="no_part" class = "form-control">
+                </div>
+
+                
+                <div class="form-group">
+                    <label for="hasil_produksi">Hasil Produksi</label>
+                    <input type="text" name="hasil_produksi" id="hasil_produksi" class = "form-control">
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="jenis_kecacatan">Jenis Kecacatan</label>
+                    <input type="text" name="jenis_kecacatan" id="jenis_kecacatan" class = "form-control">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="kuantitas">Kuantitas</label>
+                    <input type="number" name="kuantitas" id="kuantitas" class = "form-control">
+                </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Tambahkan</button>
+        </div>
+
+    </form>
+        
+    </div>
+    </div>
+  </div>

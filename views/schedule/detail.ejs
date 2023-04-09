@@ -50,11 +50,11 @@
                             </div>
                             <div class="card-block table-border-style">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="Table_Schedule" >
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>Id</th>
+                                                <!-- <th>No</th>
+                                                <th>Id</th> -->
                                                 <th>Tanggal</th>
                                                 <th>Produk</th>
                                                 <th>No Part</th>
@@ -66,8 +66,8 @@
 
                                         <% for(var i = 0; i < data.length; i++){ %>
                                             <tr>
-                                                <th scope="row"><%=  (i+1)  %></th>
-                                                <td><%= data[i].id %></td>
+                                                <!-- <th scope="row"><%=  (i+1)  %></th>
+                                                <td><%= data[i].id %></td> -->
                                                 <td><%= data[i].tanggal %></td>
                                                 <td><%= data[i].produk %></td>
                                                 <td><%= data[i].no_part %></td>

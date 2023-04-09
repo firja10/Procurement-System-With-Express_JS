@@ -9,11 +9,19 @@ var conn = require('../database');
 // GET ALL DATA
 router.get('/', function (req,res) {
 
-    conn.query('SELECT * FROM schedule_detail', function (err,results) {
+let schedule_detail, jabatan;
+
+conn.query('SELECT * FROM schedule_detail', function (err,results1, fields) {
+
+    conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
      if (req.session.nama) {
     
-        res.render('schedule/detail', {title:'Data Detail Schedule', data:results, user_name:req.session.nama});
+        schedule_detail = results1;
+        jabatan = results2[0].posisi;
+
+
+        res.render('schedule/detail', {title:'Data Detail Schedule', data:results1, jabatan:jabatan, user_name:req.session.nama});
 
 
     } else {
@@ -23,8 +31,22 @@ router.get('/', function (req,res) {
 
         
      });
+
+
+
+
+
+
     
 });
+
+
+});
+
+
+
+
+
 
 
 

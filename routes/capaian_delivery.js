@@ -25,7 +25,7 @@ router.get('/', function (req,res, ) {
     let data_1, jabatan;
 
 
-    conn.query('SELECT * FROM produk_jadi', function (err,results1, fields) {
+    conn.query('SELECT * FROM capaian_delivery', function (err,results1, fields) {
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
         if (req.session.nama) {
@@ -203,93 +203,6 @@ router.get('/get_id/(:id)', function (req,res, ) {
 
 
 
- // DATA MASUK PRODUK JADI
- router.get('/data_masuk', function (req,res) {
-
-
-    let data_1, jabatan;
-
-    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk = 'masuk'`, function (err,results1, fields) {
-
-
-      conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (err, results2, fields) {
-
-
-
-      if (req.session.nama) {
-        
-
-
-        if (err) {
-            
-            req.flash('produk_jadi/data_masuk');
-            res.render('produk_jadi/data_masuk', {title:'Data Masuk Belum Ditemukan', data:'', jabatan:'store', user_name:req.session.nama})
-
-        }
-
-
-        data_1 = results1;
-        jabatan = results2[0].posisi
-
-    //    if (results.length <0 || results.length == undefined) {
-        
-    //     results = '';
-
-    //    }
-
-        res.render('produk_jadi/data_masuk', {title:'Data Masuk Produk Jadi', data:data_1, jabatan:jabatan, user_name:req.session.nama});
-
-    } else {
-        res.redirect('/login');
-    }
-        
-    })
-   
- });
-
-});
-
-
-
-// DATA MASUK PRODUK JADI ID 
-
-
-router.get('/data_masuk/(:id)', function (req,res) {
-
-    var id = req.params.id;
-
-    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE id = '${id}' AND status_produk = 'masuk'`, function (err,results) {
-        
-
-    if (req.session.nama) {
-        
-   
-        if (err) {
-
-            req.flash('data_error_masuk_id');
-
-            res.render('produk_jadi/data_masuk_id', {title:`Transaksi Data Masuk dengan Id = ${id} Error`, data:'', user_name:req.session.nama});
-        }
-
-        res.render('produk_jadi/data_masuk_id', {title:`Transaksi Data Masuk ${results[0].nama_produk}`, data:results[0], user_name:req.session.nama});
-
-    } else {
-        res.redirect('/login');
-    }
-
-    })
-
-
-    
-})
-
-
-
-
-
-
-
-
 
 
 
@@ -304,43 +217,6 @@ router.get('/data_masuk/(:id)', function (req,res) {
 
 
  
-
-
-  // DATA KELUAR PRODUK JADI 
-
-  router.get('/data_keluar', function (req,res) {
-
-
-    let data_1, jabatan;
-
-    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk = 'keluar'`, function (err,results1, fields) {
-
-        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (err, results2, fields) {
-
-
-            data_1 = results1;
-            jabatan = results2[0].posisi;
-
-
-    if (req.session.nama) {    
-        if (err) {
-            req.flash('produk_jadi/data_keluar');
-            req.render('produk_jadi/data_keluar', {title:'Error Ini Mah', data : '', jabatan:'store', user_name:req.session.nama});
-
-        }
-
-        res.render('produk_jadi/data_keluar', {title:'Data Keluar Produk Jadi', data:data_1, jabatan:jabatan,  user_name:req.session.nama});
-
-    } else {
-        res.redirect('/login');
-     }
-        
-    })
-
-    
- });
-
-});
 
 
 

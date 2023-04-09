@@ -35,7 +35,7 @@ var ScheduleDetailRouter = require('./routes/schedule');
 var PAScheduleRouter = require('./routes/pa_schedule');
 
 var CapaianProduksi = require('./routes/capaian_produksi');
-
+var CapaianDelivery = require('./routes/capaian_delivery');
 
 
 
@@ -141,7 +141,7 @@ app.use('/bahan_baku_transaksi', BahanBakuTransaksiRouter);
 
 
 
-app.use('/produk_jadi',ProdukJadiRouter);
+// app.use('/produk_jadi',ProdukJadiRouter);
 
 
 app.use('/produk_jadi',ProdukJadiRouter);
@@ -151,6 +151,8 @@ app.use('/schedule', ScheduleDetailRouter);
 app.use('/pa_schedule', PAScheduleRouter);
 
 app.use('/capaian_produksi', CapaianProduksi);
+
+app.use('/capaian_delivery', CapaianDelivery);
 
 
 

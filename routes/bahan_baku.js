@@ -33,37 +33,48 @@ router.get('/delete/(:id)', BahanBakuController.deleteData);
 
 router.get('/data_masuk', function (req,res, next) {
     
-    if (req.session.nama) {
        
-    conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'`, function (err, results) {
+    conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'`, function (err, results1, fields) {
+    conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+    if (req.session.nama) {
 
+
+        let jabatan, data_1;
+    
         if (err) {
 
             req.flash('Tidak Dapat menampilkan Data Masuk');
-            res.render('bahan_baku/data_masuk', {title:'Error Bahan Baku Masuk', data:'', user_name:req.session.nama});
+            res.render('bahan_baku/data_masuk', {title:'Error Bahan Baku Masuk', data:'', jabatan:'', user_name:req.session.nama});
             // next();
 
 
         }
 
-        res.render('bahan_baku/data_masuk', {title:'Data Bahan Baku Yang Masuk', data:results, user_name:req.session.nama});
+
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+
+        res.render('bahan_baku/data_masuk', {title:'Data Bahan Baku Yang Masuk', data:data_1, jabatan:jabatan, user_name:req.session.nama});
 
         // next();
+
+
+    }
+
+
+    else {
+    
+        res.redirect('/login');
+    
+    }
         
-    })
-
-}
+    });
 
 
-else {
-
-    res.redirect('/login');
-
-}
-
-
+    });
 
 });
+
 
 
 
