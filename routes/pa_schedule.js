@@ -227,9 +227,9 @@ router.get('/get_id/(:id)', function (req,res) {
     
     var id = req.params.id;
 
-    conn.query(`SELECT * FROM pa_schedule WHERE id = ${id}`, function (err, results) {
+    conn.query(`SELECT * FROM pa_schedule WHERE id = ${id}`, function (err, results1, fields) {
         
-
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
         if (req.session.nama) {
             
 
@@ -239,12 +239,16 @@ router.get('/get_id/(:id)', function (req,res) {
         }
         
         
-        console.log(results);
-        res.render('pa_schedule/get_id', {title:`Detail PA Schedule ${results[0].produk}`, data:results[0], user_name:req.session.nama});
+        console.log(results1);
+        res.render('schedule/get_id_pa', {title:`Detail PA Schedule ${results1[0].produk}`, data:results1[0], jabatan:results2[0].posisi, user_name:req.session.nama});
+
+        
 
     } else {
         res.redirect('/login');
     }
+
+});
 
 
     });

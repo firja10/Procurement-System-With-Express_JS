@@ -8,10 +8,10 @@ const BahanBakuController = require('../controllers/BahanBakuController');
 
 const router = require('express').Router();
 
-router.get('/', BahanBakuController.index);
+// router.get('/', BahanBakuController.index);
 router.post('/store', BahanBakuController.store);
 // router.get('/(:id)', BahanBakuController.getid);
-router.get('/get_id/(:id)', BahanBakuController.get_id);
+// router.get('/get_id/(:id)', BahanBakuController.get_id);
 
 // router.put('/update', BahanBakuController.updateData);
 router.post('/update/:id', BahanBakuController.updateData);
@@ -19,6 +19,112 @@ router.post('/update/:id', BahanBakuController.updateData);
 // router.post('/delete/:id', BahanBakuController.deleteData);
 
 router.get('/delete/(:id)', BahanBakuController.deleteData);
+
+
+
+
+
+
+
+router.get('/', function (req,res, next) {
+    
+       
+    conn.query(`SELECT * FROM bahan_baku`, function (err, results1, fields) {
+    conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+    if (req.session.nama) {
+
+
+        let jabatan, data_1;
+    
+        if (err) {
+
+            req.flash('Tidak Dapat menampilkan Data Masuk');
+            res.render('bahan_baku/', {title:'Error Bahan Baku Masuk', data:'', jabatan:'', user_name:req.session.nama});
+            // next();
+
+
+        }
+
+
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+
+        res.render('bahan_baku/', {title:'Data Bahan Baku Yang Masuk', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+
+        // next();
+
+
+    }
+
+
+    else {
+    
+        res.redirect('/login');
+    
+    }
+        
+    });
+
+
+    });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+router.get('/get_id/:id', function (req,res, next) {
+    
+    var id = req.params.id;
+       
+    conn.query(`SELECT * FROM bahan_baku WHERE id = '${id}'`, function (err, results1, fields) {
+    conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+    if (req.session.nama) {
+
+
+        let jabatan, data_1;
+    
+        if (err) {
+
+            req.flash('Tidak Dapat menampilkan Data Masuk');
+            res.render('bahan_baku/get_id', {title:'Error Bahan Baku Masuk', data:'', jabatan:'', user_name:req.session.nama});
+            // next();
+
+
+        }
+
+
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+
+        res.render('bahan_baku/get_id', {title:'Data Bahan Baku Yang Masuk', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+
+        // next();
+
+
+    }
+
+
+    else {
+    
+        res.redirect('/login');
+    
+    }
+        
+    });
+
+
+    });
+
+});
+
 
 
 

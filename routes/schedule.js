@@ -60,23 +60,26 @@ router.get('/get_id/(:id)', function (req,res) {
     
     var id = req.params.id;
 
-    conn.query(`SELECT * FROM schedule_detail WHERE id = ${id}`, function (err, results) {
-        
+    conn.query(`SELECT * FROM schedule_detail WHERE id = ${id}`, function (error, results1, fields) {
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
         if (req.session.nama) {
             
-        if (err) {
-            res.redirect('/schedule_detail',{title:'Error Ini Mah'});
+        if (error) {
+            res.redirect('/schedule',{title:'Error Ini Mah'});
         }
            
-        // console.log(results);
-        res.render('schedule_detail/get_id', {title:`Detail Schedule ${results[0].produk}`, data:results[0], user_name:req.session.nama});
+        // console.log(results1);
+        res.render('schedule/get_id_detail', {title:`Detail Schedule ${results1[0].produk}`, data:results1[0], jabatan:results2[0].posisi, user_name:req.session.nama});
 
     } else {
 
         res.redirect('/login');
 
     }
+
+
+});
 
 
     });
@@ -141,7 +144,7 @@ router.post('/update/(:id)', function (req, res) {
         if (err) {
             req.flash('Update Schedule Error');
 
-            res.redirect(`/schedule_detail/get_id/${id}`);   
+            res.redirect(`/schedule/get_id/${id}`);   
             // res.redirect(`/produk_jadi`);            
         }
 
@@ -149,7 +152,7 @@ router.post('/update/(:id)', function (req, res) {
 
             req.flash('Schedule Detail sudah ditambahkan');
 
-            res.redirect(`/schedule_detail/get_id/${id}`);   
+            res.redirect(`/schedule/get_id/${id}`);   
             // res.redirect(`/produk_jadi`);              
         }
 
