@@ -120,10 +120,10 @@ router.get('/quality', function (req,res, ) {
 router.post('/quality/store', function (req, res) {
    
 
-    const {tanggal, shift, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng} = req.body;
+    const {tanggal, bulan, shift, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng} = req.body;
 
     var form_data = {
-        tanggal, shift, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng
+        tanggal, bulan, shift, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng
     }
 
 
@@ -349,10 +349,10 @@ router.get('/get_id/(:id)', function (req,res, ) {
  router.post('/store', function (req, res) {
    
 
-    const {produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi} = req.body;
+    const {tanggal, bulan, produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi} = req.body;
 
     var form_data = {
-        produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi
+        tanggal, bulan, produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi
     }
 
 
@@ -388,10 +388,10 @@ router.get('/get_id/(:id)', function (req,res, ) {
 
     var id = req.params.id;
 
-    const {produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi} = req.body;
+    const {tanggal, bulan, produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi} = req.body;
 
     var form_data = {
-        produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi
+        tanggal, bulan, produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi
     }
 
     conn.query(`UPDATE capaian_produksi SET ? WHERE id = ${id}`, form_data, function (err,results) {

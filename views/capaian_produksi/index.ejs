@@ -54,6 +54,8 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
+                                                <th>Tanggal</th>
+                                                <th>Bulan</th>
                                                 <th>Nama Produk</th>
                                                 <th>Nomor Part</th>
                                                 <th>Plan Produksi</th>
@@ -68,6 +70,8 @@
                                         <% for(var i = 0; i < data.length; i++){ %>
                                             <tr>
                                                 <th scope="row"><%=  (i+1)  %></th>
+                                                <td><%= data[i].tanggal %></td>
+                                                <td><%= data[i].bulan %></td>
                                                 <td><%= data[i].produk %></td>
                                                 <td><%= data[i].no_part %></td>
                                                 <td><%= data[i].plan_produksi %></td>

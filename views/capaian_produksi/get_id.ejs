@@ -56,6 +56,15 @@
                                     
                                     <form action="/capaian_produksi/update/<%= data[0].id %>" method = "POST">
 
+
+                                        <div class="form-group">
+                                            <label for="tanggal">Tanggal</label>
+                                            <input type="date" name="tanggal" id="tanggal" class = "form-control" value="<%= data[0].tanggal %>">
+                                        </div>
+
+                                        <input type="hidden" name="bulan" id="bulan">
+
+
                                         <div class="form-group">
                                             <label for="produk">Nama Produk</label>
                                             <input type="text" name="produk" id="produk" class = "form-control" value = "<%= data[0].produk %>">
@@ -111,6 +120,35 @@
 
 
 
+
+
+
+                <script>
+
+                    const tanggal_input = document.getElementById('tanggal');
+                
+                    tanggal_input.addEventListener("change", function() {
+                      
+                      const data_tanggal = tanggal_input.value;
+                
+                    const date = new Date(data_tanggal);
+                
+                    const monthNames = [
+                    "Januari", "Februari", "Maret",
+                    "April", "Mei", "Juni", "Juli",
+                    "Agustus", "September", "Oktober",
+                    "November", "Desember"
+                  ];
+                  const month = monthNames[date.getMonth()];
+                
+                    // document.getElementById('bulan').value = month;
+                
+                    document.getElementById('bulan').value = month;
+                    
+                  });
+                
+                    
+                  </script>
 
 
 
