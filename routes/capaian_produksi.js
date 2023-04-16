@@ -26,6 +26,8 @@ router.get('/', function (req,res, ) {
     
     conn.query('SELECT * FROM capaian_produksi', function (err,results1, fields) {
 
+
+
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
 
@@ -41,11 +43,11 @@ router.get('/', function (req,res, ) {
         res.redirect('/login');
     }
 
-
-    
-
-
         });
+
+
+
+
 
     });
    
@@ -98,6 +100,23 @@ router.get('/quality', function (req,res, ) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 router.post('/quality/store', function (req, res) {
    
 
@@ -122,6 +141,135 @@ router.post('/quality/store', function (req, res) {
             req.flash('Quality sudah ditambahkan');
 
             res.redirect('/capaian_produksi/quality');
+
+        }
+
+
+        
+    });
+    
+ });
+
+
+
+
+
+
+
+
+ 
+
+// UPDATE Quality DELETE
+
+
+router.get('/quality/delete/(:id)', function (req, res) {
+    
+    var id = req.params.id;
+
+    conn.query(`DELETE FROM quality WHERE id = ${id}`, function (err, results) {
+
+        if (err) {
+            
+            req.flash('Data tidak bisa dihapus');
+            res.redirect('/capaian_produksi/quality');
+
+        }
+
+        else {
+
+            req.flash('Data dapat dihapus');
+            res.redirect('/capaian_produksi/quality');
+
+        }
+
+
+        
+    })
+
+
+ });
+
+
+
+
+
+
+
+
+
+
+
+ 
+// Edit Capaian Produksi Jadi 
+router.get('/quality/get_id/(:id)', function (req,res, ) {
+    
+
+    var id = req.params.id;
+
+    conn.query(`SELECT * FROM quality WHERE id = '${id}'`, function (err,results) {
+
+        // conn.query('SELECT * FROM capaian_produksi WHERE id = ?', id, function (err,results) {
+
+
+            
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+
+            if (req.session.nama) {
+        
+            data_1 = results;
+            jabatan = results2[0].posisi;
+          
+            console.log(results);
+            res.render('capaian_produksi/get_quality_id', {title:'Capaian Produksi', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+    
+        } else {
+            res.redirect('/login');
+        }
+    
+            });
+
+
+    });
+   
+
+});
+
+
+
+
+
+
+
+
+
+ 
+router.post('/quality/update/(:id)', function (req, res) {
+   
+
+    const {tanggal, bulan, shift, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng} = req.body;
+
+    var form_data = {
+        tanggal, bulan, shift, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng
+    }
+
+    let id = req.params.id;
+
+
+    conn.query(`UPDATE quality SET ? WHERE id = ${id}`, form_data, function (err, results) {
+    
+        if (err) {
+            req.flash('Pertambahan Data Quality Error');
+
+            res.redirect(`/capaian_produksi/quality/get_id/${id}`);            
+
+        }
+
+        else {
+
+            req.flash('Quality sudah ditambahkan');
+
+            res.redirect(`/capaian_produksi/quality/get_id/${id}`);
 
         }
 
@@ -171,21 +319,24 @@ router.get('/get_id/(:id)', function (req,res, ) {
         // conn.query('SELECT * FROM capaian_produksi WHERE id = ?', id, function (err,results) {
 
 
-    if (req.session.nama) {
+            
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+
+            if (req.session.nama) {
         
-
-
-        if (err) {
-            res.redirect('/capaian_produksi',{title:'Error Ini Mah', user_name:req.session.nama});
+            data_1 = results;
+            jabatan = results2[0].posisi;
+          
+            console.log(results);
+            res.render('capaian_produksi/get_id', {title:'Capaian Produksi', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+    
+        } else {
+            res.redirect('/login');
         }
-        
-        
-        console.log(results);
-        res.render('capaian_produksi/get_id', {title:`Capaian Produksi ${results[0].nama_produk}`, data:results[0], user_name:req.session.nama});
+    
+            });
 
-    } else {
-
-    }
 
     });
    

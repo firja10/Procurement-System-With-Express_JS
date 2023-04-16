@@ -54,39 +54,51 @@
 
                     
                                     
-                                    <form action="/capaian_produksi/update/<%= data[0].id %>" method = "POST">
+                                    <form action="/capaian_produksi/quality/update/<%= data[0].id %>" method = "POST">
 
                                         <div class="form-group">
-                                            <label for="produk">Nama Produk</label>
-                                            <input type="text" name="produk" id="produk" class = "form-control" value = "<%= data[0].produk %>">
+                                            <label for="tanggal">Tanggal</label>
+                                            <input type="date" name="tanggal" id="tanggal" class = "form-control" value="<%= data[0].tanggal %>">
                                         </div>
-                        
-                                        
+                            
                                         <div class="form-group">
-                                            <label for="no_part">Nomor Part</label>
-                                            <input type="text" name="no_part" id="no_part" class = "form-control"  value = "<%= data[0].no_part %>">
+                                            <label for="shift">Shift</label>
+                                            <input type="text" name="shift" id="shift" class = "form-control" value="<%= data[0].shift %>">
                                         </div>
-                        
-                        
-                                        <div class="form-group">
-                                            <label for="plan_produksi">Plan Produksi</label>
-                                            <input type="text" name="plan_produksi" id="plan_produksi" class = "form-control" value = "<%= data[0].plan_produksi %>">
-                                        </div>   
-                                        
-                                        <div class="form-group">
-                                            <label for="hasil_produksi">Hasil Produksi</label>
-                                            <input type="text" name="hasil_produksi" id="hasil_produksi" class = "form-control" value = "<%= data[0].hasil_produksi %>">
-                                        </div>  
-
-                                        <div class="form-group">
-                                            <label for="sisa_produksi">Sisa Produksi</label>
-                                            <input type="number" name="sisa_produksi" id="sisa_produksi" class = "form-control" value = "<%= data[0].sisa_produksi %>">
-                                        </div>  
-                                        
-                                        <div class="form-group">
-                                            <label for="capaian_produksi">Capaian Produksi</label>
-                                            <input type="number" name="capaian_produksi" id="capaian_produksi" class = "form-control" value = "<%= data[0].capaian_produksi %>">
-                                        </div>  
+                            
+                            
+                                            <div class="form-group">
+                                                <label for="produk">Produk</label>
+                                                <input type="text" name="produk" id="produk" class = "form-control" value="<%= data[0].produk %>">
+                                            </div>
+                            
+                            
+                            
+                                            
+                                            <div class="form-group">
+                                                <label for="no_part">Nomor Part</label>
+                                                <input type="text" name="no_part" id="no_part" class = "form-control" value="<%= data[0].no_part %>">
+                                            </div>
+                            
+                                            
+                                            <div class="form-group">
+                                                <label for="hasil_produksi">Hasil Produksi</label>
+                                                <input type="text" name="hasil_produksi" id="hasil_produksi" class = "form-control" value="<%= data[0].hasil_produksi %>">
+                                            </div>
+                            
+                            
+                            
+                                            <div class="form-group">
+                                                <label for="jenis_kecacatan">Jenis Kecacatan</label>
+                                                <input type="text" name="jenis_kecacatan" id="jenis_kecacatan" class = "form-control" value="<%= data[0].jenis_kecacatan %>">
+                                            </div>
+                            
+                            
+                                            <div class="form-group">
+                                                <label for="kuantitas">Kuantitas</label>
+                                                <input type="number" name="kuantitas" id="kuantitas" class = "form-control" value="<%= data[0].kuantitas %>">
+                                            </div>
+                            
                                         
                                         <div class="form-group">
                                             <button type = "submit" class = "btn btn-primary">Update Data</button>

@@ -33,7 +33,7 @@
                         <!-- Basic table card start -->
                         <div class="card">
                             <div class="card-header">
-                                <h5>Edit Data Capaian Produksi</h5>
+                                <h5>Tambah Data Bahan Baku Keluar</h5>
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
 
@@ -52,42 +52,57 @@
                                
 
 
-                    
+                                    <!-- <form action="/bahan_baku/update/<%= data.id %>" method = "POST"> -->
                                     
-                                    <form action="/capaian_produksi/update/<%= data[0].id %>" method = "POST">
+                                    <form action="/bahan_baku/data_keluar/update/<%= data[0].id %>" method = "POST">
 
-                                        <div class="form-group">
-                                            <label for="produk">Nama Produk</label>
-                                            <input type="text" name="produk" id="produk" class = "form-control" value = "<%= data[0].produk %>">
-                                        </div>
-                        
-                                        
-                                        <div class="form-group">
-                                            <label for="no_part">Nomor Part</label>
-                                            <input type="text" name="no_part" id="no_part" class = "form-control"  value = "<%= data[0].no_part %>">
-                                        </div>
-                        
-                        
-                                        <div class="form-group">
-                                            <label for="plan_produksi">Plan Produksi</label>
-                                            <input type="text" name="plan_produksi" id="plan_produksi" class = "form-control" value = "<%= data[0].plan_produksi %>">
-                                        </div>   
-                                        
-                                        <div class="form-group">
-                                            <label for="hasil_produksi">Hasil Produksi</label>
-                                            <input type="text" name="hasil_produksi" id="hasil_produksi" class = "form-control" value = "<%= data[0].hasil_produksi %>">
-                                        </div>  
 
-                                        <div class="form-group">
-                                            <label for="sisa_produksi">Sisa Produksi</label>
-                                            <input type="number" name="sisa_produksi" id="sisa_produksi" class = "form-control" value = "<%= data[0].sisa_produksi %>">
-                                        </div>  
                                         
+                                            <div class="form-group">
+                                                <label for="kode_transaksi">Kode Transaksi</label>
+                                                <input type="text" name="kode_transaksi" id="kode_transaksi" class = "form-control" value="<%= data[0].kode_transaksi %>">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="nama_bahan">Nama Bahan</label>
+                                                <input type="text" name="nama_bahan" id="nama_bahan" class = "form-control" value="<%= data[0].nama_bahan %>">
+                                            </div>
+
+
+                            
                                         <div class="form-group">
-                                            <label for="capaian_produksi">Capaian Produksi</label>
-                                            <input type="number" name="capaian_produksi" id="capaian_produksi" class = "form-control" value = "<%= data[0].capaian_produksi %>">
-                                        </div>  
-                                        
+                                            <label for="tanggal">Tanggal Transaksi</label>
+                                            <input type="date" name="tanggal" id="tanggal" class = "form-control" value="<%= data[0].tanggal %>">
+                                        </div>
+                            
+                            
+                                        <!-- <input type="hidden" name="bulan" id="bulan"> -->
+                                        <input type="hidden" name="bulan" id="bulan" value="<%= data[0].bulan %>">
+                            
+                            
+                            
+                                            
+                                            <div class="form-group">
+                                                <label for="no_part">Nomor Part</label>
+                                                <input type="text" name="no_part" id="no_part" class = "form-control" value="<%= data[0].no_part %>">
+                                            </div>
+                            
+                            
+                                            <div class="form-group">
+                                                <label for="stok">Stok</label>
+                                                <input type="number" name="stok" id="stok" class = "form-control" value="<%= data[0].stok %>">
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="status_bahan_baku">Status Transaksi</label>
+                                                <!-- <input type="number" name="stok" id="stok" class = "form-control"> -->
+                                                <select class="form-control" name="status_bahan_baku" id="status_bahan_baku" disabled>
+                                                    <option value="keluar" selected disabled>Keluar</option>
+                                                </select>
+                                            </div>
+
+
+
                                         <div class="form-group">
                                             <button type = "submit" class = "btn btn-primary">Update Data</button>
                                         </div>
@@ -108,7 +123,6 @@
                     <!-- Page-body end -->
                 </div>
           
-
 
 
 
