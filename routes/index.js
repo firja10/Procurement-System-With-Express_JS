@@ -36,6 +36,27 @@ router.get('/', function(req, res, next) {
 
   // console.log(jabatan);
 
+  // var q_bahan_baku = "SELECT nama_bahan, status_bahan_baku, no_part, stok, COUNT(*) as count FROM bahan_baku_transaksi GROUP BY status_bahan_baku";
+
+  var q_bahan_baku = 'SELECT nama_bahan,  status_bahan_baku, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_bahan';
+  var q_produk_jadi = 'SELECT nama_produk,  status_produk_jadi, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_produk';
+
+
+
+
+
+
+
+  let bahan_baku, produk_jadi;
+
+
+  conn.query(q_bahan_baku, function(err, results1){
+
+    conn.query(q_produk_jadi, function(err, results2){
+
+
+
+
   let jabatan_sekarang
 
   let count, count2, count3, count4        
@@ -49,10 +70,14 @@ conn.query(q, function(err, results){
     count4 = results[0].count_users;
    jabatan_sekarang = results[0].jabatan_user;
 
+
+   bahan_baku = results1;
+   produk_jadi = results2;
+
   
 
 
-    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, jabatan:jabatan_sekarang, count: count, count2: count2, count3: count3, count4: count4  })
+    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, jabatan:jabatan_sekarang, count: count, count2: count2, count3: count3, count4: count4, bahan_baku:bahan_baku, produk_jadi:produk_jadi  })
     // res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, count: count})  
    
   }
@@ -64,6 +89,18 @@ conn.query(q, function(err, results){
 
 
 });
+
+
+  });
+
+});
+
+
+
+
+
+
+
 
 
 
