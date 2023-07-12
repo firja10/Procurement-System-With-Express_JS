@@ -33,11 +33,10 @@
                         <!-- Basic table card start -->
                         <div class="card">
                             <div class="card-header">
-                                <h5>Tabel Bahan Baku</h5>
+                                <h5>Tambah Data Bahan Baku</h5>
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
 
-                                <button class = "btn btn-primary" data-target = "#exampleBahanBaku" data-toggle = "modal">Tambah Data</button>
                                 <div class="card-header-right">
                                     <ul class="list-unstyled card-option">
                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -50,49 +49,39 @@
                             </div>
                             <div class="card-block table-border-style">
                                 <div class="table-responsive">
-                                    <table class="table" id="Tables">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Nama Bahan</th>
-                                                <th>Nomor Part</th>
-                                                <th>Stok</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        <% for(var i = 0; i < data.length; i++){ %>
-                                            <tr>
-                                                <th scope="row"><%=  (i+1)  %></th>
-                                                <td><%= data[i].nama_bahan %></td>
-                                                <td><%= data[i].no_part %></td>
-                                                <!-- <td><%= data[i].stock %></td> -->
-                                                <td><%= data[i].stock %></td>
-                                                <td> 
-                                                    <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
-
-                                                    <!-- <form action="/bahan_baku/getid?_method=GET" method = "get">
-                                                        <button type = "submit" class = "btn btn-primary">Edit Data</button>
-                                                    </form> -->
-                                                    <a href="../bahan_baku/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
-
-                                                    <a href="../bahan_baku/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
-                                                    
-
-                                                    <!-- <form action="/bahan_baku/delete/<%= data[i].id %>" method = "get"> 
-
-                                                        <button type = "submit" class = "btn btn-danger mt-3" >Hapus Data</button>
-
-                                                    </form> -->
+                               
 
 
-                                                </td>
-                                            </tr>
-                                        <% } %>
+                    
+                                    
+                                    <form action="/bahan_baku/update/<%= data[0].id %>" method = "POST">
 
-                                        </tbody>
-                                    </table>
+                                        <div class="form-group">
+                                            <label for="nama_bahan">Nama Bahan</label>
+                                            <input type="text" name="nama_bahan" id="nama_bahan" class = "form-control" value = "<%= data[0].nama_bahan %>">
+                                        </div>
+                        
+                                        
+                                        <div class="form-group">
+                                            <label for="no_part">Nomor Part</label>
+                                            <input type="text" name="no_part" id="no_part" class = "form-control"  value = "<%= data[0].no_part %>">
+                                        </div>
+                        
+                        
+                                        <div class="form-group">
+                                            <label for="stock">Stok</label>
+                                            <input type="number" name="stock" id="stock" class = "form-control" value = "<%= data[0].stock %>">
+                                        </div>        
+                                        
+                                        <div class="form-group">
+                                            <button type = "submit" class = "btn btn-primary">Update Data</button>
+                                        </div>
+
+
+                                    </form>
+
+
+
                                 </div>
                             </div>
                         </div>

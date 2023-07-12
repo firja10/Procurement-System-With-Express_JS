@@ -25,7 +25,10 @@ router.get('/', function (req,res, ) {
     let data_1, jabatan;
 
 
-    conn.query('SELECT * FROM produk_jadi', function (err,results1, fields) {
+    conn.query(`SELECT nama_produk, no_part, 
+    SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE -stok END) AS total_stok
+FROM produk_jadi_transaksi
+GROUP BY nama_bahan, no_part;`, function (err,results1, fields) {
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
         if (req.session.nama) {
@@ -46,6 +49,55 @@ router.get('/', function (req,res, ) {
 });
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+// Get Produk Jadi Seluruh
+router.get('/data', function (req,res, ) {
+    
+
+    let data_1, jabatan;
+
+
+    conn.query('SELECT * FROM produk_jadi_transaksi', function (err,results1, fields) {
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+        if (req.session.nama) {
+    
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+      
+        // console.log(results1);
+        res.render('produk_jadi/data', {title:'Produk Jadi', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+
+    } else {
+        res.redirect('/login');
+    }
+
+    });
+   
+
+});
+
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -355,8 +407,207 @@ router.post('/data_masuk/store', function (req, res) {
 
         });
 
+
         
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+ // DATA KELUAR PRODUK JADI
+ router.get('/data_keluar', function (req,res) {
+
+
+    let data_1, jabatan, data_2;
+
+    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk_jadi = 'keluar'`, function (err,results1, fields) {
+      conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (err, results2, fields) {
+        conn.query("SELECT * FROM produk_jadi ", function (error, results3, fields) {
+
+
+      if (req.session.nama) {
+        
+
+
+        if (err) {
+            
+            req.flash('produk_jadi/data_keluar');
+            res.render('produk_jadi/data_keluar', {title:'Data Keluar Belum Ditemukan', data:'', jabatan:'store', user_name:req.session.nama, produk_jadi:''})
+
+        }
+
+
+        data_1 = results1;
+        jabatan = results2[0].posisi
+        data_2 = results3;
+
+
+
+    //    if (results.length <0 || results.length == undefined) {
+        
+    //     results = '';
+
+    //    }
+
+        res.render('produk_jadi/data_keluar', {title:'Data Keluar Produk Jadi', data:data_1, jabatan:jabatan, user_name:req.session.nama, produk_jadi:data_2});
+
+    } else {
+        res.redirect('/login');
+    }
+        
+    })
+   
+ });
+
+});
+
+ });
+
+
+
+// DATA KELUAR PRODUK JADI ID 
+
+
+router.get('/data_keluar/(:id)', function (req,res) {
+
+    var id = req.params.id;
+
+    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE id = '${id}' AND status_produk = 'keluar'`, function (err,results) {
+        
+
+    if (req.session.nama) {
+        
+   
+        if (err) {
+
+            req.flash('data_error_keluar_id');
+
+            res.render('produk_jadi/data_keluar_id', {title:`Transaksi Data Keluar dengan Id = ${id} Error`, data:'', user_name:req.session.nama});
+        }
+
+        res.render('produk_jadi/data_masuk_id', {title:`Transaksi Data Keluar ${results[0].nama_produk}`, data:results[0], user_name:req.session.nama});
+
+    } else {
+        res.redirect('/login');
+    }
+
+    })
+
+
+    
+})
+
+
+
+
+
+
+
+
+
+// INSERT Bahan Baku
+
+router.post('/data_keluar/store', function (req, res) {
+
+    // const {no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok, status_produk_jadi} = req.body;
+
+    const {no_surat, kode_transaksi, tanggal, bulan, nama_produk, id_produk, no_part, stok} = req.body;
+
+    const status_produk_jadi = 'keluar';
+
+
+    var form_data = {
+        no_surat, kode_transaksi, tanggal, bulan, nama_produk, id_produk, no_part, stok, status_produk_jadi
+        // no_surat, kode_transaksi, tanggal, nama_bahan, id_produk_jadi, no_part, stok, status_produk_jadi
+    }
+
+    conn.query(`INSERT INTO produk_jadi_transaksi SET ?`, form_data, function (err, results) {
+
+
+        // conn.query(`SELECT * produk_jadi_transaksi ORDER BY id DESC LIMIT 1`, function (err, results1) {
+
+        //     const hasil = results1[0];
+
+        // `SELECT * produk_jadi_transaksi ORDER BY id DESC LIMIT 1`
+
+
+        const update_produk_jadi = {stock:req.body.stok, no_part:req.body.no_part}
+
+
+        conn.query(`UPDATE produk_jadi SET stock = stock + ? WHERE no_part = ? `, [req.body.stok, req.body.no_part], function (err, results) {
+
+        if (err) {
+            req.flash('Pertambahan Data Masuk Bahan Baku Error');
+
+            // res.redirect('/produk_jadi/data_masuk');      
+            
+            // res.redirect('/produk_jadi');    
+
+            console.log('produknya tidak keluar');
+            
+
+            
+            }
+
+            else {
+
+            req.flash('Data Keluar Bahan Baku sudah ditambahkan');
+
+            // res.redirect('/produk_jadi/data_masuk');    
+
+            
+            console.log('produknya keluar');
+
+            }
+
+
+
+            });
+
+        });
+
+
+        
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //  });
 

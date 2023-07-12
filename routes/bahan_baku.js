@@ -77,6 +77,64 @@ router.get('/', function (req,res, next) {
 
 
 
+router.get('/data', function (req,res, next) {
+    
+       
+    // conn.query(`SELECT * FROM bahan_baku_transaksi`, function (err, results1, fields) {
+    
+    conn.query(`SELECT nama_bahan, no_part, 
+    SUM(CASE WHEN status_bahan_baku = 'masuk' THEN stok ELSE -stok END) AS total_stok
+FROM bahan_baku_transaksi
+GROUP BY nama_bahan, no_part;
+`, function (err, results1, fields) {
+    conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+    if (req.session.nama) {
+
+
+        let jabatan, data_1;
+    
+        if (err) {
+
+            req.flash('Tidak Dapat menampilkan Data Masuk');
+            res.render('bahan_baku/data', {title:'Error Bahan Baku Masuk', data:'', jabatan:'', user_name:req.session.nama});
+            // next();
+
+
+        }
+
+
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+
+        res.render('bahan_baku/data', {title:'Data Bahan Baku Yang Masuk', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+
+        // next();
+
+
+    }
+
+
+    else {
+    
+        res.redirect('/login');
+    
+    }
+        
+    });
+
+
+    });
+
+});
+
+
+
+
+
+
+
+
+
 
 
 

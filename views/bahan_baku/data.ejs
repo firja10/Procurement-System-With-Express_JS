@@ -33,11 +33,11 @@
                         <!-- Basic table card start -->
                         <div class="card">
                             <div class="card-header">
-                                <h5>Tabel Data Masuk Bahan Baku</h5>
+                                <h5>Tabel Bahan Baku</h5>
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
 
-                                <button class = "btn btn-primary" data-target = "#exampleDataMasuk" data-toggle = "modal">Tambah Data</button>
+                                <button class = "btn btn-primary" data-target = "#exampleBahanBaku" data-toggle = "modal">Tambah Data</button>
                                 <div class="card-header-right">
                                     <ul class="list-unstyled card-option">
                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -48,22 +48,15 @@
                                     </ul>
                                 </div>
                             </div>
-
-                            
                             <div class="card-block table-border-style">
                                 <div class="table-responsive">
                                     <table class="table" id="Tables">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Nama Bahan Baku</th>
-                                                <th>Status Bahan Baku</th>
-                                                <th>Kode Transaksi</th>
-                                                <th>Tanggal Transaksi</th>
-                                                <th>Bulan</th>
-                                                <th>No Part</th>
+                                                <th>Nama Bahan</th>
+                                                <th>Nomor Part</th>
                                                 <th>Stok</th>
-                                                <th>No. Surat</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -73,20 +66,28 @@
                                             <tr>
                                                 <th scope="row"><%=  (i+1)  %></th>
                                                 <td><%= data[i].nama_bahan %></td>
-                                                <td><%= data[i].status_bahan_baku %></td>
-                                                <td><%= data[i].kode_transaksi %></td>
-                                                <td><%= data[i].tanggal %></td>
-                                                <td><%= data[i].bulan %></td>
-
                                                 <td><%= data[i].no_part %></td>
-                                                <td><%= data[i].stok %></td>
-                                                <td><%= data[i].no_surat %></td>
+                                                <!-- <td><%= data[i].stock %></td> -->
+                                                <!-- <td><%= data[i].stok %></td> -->
+                                                <td><%= data[i].total_stok %></td>
                                                 <td> 
-                                              
-                                                    <a href="../bahan_baku/data_masuk/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
+                                                    <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
 
-                                                    <a href="../bahan_baku/data_masuk/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
-                                                                                                     
+                                                    <!-- <form action="/bahan_baku/getid?_method=GET" method = "get">
+                                                        <button type = "submit" class = "btn btn-primary">Edit Data</button>
+                                                    </form> -->
+                                                    <a href="../bahan_baku/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
+
+                                                    <a href="../bahan_baku/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
+                                                    
+
+                                                    <!-- <form action="/bahan_baku/delete/<%= data[i].id %>" method = "get"> 
+
+                                                        <button type = "submit" class = "btn btn-danger mt-3" >Hapus Data</button>
+
+                                                    </form> -->
+
+
                                                 </td>
                                             </tr>
                                         <% } %>
@@ -108,7 +109,11 @@
 
 
 
-                <%- include('../../layouts/modal_data_masuk.ejs') %>
+
+
+
+
+<%- include('../../layouts/modal_bahan_baku.ejs') %>
 
 
 
