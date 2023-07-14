@@ -8,53 +8,33 @@ var bodyParser = require('body-parser');
 
 
 
-// GET ALL DATA
-router.get('/', function (req,res) {
-
-
-    let q = "SELECT (SELECT * FROM pa_schedule) AS pa_schedules, (SELECT posisi FROM users WHERE nama = '" + req.session.nama + "') AS jabatan_user ;";
-
-    // conn.query('SELECT * FROM pa_schedule', function (err,results) {
-
-    let data_1, jabatan;
 
 
 
-
-    // execute the query to select all rows from table1
-conn.query('SELECT * FROM pa_schedule', function (error, results1, fields) {
-    if (error) throw error;
+router.get('/', function (req, res) {
+    if (req.session.nama) {
+      // Query untuk mengambil data dari tabel pa_schedule
+      conn.query('SELECT produk, no_part, plan_produksi, DATE_FORMAT(tanggal, "%d %M %Y") AS formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM pa_schedule', function (error, results, fields) {
+        if (error) throw error;
   
-    // execute the query to select all rows from table2
-    conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
-
-
-        if(req.session.nama)
-
-        {
-
-      if (error) throw error;
+        // Ambil data jabatan dari tabel users berdasarkan nama sesi
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, jabatanResult, fields) {
+          if (error) throw error;
   
-      // combine the results from both queries into a single array
-      const combinedResults = results1.concat(results2);
+          const data = results;
+          const jabatan = jabatanResult[0].posisi;
   
-      data_1 = results1;
-      jabatan = results2[0].posisi;
-
-
-
-  // res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results, user_name:req.session.nama});
-
-  res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:data_1, jabatan:jabatan, user_name:req.session.nama});
-
+          res.render('schedule/pa', {
+            title: 'Data Detail Laporan PA Schedule',
+            data: data,
+            jabatan: jabatan,
+            user_name: req.session.nama
+          });
+        });
+      });
     } else {
-        res.redirect('/login');
+      res.redirect('/login');
     }
-
-
-
-
-    });
   });
 
 
@@ -64,34 +44,71 @@ conn.query('SELECT * FROM pa_schedule', function (error, results1, fields) {
 
 
 
-    //     conn.query(q, function (err,results) {
-
-    //     if(req.session.nama)
-
-    //     {
-
-    //         if(err) throw err;
-
-    //         data_1 = results[0].pa_schedules;
-    //         jabatan = results[0].jabatan_user;
 
 
 
-    //     // res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results, user_name:req.session.nama});
 
-    //     res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+// // GET ALL DATA
+// router.get('/', function (req,res) {
 
-    //     } else {
-    //         res.redirect('/login');
-    //     }
-        
-    //  });
+
+//     // let q = "SELECT (SELECT * FROM pa_schedule) AS pa_schedules, (SELECT posisi FROM users WHERE nama = '" + req.session.nama + "') AS jabatan_user ;";
+    
+//     let q = `SELECT (SELECT produk, plan_produksi, no_part, DATE_FORMAT(tanggal, "%d-%m-%Y") AS formatted_tanggal FROM pa_schedule) AS pa_schedules, (SELECT posisi FROM users WHERE nama = '" + req.session.nama + "') AS jabatan_user ;`;
+
+//     // conn.query('SELECT * FROM pa_schedule', function (err,results) {
+
+//     let data_1, jabatan;
+
+
+
+
+//     // execute the query to select all rows from table1
+// conn.query('SELECT * FROM pa_schedule', function (error, results1, fields) {
+//     if (error) throw error;
+  
+//     // execute the query to select all rows from table2
+//     conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+
+//         if(req.session.nama)
+
+//         {
+
+//       if (error) throw error;
+  
+//       // combine the results from both queries into a single array
+//       const combinedResults = results1.concat(results2);
+
+
+
+
+
+  
+//       data_1 = results1;
+//       jabatan = results2[0].posisi;
+
+
+
+//   // res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:results, user_name:req.session.nama});
+
+//   res.render('schedule/pa', {title:'Data Detail Laporan PA Schedule', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+
+//     } else {
+//         res.redirect('/login');
+//     }
+
+
+
+
+//     });
+//   });
 
 
 
 
     
-});
+// });
 
 
 

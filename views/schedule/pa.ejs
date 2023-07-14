@@ -90,6 +90,7 @@
 
 
                                                 <th>Tanggal</th>
+                                                <th>Bulan</th>
                                                 <th>Produk</th>
                                                 <th>No Part</th>
                                                 <th>Plan Produksi</th>
@@ -101,7 +102,9 @@
                                         <% for(var i = 0; i < data.length; i++){ %>
                                             <tr>
                       
-                                                <td><%= data[i].tanggal %></td>
+                                                <!-- <td><%= data[i].tanggal %></td> -->
+                                                <td><%= data[i].formatted_tanggal %></td>
+                                                <td><%= data[i].formatted_bulan %></td>
                                                 <td><%= data[i].produk %></td>
                                                 <td><%= data[i].no_part %></td>
                                                 <td><%= data[i].plan_produksi %></td>

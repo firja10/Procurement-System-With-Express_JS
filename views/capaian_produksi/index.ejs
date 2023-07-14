@@ -33,11 +33,11 @@
                         <!-- Basic table card start -->
                         <div class="card">
                             <div class="card-header">
-                                <h5>Tabel Capaian Produksi</h5>
+                                <h5>Tabel Quality</h5>
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
 
-                                <button class = "btn btn-primary" data-target = "#exampleCapaianProduksi" data-toggle = "modal">Tambah Data</button>
+                                <button class = "btn btn-primary" type="button" data-target = "#modalQuality" data-toggle = "modal">Tambah Data</button>
                                 <div class="card-header-right">
                                     <ul class="list-unstyled card-option">
                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -54,54 +54,33 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>Tanggal</th>
-                                                <th>Bulan</th>
-                                                <th>Nama Produk</th>
-                                                <th>Nomor Part</th>
-                                                <th>Plan Produksi</th>
+                                           
+                                                <th>Produk</th>
+                                                <th>Part No</th>
                                                 <th>Hasil Produksi</th>
-                                                <th>Sisa Produksi</th>
-                                                <th>Capaian Produksi</th>
-                                                <th>Aksi</th>
+                                                <th>Jenis Kecacatan</th>
+                                                <th>Kuantitas</th>
+                                                <th>Persentase NG</th>
+           
                                             </tr>
                                         </thead>
                                         <tbody>
 
-                                        <% for(var i = 0; i < data.length; i++){ %>
-                                            <tr>
-                                                <th scope="row"><%=  (i+1)  %></th>
-                                                <td><%= data[i].tanggal %></td>
-                                                <td><%= data[i].bulan %></td>
-                                                <td><%= data[i].produk %></td>
-                                                <td><%= data[i].no_part %></td>
-                                                <td><%= data[i].plan_produksi %></td>
-                                                <td><%= data[i].hasil_produksi %></td>
-                                                <td><%= data[i].sisa_produksi %></td>
-                                                <td><%= data[i].capaian_produksi %></td>
-
-
-
-                                                <td> 
-                                                    <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
-
-                                                    <!-- <form action="/capaian_produksi/getid?_method=GET" method = "get">
-                                                        <button type = "submit" class = "btn btn-primary">Edit Data</button>
-                                                    </form> -->
-                                                    <a href="../capaian_produksi/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
-
-                                                    <a href="../capaian_produksi/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
+                                            <% for(var i = 0; i < data.length; i++){ %>
+                                                <tr>
+                                                    <th scope="row"><%=  (i+1)  %></th>
+                           
+                           
+                                                    <td><%= data[i].produk %></td>
+                                                    <td><%= data[i].no_part %></td>
+                                                    <td><%= data[i].hasil_produksi %></td>
+                                                    <td><%= data[i].jenis_kecacatan %></td>
+                                                    <td><%= data[i].kuantitas %></td>
+                                                    <td><%= data[i].persentase_ng %></td>
                                                     
-
-                                                    <!-- <form action="/capaian_produksi/delete/<%= data[i].id %>" method = "get"> 
-
-                                                        <button type = "submit" class = "btn btn-danger mt-3" >Hapus Data</button>
-
-                                                    </form> -->
-
-
-                                                </td>
-                                            </tr>
-                                        <% } %>
+    
+                                                </tr>
+                                            <% } %>
 
                                         </tbody>
                                     </table>
@@ -124,7 +103,7 @@
 
 
 
-<%- include('../../layouts/modal_capaian_produksi.ejs') %>
+<%- include('../../layouts/modal_quality.ejs') %>
 
 
 

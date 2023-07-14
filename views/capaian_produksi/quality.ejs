@@ -71,8 +71,10 @@
                                             <% for(var i = 0; i < data.length; i++){ %>
                                                 <tr>
                                                     <th scope="row"><%=  (i+1)  %></th>
-                                                    <td><%= data[i].tanggal %></td>
-                                                    <td><%= data[i].bulan %></td>
+                                                    <!-- <td><%= data[i].tanggal %></td> -->
+                                                    <td><%= data[i].formatted_tanggal %></td>
+                                                    <!-- <td><%= data[i].bulan %></td> -->
+                                                    <td><%= data[i].formatted_bulan %></td>
                                                     <td><%= data[i].shift %></td>
                                                     <td><%= data[i].produk %></td>
                                                     <td><%= data[i].no_part %></td>

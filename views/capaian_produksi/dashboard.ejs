@@ -1,0 +1,111 @@
+<%- include('../../layouts/header.ejs') %>
+
+        <!-- Page-header start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10"><%= title %></h5>
+                            <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="index.html"> <i class="ti ti-harddrive"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!"><%= title %></a>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page-header end -->
+        <div class="pcoded-inner-content">
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        <!-- Basic table card start -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Dashboard</h5>
+                                <!-- <span>use class <code>table</code> inside table element</span> -->
+                                <br> <br>
+
+                                <button class = "btn btn-primary" type="button" data-target = "#modalQuality" data-toggle = "modal">Tambah Data</button>
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+
+
+                                    <table class="table" id="Tables">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+
+
+                                                <th>Produk</th>
+                                                <th>Part No</th>
+                                                <th>Hasil Produksi</th>
+                                                <th>Jenis Kecacatan</th>
+                                                <th>Kuantitas</th>
+                                                <th>Persentase NG</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <% for(var i = 0; i < data.length; i++){ %>
+                                                <tr>
+                                                    <th scope="row"><%=  (i+1)  %></th>
+
+                                                    <td><%= data[i].produk %></td>
+                                                    <td><%= data[i].no_part %></td>
+                                                    <td><%= data[i].hasil_produksi %></td>
+                                                    <td><%= data[i].jenis_kecacatan %></td>
+                                                    <td><%= data[i].kuantitas %></td>
+                                                    
+    
+                                         
+                                                </tr>
+                                            <% } %>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Basic table card end -->
+                      
+            
+                       
+                    </div>
+                    <!-- Page-body end -->
+                </div>
+          
+
+
+
+
+
+
+
+
+<%- include('../../layouts/modal_quality.ejs') %>
+
+
+
+<%- include('../../layouts/footer.ejs') %>

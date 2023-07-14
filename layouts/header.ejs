@@ -284,15 +284,25 @@
                              <!-- <li class="active"> -->
 
                             
-                            <li>
+                            <!-- <li>
                                   <a href="/" class="waves-effect waves-dark">
                                       <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
                                       <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
                                       <span class="pcoded-mcaret"></span>
                                   </a>
-                              </li>
+                              </li> -->
 
                               <% if(jabatan == 'sales') { %>
+
+
+                                <li>
+                                    <a href="/" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+
 
                                 <li>
                                     <a href="/pa_schedule" class="waves-effect waves-dark">
@@ -308,7 +318,13 @@
                               <% } else if(jabatan == 'ppc') { %>
 
                                 
-
+                                <li>
+                                    <a href="/" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
 
                                 <li>
                                     <a href="/schedule" class="waves-effect waves-dark">
@@ -323,8 +339,17 @@
 
                               <% } else if(jabatan == 'produksi') { %>
 
+
                                 <li>
-                                    <a href="/capaian_produksi" class="waves-effect waves-dark">
+                                    <a href="/capaian_produksi/" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/capaian_produksi/capaian" class="waves-effect waves-dark">
                                         <span class="pcoded-micon"><i class="ti-bar-chart"></i><b></b></span>
                                         <span class="pcoded-mtext" data-i18n="nav.dash.main">Capaian Produksi</span>
                                         <span class="pcoded-mcaret"></span>
@@ -342,7 +367,13 @@
                             <% } else if(jabatan == 'store') {  %>
 
 
-
+                                <li>
+                                    <a href="/" class="waves-effect waves-dark">
+                                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
 
 
                                 

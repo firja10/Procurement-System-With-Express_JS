@@ -19,12 +19,116 @@ var bodyParser = require('body-parser');
 
 
 // Get Capaian Produksi Jadi
+// router.get('/', function (req,res, ) {
+    
+
+//     let data_1, jabatan;
+    
+//     conn.query('SELECT produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM capaian_produksi', function (err,results1, fields) {
+
+
+
+//         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+
+//         if (req.session.nama) {
+    
+//         data_1 = results1;
+//         jabatan = results2[0].posisi;
+      
+//         console.log(results1);
+//         res.render('capaian_produksi/index', {title:'Capaian Produksi', data:results1, jabatan:jabatan, user_name:req.session.nama});
+
+//     } else {
+//         res.redirect('/login');
+//     }
+
+//         });
+
+
+
+
+
+//     });
+   
+
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get Capaian Produksi Jadi
 router.get('/', function (req,res, ) {
     
 
     let data_1, jabatan;
     
-    conn.query('SELECT * FROM capaian_produksi', function (err,results1, fields) {
+    // conn.query('SELECT * FROM quality', function (err,results1, fields) {
+    conn.query('SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality', function (err,results1, fields) {
+
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+
+        if (req.session.nama) {
+    
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+      
+        console.log(results1);
+        res.render('capaian_produksi/index', {title:'Dashboard Capaian', data:results1, jabatan:jabatan, user_name:req.session.nama});
+
+    } else {
+        res.redirect('/login');
+    }
+
+
+
+        });
+
+    });
+   
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get Capaian Produksi Jadi
+router.get('/capaian', function (req,res, ) {
+    
+
+    let data_1, jabatan;
+    
+    conn.query('SELECT produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM capaian_produksi', function (err,results1, fields) {
 
 
 
@@ -37,7 +141,7 @@ router.get('/', function (req,res, ) {
         jabatan = results2[0].posisi;
       
         console.log(results1);
-        res.render('capaian_produksi/index', {title:'Capaian Produksi', data:results1, jabatan:jabatan, user_name:req.session.nama});
+        res.render('capaian_produksi/capaian', {title:'Capaian Produksi', data:results1, jabatan:jabatan, user_name:req.session.nama});
 
     } else {
         res.redirect('/login');
@@ -62,13 +166,25 @@ router.get('/', function (req,res, ) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 // Get Capaian Produksi Jadi
 router.get('/quality', function (req,res, ) {
     
 
     let data_1, jabatan;
     
-    conn.query('SELECT * FROM quality', function (err,results1, fields) {
+    // conn.query('SELECT * FROM quality', function (err,results1, fields) {
+    conn.query('SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality', function (err,results1, fields) {
 
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
