@@ -62,13 +62,48 @@ GROUP BY nama_bahan, no_part;`, function (err,results1, fields) {
 
 
 // Get Produk Jadi Seluruh
+// router.get('/data', function (req,res, ) {
+    
+
+//     let data_1, jabatan;
+
+
+//     conn.query('SELECT * FROM produk_jadi_transaksi', function (err,results1, fields) {
+//         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+//         if (req.session.nama) {
+    
+//         data_1 = results1;
+//         jabatan = results2[0].posisi;
+      
+//         // console.log(results1);
+//         res.render('produk_jadi/data', {title:'Produk Jadi', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+
+//     } else {
+//         res.redirect('/login');
+//     }
+
+//     });
+   
+
+// });
+
+// });
+
+
+
+
+
 router.get('/data', function (req,res, ) {
     
 
     let data_1, jabatan;
 
 
-    conn.query('SELECT * FROM produk_jadi_transaksi', function (err,results1, fields) {
+    conn.query(`SELECT nama_produk, no_part, 
+    SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE -stok END) AS total_stok
+FROM produk_jadi_transaksi
+GROUP BY nama_produk, no_part;`, function (err,results1, fields) {
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
         if (req.session.nama) {
@@ -89,7 +124,6 @@ router.get('/data', function (req,res, ) {
 });
 
 });
-
 
 
 

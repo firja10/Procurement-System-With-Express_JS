@@ -41,18 +41,68 @@ router.get('/', function(req, res, next) {
   var q_bahan_baku = 'SELECT nama_bahan,  status_bahan_baku, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_bahan';
   var q_produk_jadi = 'SELECT nama_produk,  status_produk_jadi, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_produk';
 
+  var q_capaian_produksi = `SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality`;
+
+  var q_ringkasan_produksi = `SELECT
+  nama_produk,
+  no_part,
+  SUM(stok_produk_jadi) AS stok_produk_jadi,
+  SUM(stok_bahan_baku) AS stok_bahan_baku,
+  SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_produksi,
+  SUM(stok_bahan_baku) + SUM(stok_produk_jadi) + SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_keseluruhan
+FROM
+  (
+      SELECT
+          nama_produk,
+          no_part,
+          CASE
+              WHEN status_produk_jadi = 'masuk' THEN stok
+              WHEN status_produk_jadi = 'keluar' THEN -stok
+              ELSE 0
+          END AS stok_produk_jadi,
+          0 AS stok_bahan_baku
+      FROM
+          produk_jadi_transaksi
+
+      UNION ALL
+
+      SELECT
+          NULL AS nama_produk,
+          no_part,
+          0 AS stok_produk_jadi,
+          CASE
+              WHEN status_bahan_baku = 'masuk' THEN stok
+              WHEN status_bahan_baku = 'keluar' THEN -stok
+              ELSE 0
+          END AS stok_bahan_baku
+      FROM
+          bahan_baku_transaksi
+  ) AS combined_data
+GROUP BY
+  no_part, nama_produk
+ORDER BY
+  no_part;
+
+
+`;
 
 
 
 
 
-
-  let bahan_baku, produk_jadi;
+  let bahan_baku, produk_jadi, capaian_produksi, ringkasan_produksi;
 
 
   conn.query(q_bahan_baku, function(err, results1){
 
     conn.query(q_produk_jadi, function(err, results2){
+
+      conn.query(q_capaian_produksi, function(err, results3){
+
+
+        conn.query(q_ringkasan_produksi, function(err, results4){
+
+
 
 
 
@@ -74,10 +124,14 @@ conn.query(q, function(err, results){
    bahan_baku = results1;
    produk_jadi = results2;
 
+   capaian_produksi = results3;
+
+   ringkasan_produksi = results4;
+   
   
 
 
-    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, jabatan:jabatan_sekarang, count: count, count2: count2, count3: count3, count4: count4, bahan_baku:bahan_baku, produk_jadi:produk_jadi  })
+    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, jabatan:jabatan_sekarang, count: count, count2: count2, count3: count3, count4: count4, bahan_baku:bahan_baku, produk_jadi:produk_jadi, capaian_produksi:capaian_produksi, ringkasan_produksi:ringkasan_produksi  })
     // res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, count: count})  
    
   }
@@ -91,7 +145,15 @@ conn.query(q, function(err, results){
 });
 
 
+
+
+
+
+
+});
   });
+
+});
 
 });
 

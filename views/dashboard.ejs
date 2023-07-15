@@ -43,14 +43,121 @@
 
                                       <% } else if(jabatan == 'produksi') { %>
 
-                                        <canvas id="ProduksiUnderBracket"></canvas>
-                                        <canvas id="ProduksiInnerTube"></canvas>
+                                        <!-- <canvas id="ProduksiUnderBracket"></canvas>
+                                        <canvas id="ProduksiInnerTube"></canvas> -->
+
+
+
+
+                                        <table class="table" id="Tables">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                               
+                                                    <th>Produk</th>
+                                                    <th>Part No</th>
+                                                    <th>Hasil Produksi</th>
+                                                    <th>Jenis Kecacatan</th>
+                                                    <th>Kuantitas</th>
+                                                    <th>Persentase NG</th>
+               
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+    
+                                                <% for(var i = 0; i < capaian_produksi.length; i++){ %>
+                                                    <tr>
+                                                        <th scope="row"><%=  (i+1)  %></th>
+                               
+                               
+                                                        <td><%= capaian_produksi[i].produk %></td>
+                                                        <td><%= capaian_produksi[i].no_part %></td>
+                                                        <td><%= capaian_produksi[i].hasil_produksi %></td>
+                                                        <td><%= capaian_produksi[i].jenis_kecacatan %></td>
+                                                        <td><%= capaian_produksi[i].kuantitas %></td>
+                                                        <td><%= capaian_produksi[i].persentase_ng %></td>
+                                                        
+        
+                                                    </tr>
+                                                <% } %>
+    
+                                            </tbody>
+                                        </table>
+
+
 
 
                                         <% } else if(jabatan == 'store') { %>
 
 
+
+
+
                                             <center>
+                                                <h3>Tabel Ringkasan Produksi</h3>
+                                            </center>
+                                            
+                                          <table class="table" id="produk_jadi_tabel">
+                                            <thead>
+                                             
+                                                <tr>
+                                                <th scope="col">No</th>
+                                                <th scope="col">Nama Produk</th>
+                                                <th scope="col">Nomor Part</th>
+                                                <th scope="col">Stok Bahan Baku Keluar</th>
+                                                <th scope="col">Stok Produk Jadi Masuk</th>
+                                                <th scope="col">Stok Produksi</th>
+                                                <th scope="col">Stok Keseluruhan</th>
+                                              </tr>
+                                            
+                                            </thead>
+                                            <tbody>
+
+                                                
+                                            
+                                            <% if ( ringkasan_produksi && ringkasan_produksi.length){ %>
+
+
+
+                                                <% for(var i = 0; i < ringkasan_produksi.length; i++){ %>
+
+                                                    <tr>
+                                                      <th scope="row"><%= (i+1) %></th>
+                                                      <td><%= ringkasan_produksi[i].nama_produk %></td>
+                                                      <td><%= ringkasan_produksi[i].no_part %></td>
+                                  
+                                          
+                                                      <td><%= ringkasan_produksi[i].stok_bahan_baku %></td>
+                                                      <td><%= ringkasan_produksi[i].stok_produk_jadi %></td>
+                                                      <td><%= ringkasan_produksi[i].stok_produksi %></td>
+                                                      <td><%= ringkasan_produksi[i].stok_keseluruhan %></td>
+  
+                                                  </tr>
+  
+                                                  <% } %>
+
+                                                  <% } else { %>
+
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+
+
+                                                    <% } %>
+                                         
+                                    
+                                            </tbody>
+                                          </table>
+
+
+
+
+
+
+                                            <!-- <center>
                                                 <h3>Tabel Bahan Baku</h3>
                                             </center>
                                  
@@ -116,7 +223,7 @@
                                                 <thead>
                                                  
                                                     <tr>
-                                                    <!-- <th scope="col">No</th> -->
+                                                  <th scope="col">No</th> 
                                                     <th scope="col">Nama Produk Jadi</th>
                                                     <th scope="col">Nomor Part</th>
                                                     <th scope="col">Produk Jadi Masuk</th>
@@ -163,7 +270,15 @@
                                              
                                         
                                                 </tbody>
-                                              </table>
+                                              </table> -->
+
+
+
+
+
+
+
+
 
     
                                         <% } else { %>

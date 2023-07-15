@@ -1,0 +1,33 @@
+1. Dibuatkan tabel relasi antara produk_jadi_transaksi dan bahan_baku_transaksi. 
+
+2. Tabel Produksi : (Store & Packaging)
+id, id_produk_jadi_transaksi, nama_bahan_baku, id_bahan_baku_transaksi, no_part, stok (bahan_baku_transaksi yang statusnya keluar), stok (produksi), stok(produk_jadi_transaksi yang statusnya keluar) -> disesuaikan atau dicocokkan berdasarkan no_part nya. 
+
+3. Di Dashboard menampilkan Tabel Produksi (Store & Packaging)
+
+Nama Bahan Baku,v Nomor Part, Stok Bahan Baku Keluar, Stok Produk jadi Keluar, Stok Produksi 
+
+
+4. Akun Produksi : 
+a. Dashboard
+
+- Buat Tabel Relasi Hasil Produksi dan Quality berdasarkan no_part:
+
+id, id_quality, id_capaian_produksi, nama_produk, no_part, hasil_produksi (capaian_produksi), kuantitas (quality), persentase (NG).
+
+- Rumus Persentase NG ? 
+ Persentase NG = kuantitas (quality)/hasil_produksi (capaian_produksi)
+
+- Cek lagi buat akses Edit sama Delete dan Hak Akses Menu setiap akun (Prioritas). 
+
+
+5. Masukkan setiap akun Username, Pass, sama Email yang sudah diberikan
+
+
+Prioritas : 
+1. Hak Akses 
+2. Dashboard
+
+
+
+
