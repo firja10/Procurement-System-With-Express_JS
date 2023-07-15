@@ -43,6 +43,23 @@ router.get('/', function(req, res, next) {
 
   var q_capaian_produksi = `SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality`;
 
+
+  var q_hasil_quality = `SELECT
+  cp.produk,
+  cp.no_part,
+  SUM(cp.hasil_produksi) AS total_hasil_produksi,
+  SUM(q.kuantitas) AS total_kuantitas,
+  (SUM(q.kuantitas) / SUM(cp.hasil_produksi)) * 100 AS persentase_ng
+FROM
+  capaian_produksi cp
+JOIN
+  quality q ON cp.no_part = q.no_part
+GROUP BY
+  cp.produk,
+  cp.no_part;
+`;
+
+
   var q_ringkasan_produksi = `SELECT
   nama_produk,
   no_part,
@@ -90,7 +107,7 @@ ORDER BY
 
 
 
-  let bahan_baku, produk_jadi, capaian_produksi, ringkasan_produksi;
+  let bahan_baku, produk_jadi, capaian_produksi, ringkasan_produksi, hasil_quality;
 
 
   conn.query(q_bahan_baku, function(err, results1){
@@ -101,6 +118,11 @@ ORDER BY
 
 
         conn.query(q_ringkasan_produksi, function(err, results4){
+
+          conn.query(q_hasil_quality, function(err, results5){
+
+
+
 
 
 
@@ -127,11 +149,12 @@ conn.query(q, function(err, results){
    capaian_produksi = results3;
 
    ringkasan_produksi = results4;
+   hasil_quality = results5;
    
   
 
 
-    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, jabatan:jabatan_sekarang, count: count, count2: count2, count3: count3, count4: count4, bahan_baku:bahan_baku, produk_jadi:produk_jadi, capaian_produksi:capaian_produksi, ringkasan_produksi:ringkasan_produksi  })
+    res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, jabatan:jabatan_sekarang, count: count, count2: count2, count3: count3, count4: count4, bahan_baku:bahan_baku, produk_jadi:produk_jadi, capaian_produksi:capaian_produksi, ringkasan_produksi:ringkasan_produksi, hasil_quality:hasil_quality  })
     // res.render('dashboard', { title: 'Dashboard', user_name:req.session.nama, count: count})  
    
   }
@@ -148,6 +171,8 @@ conn.query(q, function(err, results){
 
 
 
+
+});
 
 
 });

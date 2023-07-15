@@ -43,12 +43,77 @@
 
                                       <% } else if(jabatan == 'produksi') { %>
 
+
+
+
+                                        <center>
+                                          <h3>Tabel Ringkasan Capaian Produksi dan Quality</h3>
+                                      </center>
+                                      
+                                    <table class="table" id="produk_jadi_tabel">
+                                      <thead>
+                                       
+                                          <tr>
+                                          <th scope="col">No</th>
+                                          <th scope="col">Nama Produk</th>
+                                          <th scope="col">Nomor Part</th>
+                                          <th scope="col">Hasil Produksi</th>
+                                          <th scope="col">Kuantitas</th>
+                                          <th scope="col">Persentase NG</th>
+                                        </tr>
+                                      
+                                      </thead>
+                                      <tbody>
+
+                                          
+                                      
+                                      <% if ( hasil_quality && hasil_quality.length){ %>
+
+
+
+                                          <% for(var i = 0; i < hasil_quality.length; i++){ %>
+
+                                              <tr>
+                                                <th scope="row"><%= (i+1) %></th>
+                                                <td><%= hasil_quality[i].produk %></td>
+                                                <td><%= hasil_quality[i].no_part %></td>
+                            
+                                    
+                                                <td><%= hasil_quality[i].total_hasil_produksi %></td>
+                                                <td><%= hasil_quality[i].total_kuantitas %></td>
+                                                <td><%= hasil_quality[i].persentase_ng %> %</td>
+
+                                            </tr>
+
+                                            <% } %>
+
+                                            <% } else { %>
+
+                                              <td></td>
+                                              <td></td>
+                                              <td></td>
+                                              <td></td>
+                                              <td></td>
+                                              <td></td>
+
+
+                                              <% } %>
+                                   
+                              
+                                      </tbody>
+                                    </table>
+
+
+
+
+
+
                                         <!-- <canvas id="ProduksiUnderBracket"></canvas>
                                         <canvas id="ProduksiInnerTube"></canvas> -->
 
 
 
-
+<!-- 
                                         <table class="table" id="Tables">
                                             <thead>
                                                 <tr>
@@ -82,7 +147,11 @@
                                                 <% } %>
     
                                             </tbody>
-                                        </table>
+                                        </table> -->
+
+
+
+                                        
 
 
 
