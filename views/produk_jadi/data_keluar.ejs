@@ -37,7 +37,13 @@
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
 
+
+                                <% if(jabatan == 'store') { %>
                                 <button class = "btn btn-primary" data-target = "#exampleProdukJadi" data-toggle = "modal">Tambah Data</button>
+                                <% } else { }%>
+                              
+                              
+                              
                                 <div class="card-header-right">
                                     <ul class="list-unstyled card-option">
                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -61,7 +67,11 @@
                                                 <th>No Part</th>
                                                 <th>Stok</th>
                                                 <th>No. Surat</th>
+
+                                                <% if(jabatan == 'store') { %>
                                                 <th>Aksi</th>
+                                                <% } else {} %>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -76,6 +86,8 @@
                                                 <td><%= data[i].no_part %></td>
                                                 <td><%= data[i].stok %></td>
                                                 <td><%= data[i].no_surat %></td>
+
+                                                <% if(jabatan == 'store') { %>
                                                 <td> 
                                                     <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
 
@@ -95,6 +107,10 @@
 
 
                                                 </td>
+                                                <% } else {} %>
+
+
+
                                             </tr>
                                         <% } %>
 
