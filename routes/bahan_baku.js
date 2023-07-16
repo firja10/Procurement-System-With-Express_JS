@@ -431,17 +431,24 @@ router.post('/data_masuk/store', function (req, res) {
 
     var id = req.params.id;
 
-    const {no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok, status_bahan_baku} = req.body;
+    // const {no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok} = req.body;
+    const {no_surat, kode_transaksi, tanggal, bulan, no_part, stok} = req.body;
 
     var form_data = {
-        no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok, status_bahan_baku
+        // no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok, status_bahan_baku
+
+        no_surat, kode_transaksi, tanggal, bulan, no_part, stok
         // no_surat, kode_transaksi, tanggal, nama_bahan, id_bahan_baku, no_part, stok, status_bahan_baku
     }
+
+    
 
     conn.query(`UPDATE bahan_baku_transaksi SET ? WHERE id = ${id}`, form_data, function (err,results) {
         
         if (err) {
             req.flash('Update Bahan Baku Masuk Error');
+
+            // res.redirect(`/bahan_baku/data_masuk/get_id/${id}`);   
 
             res.redirect(`/bahan_baku/data_masuk/get_id/${id}`);   
             // res.redirect(`/produk_jadi`);            
@@ -452,7 +459,8 @@ router.post('/data_masuk/store', function (req, res) {
 
             req.flash('Data bahan baku masuk sudah ditambahkan');
 
-            res.redirect(`/bahan_baku/data_masuk/get_id/${id}`);   
+            // res.redirect(`/bahan_baku/data_masuk/get_id/${id}`);  
+            res.redirect(`/bahan_baku/data_masuk`);   
             // res.redirect(`/produk_jadi`);              
 
 
@@ -535,6 +543,8 @@ router.post('/data_masuk/store', function (req, res) {
 // GET DATA KELUAR BAHAN BAKU
 router.post('/data_keluar/store', function (req,res) {
   
+    // const {no_surat, kode_transaksi, tanggal, nama_bahan, bulan, id_bahan, no_part, stok} = req.body;
+
     const {no_surat, kode_transaksi, tanggal, nama_bahan, bulan, id_bahan, no_part, stok} = req.body;
 
     const status_bahan_baku = 'keluar';
@@ -601,8 +611,36 @@ router.post('/data_keluar/store', function (req,res) {
 
 router.get('/data_keluar', function (req,res, next) {
     
+
+
+
+    // SELECT 
+    // id,
+    // no_surat,
+    // kode_transaksi,
+    // bulan,
+    // nama_bahan,
+    // id_bahan,
+    // no_part,
+    // status_bahan_baku,
+    // DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan,
+    
+    // stok FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'
        
-    conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'keluar'`, function (err, results1, fields) {
+    // conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'keluar'`, function (err, results1, fields) {
+
+    conn.query(`SELECT 
+    id,
+    no_surat,
+    kode_transaksi,
+    bulan,
+    nama_bahan,
+    id_bahan,
+    no_part,
+    status_bahan_baku,
+    DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan,
+    
+    stok FROM bahan_baku_transaksi WHERE status_bahan_baku = 'keluar'`, function (err, results1, fields) {
     conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
         // conn.query("SELECT id, nama_bahan, stock FROM bahan_baku ", function (error, results3, fields) {
@@ -728,10 +766,10 @@ router.get('/data_keluar', function (req,res, next) {
     
     var id = req.params.id;
 
-    const {no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok, status_bahan_baku} = req.body;
+    const {no_surat, kode_transaksi, tanggal, bulan, no_part, stok} = req.body;
 
     var form_data = {
-        no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok, status_bahan_baku
+        no_surat, kode_transaksi, tanggal, bulan, no_part, stok
         // no_surat, kode_transaksi, tanggal, nama_bahan, id_bahan_baku, no_part, stok, status_bahan_baku
     }
 

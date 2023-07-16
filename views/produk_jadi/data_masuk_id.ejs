@@ -1,0 +1,135 @@
+<%- include('../../layouts/header.ejs') %>
+
+        <!-- Page-header start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10"><%= title %></h5>
+                            <p class="m-b-0">Lorem Ipsum is simply dummy text of the printing</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="index.html"> <i class="ti ti-harddrive"></i> </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!"><%= title %></a>
+                            </li>
+                        
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page-header end -->
+        <div class="pcoded-inner-content">
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        <!-- Basic table card start -->
+                        <div class="card">
+                            <div class="card-header">
+                                <!-- <h5>Tambah Data Bahan Baku Masuk</h5> -->
+                                <!-- <span>use class <code>table</code> inside table element</span> -->
+                                <br> <br>
+
+                                <div class="card-header-right">
+                                    <ul class="list-unstyled card-option">
+                                        <li><i class="fa fa fa-wrench open-card-option"></i></li>
+                                        <li><i class="fa fa-window-maximize full-card"></i></li>
+                                        <li><i class="fa fa-minus minimize-card"></i></li>
+                                        <li><i class="fa fa-refresh reload-card"></i></li>
+                                        <li><i class="fa fa-trash close-card"></i></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                               
+
+
+                                    <!-- <form action="/bahan_baku/update/<%= data.id %>" method = "POST"> -->
+                                    
+                                    <form action="/bahan_baku/data_masuk/update/<%= data[0].id %>" method = "POST">
+
+
+                                        
+                                            <div class="form-group">
+                                                <label for="kode_transaksi">Kode Transaksi</label>
+                                                <input type="text" name="kode_transaksi" id="kode_transaksi" class = "form-control" value="<%= data[0].kode_transaksi %>">
+                                            </div>
+                            
+                                        <div class="form-group">
+                                            <label for="tanggal">Tanggal Transaksi</label>
+                                            <input type="date" name="tanggal" id="tanggal" class = "form-control" value="<%= data[0].tanggal %>">
+                                        </div>
+                            
+                            
+                                        <!-- <input type="hidden" name="bulan" id="bulan"> -->
+                                        <input type="hidden" name="bulan" id="bulan" value="<%= data[0].bulan %>">
+                            
+                            
+                            
+                                            
+                                            <div class="form-group">
+                                                <label for="no_part">Nomor Part</label>
+                                                <input type="text" name="no_part" id="no_part" class = "form-control" value="<%= data[0].no_part %>">
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label for="no_surat">Nomor Surat</label>
+                                                <input type="text" name="no_surat" id="no_surat" class = "form-control" value="<%= data[0].no_surat %>">
+                                            </div>
+                            
+                            
+                                            <div class="form-group">
+                                                <label for="stok">Stok</label>
+                                                <input type="number" name="stok" id="stok" class = "form-control" value="<%= data[0].stok %>">
+                                            </div>
+                            
+                                            <div class="form-group">
+                                                <label for="status_produk_jadi">Status Transaksi</label>
+                                                <!-- <input type="number" name="stok" id="stok" class = "form-control"> -->
+                                                <select class="form-control" name="status_produk_jadi" id="status_produk_jadi" disabled>
+                                                    <option value="masuk" selected disabled>Masuk</option>
+                                                </select>
+                                            </div>
+
+
+
+                                        <div class="form-group">
+                                            <button type = "submit" class = "btn btn-primary">Update Data</button>
+                                        </div>
+
+
+                                    </form>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Basic table card end -->
+                      
+            
+                       
+                    </div>
+                    <!-- Page-body end -->
+                </div>
+          
+
+
+
+
+
+
+
+
+
+
+<%- include('../../layouts/footer.ejs') %>

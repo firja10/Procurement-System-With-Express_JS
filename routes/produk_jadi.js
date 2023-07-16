@@ -168,6 +168,49 @@ router.get('/get_id/(:id)', function (req,res, ) {
 });
 
 
+
+
+
+
+
+
+
+router.get('/data_masuk/get_id/(:id)', function (req,res, ) {
+    
+
+    var id = req.params.id;
+
+    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE id = '${id}'`, function (err,results) {
+
+        // conn.query('SELECT * FROM produk_jadi WHERE id = ?', id, function (err,results) {
+
+
+    if (req.session.nama) {
+        
+
+
+        if (err) {
+            res.redirect('/produk_jadi/data_masuk',{title:'Error Ini Mah', user_name:req.session.nama});
+        }
+        
+        
+        console.log(results);
+        res.render('produk_jadi/data_masuk_id', {title:`Produk Jadi ${results[0].nama_produk}`, data:results[0], user_name:req.session.nama});
+
+    } else {
+
+    }
+
+    });
+   
+
+});
+
+
+
+
+
+
 // INSERT PRODUK JADI 
 
  router.post('/store', function (req, res) {
@@ -256,6 +299,76 @@ router.get('/get_id/(:id)', function (req,res, ) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+ 
+ router.post('/data_masuk/update/(:id)', function (req, res) {
+    
+
+    var id = req.params.id;
+
+    // const {nama_produk, no_part, stock} = req.body;
+    const {no_surat, kode_transaksi, tanggal, bulan, no_part, stok} = req.body;
+
+    var form_data = {
+        no_surat, kode_transaksi, tanggal, bulan, no_part, stok
+    }
+
+    conn.query(`UPDATE produk_jadi_transaksi SET ? WHERE id = ${id}`, form_data, function (err,results) {
+        
+        if (err) {
+            req.flash('Update Produk Error');
+
+            res.redirect(`/produk_jadi/data_masuk/get_id/${id}`);   
+            // res.redirect(`/produk_jadi`);            
+
+        }
+
+        else {
+
+            req.flash('Produk sudah ditambahkan');
+
+            res.redirect(`/produk_jadi/data_masuk/get_id/${id}`);   
+            // res.redirect(`/produk_jadi`);              
+
+
+        }
+
+
+
+
+    })
+
+
+
+ });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // UPDATE PRODUK DELETE
 
 
@@ -295,7 +408,32 @@ router.get('/get_id/(:id)', function (req,res, ) {
 
     let data_1, jabatan, data_2;
 
-    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk_jadi = 'masuk'`, function (err,results1, fields) {
+
+    // SELECT 
+    // id,
+    // no_surat,
+    // kode_transaksi,
+    // bulan,
+    // nama_bahan,
+    // id_bahan,
+    // no_part,
+    // status_bahan_baku,
+    // DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan,
+
+
+    conn.query(`    SELECT 
+    id,
+    no_surat,
+    kode_transaksi,
+    bulan,
+    nama_produk,
+    id_produk,
+    no_part,
+    status_produk_jadi,
+    DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan, stok FROM produk_jadi_transaksi WHERE status_produk_jadi = 'masuk'`, function (err,results1, fields) {
+
+
+    // conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk_jadi = 'masuk'`, function (err,results1, fields) {
       conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (err, results2, fields) {
         conn.query("SELECT * FROM produk_jadi ", function (error, results3, fields) {
 
