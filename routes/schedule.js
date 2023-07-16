@@ -11,8 +11,11 @@ router.get('/', function (req,res) {
 
 let schedule_detail, jabatan;
 
-conn.query('SELECT * FROM schedule_detail', function (err,results1, fields) {
+// conn.query('SELECT * FROM schedule_detail', function (err,results1, fields) {
+    conn.query(`SELECT id, produk, no_part, plan_produksi, DATE_FORMAT(tanggal, "%d %M %Y") AS formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan from schedule_detail`, function (err,results1, fields) {
 
+
+    
     conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
      if (req.session.nama) {
@@ -107,14 +110,14 @@ conn.query('INSERT INTO schedule_detail SET ?', form_data, function (err, result
     if (err) {
 
         req.flash('Data Detail Jadwal Tidak Masuk');
-        res.redirect('/');
+        res.redirect('/schedule');
         
     }
 
     else {
 
         req.flash('Data Detail Jadwal Masuk');
-        res.redirect('/');
+        res.redirect('/schedule');
 
     }
     
@@ -133,9 +136,9 @@ router.post('/update/(:id)', function (req, res) {
 
     var id = req.params.id;
 
-    const {tanggal,produk, no_part, plan_produksi} = req.body;
+    const {tanggal, produk, no_part, plan_produksi} = req.body;
 
-    var form_data = {tanggal,produk, no_part, plan_produksi};
+    var form_data = {tanggal, produk, no_part, plan_produksi};
     
 
 
@@ -173,14 +176,14 @@ router.post('/update/(:id)', function (req, res) {
         if (err) {
             
             req.flash('Data tidak bisa dihapus');
-            res.redirect('/schedule_detail');
+            res.redirect('/schedule');
 
         }
 
         else {
 
             req.flash('Data dapat dihapus');
-            res.redirect('/schedule_detail');
+            res.redirect('/schedule');
 
         }
         

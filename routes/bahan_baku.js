@@ -198,7 +198,21 @@ router.get('/get_id/:id', function (req,res, next) {
 router.get('/data_masuk', function (req,res, next) {
     
        
-    conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'`, function (err, results1, fields) {
+    // conn.query(`SELECT * FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'`, function (err, results1, fields) {
+
+    conn.query(`SELECT 
+    id,
+    no_surat,
+    kode_transaksi,
+    bulan,
+    nama_bahan,
+    id_bahan,
+    no_part,
+    status_bahan_baku,
+    DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan,
+    
+    stok FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'`, function (err, results1, fields) {
+
     conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
         // conn.query("SELECT id, nama_bahan, stock FROM bahan_baku ", function (error, results3, fields) {

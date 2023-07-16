@@ -78,7 +78,7 @@ router.get('/', function (req,res, ) {
     let data_1, jabatan;
     
     // conn.query('SELECT * FROM quality', function (err,results1, fields) {
-    conn.query('SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality', function (err,results1, fields) {
+    conn.query('SELECT id, tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality', function (err,results1, fields) {
 
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
@@ -128,7 +128,7 @@ router.get('/capaian', function (req,res, ) {
 
     let data_1, jabatan;
     
-    conn.query('SELECT produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM capaian_produksi', function (err,results1, fields) {
+    conn.query('SELECT id, produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM capaian_produksi', function (err,results1, fields) {
 
 
 
@@ -184,7 +184,7 @@ router.get('/quality', function (req,res, ) {
     let data_1, jabatan;
     
     // conn.query('SELECT * FROM quality', function (err,results1, fields) {
-    conn.query('SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality', function (err,results1, fields) {
+    conn.query('SELECT id, tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality', function (err,results1, fields) {
 
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 
@@ -477,7 +477,7 @@ router.get('/get_id/(:id)', function (req,res, ) {
         if (err) {
             req.flash('Pertambahan Capaian Produksi Error');
 
-            res.redirect('/capaian_produksi');            
+            res.redirect('/capaian_produksi/capaian');            
 
         }
 
@@ -485,7 +485,7 @@ router.get('/get_id/(:id)', function (req,res, ) {
 
             req.flash('Produk sudah ditambahkan');
 
-            res.redirect('/capaian_produksi');
+            res.redirect('/capaian_produksi/capaian');
 
         }
 
@@ -556,14 +556,14 @@ router.get('/get_id/(:id)', function (req,res, ) {
         if (err) {
             
             req.flash('Data tidak bisa dihapus');
-            res.redirect('/capaian_produksi');
+            res.redirect('/capaian_produksi/capaian');
 
         }
 
         else {
 
             req.flash('Data dapat dihapus');
-            res.redirect('/capaian_produksi');
+            res.redirect('/capaian_produksi/capaian');
 
         }
 

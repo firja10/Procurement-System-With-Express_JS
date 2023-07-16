@@ -37,7 +37,13 @@
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
 
+                                
+                                <% if(jabatan == 'ppc') { %>
                                 <button class = "btn btn-primary" data-target = "#exampleSchedule" data-toggle = "modal">Tambah Data</button>
+                                
+                                <% } else {} %>
+                                
+                                
                                 <div class="card-header-right">
                                     <ul class="list-unstyled card-option">
                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -59,7 +65,12 @@
                                                 <th>Produk</th>
                                                 <th>No Part</th>
                                                 <th>Plan Produksi</th>
+
+                                                <% if(jabatan == 'ppc') { %>
                                                 <th>Aksi</th>
+
+                                                <% } else { } %>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -74,6 +85,9 @@
                                                 <td><%= data[i].no_part %></td>
                                                 <td><%= data[i].plan_produksi %></td>
 
+
+
+                                                <% if(jabatan == 'ppc') { %>
                                                 <td> 
                                                     <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
 
@@ -92,6 +106,12 @@
 
 
                                                 </td>
+
+                                                <% } else{ } %>
+
+
+
+
                                             </tr>
                                         <% } %>
 

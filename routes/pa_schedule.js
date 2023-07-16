@@ -14,8 +14,11 @@ var bodyParser = require('body-parser');
 router.get('/', function (req, res) {
     if (req.session.nama) {
       // Query untuk mengambil data dari tabel pa_schedule
-      conn.query('SELECT produk, no_part, plan_produksi, DATE_FORMAT(tanggal, "%d %M %Y") AS formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM pa_schedule', function (error, results, fields) {
-        if (error) throw error;
+    //   conn.query('SELECT produk, no_part, plan_produksi, DATE_FORMAT(tanggal, "%d %M %Y") AS formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM pa_schedule', function (error, results, fields) {
+
+    conn.query('SELECT id, produk, no_part, plan_produksi, DATE_FORMAT(tanggal, "%d %M %Y") AS formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM pa_schedule', function (error, results, fields) {
+
+    if (error) throw error;
   
         // Ambil data jabatan dari tabel users berdasarkan nama sesi
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, jabatanResult, fields) {
@@ -36,6 +39,19 @@ router.get('/', function (req, res) {
       res.redirect('/login');
     }
   });
+
+
+
+
+
+
+
+
+
+
+
+  
+// GET ID 
 
 
 

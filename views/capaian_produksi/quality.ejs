@@ -37,7 +37,10 @@
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
 
+                                <% if(jabatan == 'produksi') { %>
                                 <button class = "btn btn-primary" type="button" data-target = "#modalQuality" data-toggle = "modal">Tambah Data</button>
+                                <% } else { }%>
+                              
                                 <div class="card-header-right">
                                     <ul class="list-unstyled card-option">
                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -65,7 +68,12 @@
                                                 <th>Jenis Kecacatan</th>
                                                 <th>Kuantitas</th>
                                                 <!-- <th>Persentase NG</th> -->
+
+                                                <% if(jabatan == 'produksi') { %>
                                                 <th>Aksi</th>
+
+                                                <% } else { }%>
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -85,7 +93,7 @@
                                                     <td><%= data[i].kuantitas %></td>
                                                     <!-- <td><%= data[i].persentase_ng %></td> -->
                                                     
-    
+                                                    <% if(jabatan == 'produksi') { %>
                                                     <td> 
                                                         <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
     
@@ -105,6 +113,10 @@
     
     
                                                     </td>
+
+                                                    <% } else { }%>
+
+
                                                 </tr>
                                             <% } %>
 

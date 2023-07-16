@@ -36,8 +36,13 @@
                                 <h5>Tabel PA Schedule</h5>
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
-
+                                
+                                
+                                <% if(jabatan == 'sales') { %>
                                 <button class = "btn btn-primary" data-target = "#examplePASchedule" data-toggle = "modal">Tambah Data</button>
+                                <% } else { } %>
+
+
                                 <div class="card-header-right">
                                     <ul class="list-unstyled card-option">
                                         <li><i class="fa fa fa-wrench open-card-option"></i></li>
@@ -94,7 +99,9 @@
                                                 <th>Produk</th>
                                                 <th>No Part</th>
                                                 <th>Plan Produksi</th>
+                                                <% if(jabatan == 'sales') { %>
                                                 <th>Aksi</th>
+                                                <% } else { } %>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -108,25 +115,22 @@
                                                 <td><%= data[i].produk %></td>
                                                 <td><%= data[i].no_part %></td>
                                                 <td><%= data[i].plan_produksi %></td>
-
+                                                <% if(jabatan == 'sales') { %>
                                                 <td> 
                                                     <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
 
                                                     <!-- <form action="/bahan_baku/getid?_method=GET" method = "get">
                                                         <button type = "submit" class = "btn btn-primary">Edit Data</button>
                                                     </form> -->
-                                                    <a href="../pa_schedule/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
 
+                                                    <a href="../pa_schedule/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
                                                     <a href="../pa_schedule/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
                                                 
-                                                    <!-- <form action="/bahan_baku/delete/<%= data[i].id %>" method = "get"> 
-
-                                                        <button type = "submit" class = "btn btn-danger mt-3" >Hapus Data</button>
-
-                                                    </form> -->
-
 
                                                 </td>
+
+                                                
+                                                <% } else { }%>
                                             </tr>
                                         <% } %>
 
