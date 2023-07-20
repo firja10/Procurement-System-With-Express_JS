@@ -128,7 +128,7 @@ router.get('/capaian', function (req,res, ) {
 
     let data_1, jabatan;
     
-    conn.query('SELECT id, produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, capaian_produksi, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM capaian_produksi', function (err,results1, fields) {
+    conn.query('SELECT id, produk, no_part, plan_produksi, hasil_produksi, sisa_produksi, FORMAT(capaian_produksi, 2) as capaian_produksi, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM capaian_produksi', function (err,results1, fields) {
 
 
 

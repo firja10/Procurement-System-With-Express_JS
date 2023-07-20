@@ -95,8 +95,8 @@ GROUP BY nama_bahan, no_part;
     
         if (err) {
 
-            req.flash('Tidak Dapat menampilkan Data Masuk');
-            res.render('bahan_baku/data', {title:'Error Bahan Baku Masuk', data:'', jabatan:'', user_name:req.session.nama});
+            req.flash('Tidak Dapat menampilkan Data Bahan Baku');
+            res.render('bahan_baku/data', {title:'Error Bahan Baku', data:'', jabatan:'', user_name:req.session.nama});
             // next();
 
 
@@ -106,7 +106,7 @@ GROUP BY nama_bahan, no_part;
         data_1 = results1;
         jabatan = results2[0].posisi;
 
-        res.render('bahan_baku/data', {title:'Data Bahan Baku Yang Masuk', data:data_1, jabatan:jabatan, user_name:req.session.nama});
+        res.render('bahan_baku/data', {title:'Data Bahan Baku', data:data_1, jabatan:jabatan, user_name:req.session.nama});
 
         // next();
 
