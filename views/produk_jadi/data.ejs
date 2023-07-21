@@ -37,9 +37,9 @@
                                 <!-- <span>use class <code>table</code> inside table element</span> -->
                                 <br> <br>
 
-                                <% if(jabatan == 'store') { %>
+                                <!-- <% if(jabatan == 'store') { %>
                                 <button class = "btn btn-primary" data-target = "#exampleProdukJadi" data-toggle = "modal">Tambah Data</button>
-                                <% } else {} %>
+                                <% } else {} %> -->
                                
                                 <div class="card-header-right">
                                     <ul class="list-unstyled card-option">
@@ -60,9 +60,9 @@
                                                 <th>Nama Produk</th>
                                                 <th>Nomor Part</th>
                                                 <th>Stok</th>
-                                                <% if(jabatan == 'store') { %>
+                                                <!-- <% if(jabatan == 'store') { %>
                                                 <th>Aksi</th>
-                                                <% } else { }%>
+                                                <% } else { }%> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -79,27 +79,15 @@
 
 
 
-                                                <% if(jabatan == 'store') { %>
+                                                <!-- <% if(jabatan == 'store') { %>
                                                 <td> 
-                                                    <!-- <a href="" class="btn btn-primary">Edit Data</a> -->
-
-                                                    <!-- <form action="/bahan_baku/getid?_method=GET" method = "get">
-                                                        <button type = "submit" class = "btn btn-primary">Edit Data</button>
-                                                    </form> -->
                                                     <a href="../produk_jadi/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
 
                                                     <a href="../produk_jadi/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
-                                                    
-
-                                                    <!-- <form action="/bahan_baku/delete/<%= data[i].id %>" method = "get"> 
-
-                                                        <button type = "submit" class = "btn btn-danger mt-3" >Hapus Data</button>
-
-                                                    </form> -->
 
 
                                                 </td>
-                                                <% } else {} %>
+                                                <% } else {} %> -->
 
 
 
