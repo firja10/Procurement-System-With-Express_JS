@@ -41,7 +41,7 @@ router.get('/', function(req, res, next) {
   var q_bahan_baku = 'SELECT nama_bahan,  status_bahan_baku, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_bahan';
   var q_produk_jadi = 'SELECT nama_produk,  status_produk_jadi, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_produk';
 
-  var q_capaian_produksi = `SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, FORMAT(persentase_ng, 2) as persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality`;
+  var q_capaian_produksi = `SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, FORMAT(persentase_ng, 2) as persentase_ngs, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality`;
 
   var q_ppc_dashboard = `SELECT
   pa.produk AS produk,
@@ -67,7 +67,7 @@ ON
   cp.no_part,
   SUM(cp.hasil_produksi) AS total_hasil_produksi,
   SUM(q.kuantitas) AS total_kuantitas,
-  (SUM(q.kuantitas) / SUM(cp.hasil_produksi)) * 100 AS persentase_ng
+  FORMAT((SUM(q.kuantitas) / SUM(cp.hasil_produksi)) * 100, 2) AS persentase_ng
 FROM
   capaian_produksi cp
 JOIN
