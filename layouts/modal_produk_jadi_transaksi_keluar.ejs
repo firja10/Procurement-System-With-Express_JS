@@ -1,0 +1,135 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleProdukJadiTransaksi" tabindex="-1" role="dialog" aria-labelledby="exampleProdukJadiTransaksiLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleProdukJadiTransaksiLabel">Modal Produk Jadi</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <form action="/produk_jadi/data_keluar/store" method="post">
+
+        <div class="modal-body">
+          
+
+                <!-- <div class="form-group">
+                    <label for="nama_produk">Nama Produk</label>
+                    <input type="text" name="nama_produk" id="nama_produk" class = "form-control">
+                </div>
+
+                
+                <div class="form-group">
+                    <label for="no_part">Nomor Part</label>
+                    <input type="text" name="no_part" id="no_part" class = "form-control">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="stock">Stok</label>
+                    <input type="number" name="stock" id="stock" class = "form-control">
+                </div> -->
+
+
+
+                <div class="form-group">
+                  <label for="nama_produk">Nama Produk Jadi</label>
+                  <!-- <input type="text" name="nama_produk" id="nama_produk" class = "form-control"> -->
+
+                <select class="form-control" name="nama_produk" id="nama_produk">
+
+                  <% for(var k = 0; k < produk_jadi.length; k++){ %>
+
+                      <option value="<%= produk_jadi[k].nama_produk %>"><%= produk_jadi[k].nama_produk  %> - <%= produk_jadi[k].stock  %></option>
+
+                    <% } %>
+
+                </select>
+
+
+              </div>
+
+
+
+              <div class="form-group">
+                <label for="kode_transaksi">Kode Transaksi</label>
+                <input type="text" name="kode_transaksi" id="kode_transaksi" class = "form-control">
+            </div>
+
+            <div class="form-group">
+              <label for="tanggal">Tanggal Transaksi</label>
+              <input type="date" name="tanggal" id="tanggal" class = "form-control">
+          </div>
+
+
+
+                                    <!-- <input type="hidden" name="bulan" id="bulan"> -->
+                                    <input type="hidden" name="bulan" id="bulan">
+
+              
+              <div class="form-group">
+                  <label for="no_part">Nomor Part</label>
+                  <input type="text" name="no_part" id="no_part" class = "form-control">
+              </div>
+
+
+              <div class="form-group">
+                <label for="no_surat">Nomor Surat</label>
+                <input type="text" name="no_surat" id="no_surat" class = "form-control">
+            </div>
+
+
+              <div class="form-group">
+                  <label for="stok">Stok</label>
+                  <input type="number" name="stok" id="stok" class = "form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="status_produk_jadi">Status Transaksi</label>
+                <!-- <input type="number" name="stok" id="stok" class = "form-control"> -->
+                <select class="form-control" name="status_produk_jadi" id="status_produk_jadi" disabled>
+                    <option value="keluar" selected disabled>Keluar</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Tambahkan</button>
+        </div>
+
+    </form>
+        
+    </div>
+    </div>
+  </div>
+
+
+
+  <script>
+
+    const tanggal_input = document.getElementById('tanggal');
+
+    tanggal_input.addEventListener("change", function() {
+      
+      const data_tanggal = tanggal_input.value;
+
+    const date = new Date(data_tanggal);
+
+    const monthNames = [
+    "Januari", "Februari", "Maret",
+    "April", "Mei", "Juni", "Juli",
+    "Agustus", "September", "Oktober",
+    "November", "Desember"
+  ];
+  const month = monthNames[date.getMonth()];
+
+    // document.getElementById('bulan').value = month;
+
+    document.getElementById('bulan').value = month;
+    
+  });
+
+    
+  </script>

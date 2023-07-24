@@ -39,7 +39,7 @@
 
 
                                 <% if(jabatan == 'store') { %>
-                                <button class = "btn btn-primary" data-target = "#exampleProdukJadi" data-toggle = "modal">Tambah Data</button>
+                                <button class = "btn btn-primary" data-target = "#exampleProdukJadiTransaksi" data-toggle = "modal">Tambah Data</button>
                                 <% } else { }%>
                               
                               
@@ -82,7 +82,8 @@
                                                 <td><%= data[i].nama_produk %></td>
                                                 <td><%= data[i].status_produk_jadi %></td>
                                                 <!-- <td><%= data[i].kode_transaksi %></td> -->
-                                                <td><%= data[i].tanggal %></td>
+                                                <!-- <td><%= data[i].tanggal %></td> -->
+                                                <td><%= data[i].formatted_tanggal %></td>
                                                 <td><%= data[i].no_part %></td>
                                                 <td><%= data[i].stok %></td>
                                                 <td><%= data[i].no_surat %></td>
@@ -94,9 +95,9 @@
                                                     <!-- <form action="/bahan_baku/getid?_method=GET" method = "get">
                                                         <button type = "submit" class = "btn btn-primary">Edit Data</button>
                                                     </form> -->
-                                                    <a href="../produk_jadi/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
+                                                    <a href="../produk_jadi/data_keluar/get_id/<%= data[i].id %>" class="btn btn-primary">Edit Data</a>
 
-                                                    <a href="../produk_jadi/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
+                                                    <a href="../produk_jadi/data_keluar_transaksi/delete/<%= data[i].id %>" class="btn btn-danger">Delete Data</a>
                                                     
 
                                                     <!-- <form action="/bahan_baku/delete/<%= data[i].id %>" method = "get"> 
@@ -131,7 +132,7 @@
 
 
 
-                <%- include('../../layouts/modal_produk_jadi.ejs') %>
+                <%- include('../../layouts/modal_produk_jadi_transaksi_keluar.ejs') %>
 
 
 

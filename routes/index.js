@@ -38,25 +38,42 @@ router.get('/', function(req, res, next) {
 
   // var q_bahan_baku = "SELECT nama_bahan, status_bahan_baku, no_part, stok, COUNT(*) as count FROM bahan_baku_transaksi GROUP BY status_bahan_baku";
 
-  var q_bahan_baku = 'SELECT nama_bahan,  status_bahan_baku, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_bahan';
-  var q_produk_jadi = 'SELECT nama_produk,  status_produk_jadi, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_produk';
+  // var q_bahan_baku = 'SELECT nama_bahan,  status_bahan_baku, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_bahan';
+  var q_bahan_baku = 'SELECT nama_bahan,  status_bahan_baku, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY no_part';
+  // var q_produk_jadi = 'SELECT nama_produk,  status_produk_jadi, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY nama_produk';
+  var q_produk_jadi = 'SELECT nama_produk,  status_produk_jadi, no_part, stok, COUNT(CASE WHEN status_bahan_baku = "masuk" THEN 1 END) as count_masuk, COUNT(CASE WHEN status_bahan_baku = "keluar" THEN 1 END) as count_keluar FROM bahan_baku_transaksi GROUP BY no_part';
 
   var q_capaian_produksi = `SELECT tanggal, shift, bulan, produk, no_part, hasil_produksi, jenis_kecacatan, kuantitas, FORMAT(persentase_ng, 2) as persentase_ngs, persentase_ng, DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan FROM quality`;
 
-  var q_ppc_dashboard = `SELECT
-  pa.produk AS produk,
-  pa.no_part AS no_part,
-  pa.plan_produksi AS plan_produksi,
-  cp.hasil_produksi AS hasil_produksi,
-  FORMAT((cp.hasil_produksi / pa.plan_produksi) * 100, 2) AS persentase 
-FROM
-  schedule_detail AS pa
-JOIN
-  capaian_produksi AS cp
-ON
-  pa.no_part = cp.no_part;
-`;
+//   var q_ppc_dashboard = `SELECT
+//   pa.produk AS produk,
+//   pa.no_part AS no_part,
+//   pa.plan_produksi AS plan_produksi,
+//   cp.hasil_produksi AS hasil_produksi,
+//   FORMAT((cp.hasil_produksi / pa.plan_produksi) * 100, 2) AS persentase 
+// FROM
+//   schedule_detail AS pa
+// JOIN
+//   capaian_produksi AS cp
+// ON
+//   pa.no_part = cp.no_part;
+// `;
 
+
+
+var q_ppc_dashboard = `SELECT
+sche.produk AS produk,
+sche.no_part AS no_part,
+SUM(cp.hasil_produksi) AS total_hasil_produksi,
+SUM(sche.plan_produksi) AS total_plan_produksi,
+FORMAT((SUM(cp.hasil_produksi) / SUM(sche.plan_produksi)) * 100, 2) AS persentase
+FROM
+schedule_detail AS sche
+JOIN
+capaian_produksi AS cp ON sche.no_part = cp.no_part
+GROUP BY
+sche.no_part;
+`;
 
   
 
@@ -78,50 +95,90 @@ GROUP BY
 `;
 
 
-  var q_ringkasan_produksi = `SELECT
-  nama_produk,
-  no_part,
-  SUM(stok_produk_jadi) AS stok_produk_jadi,
-  SUM(stok_bahan_baku) AS stok_bahan_baku,
-  SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_produksi,
-  SUM(stok_bahan_baku) + SUM(stok_produk_jadi) + SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_keseluruhan
+//   var q_ringkasan_produksi = `SELECT
+//   nama_produk,
+//   no_part,
+//   SUM(stok_produk_jadi) AS stok_produk_jadi,
+//   SUM(stok_bahan_baku) AS stok_bahan_baku,
+//   SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_produksi,
+//   SUM(stok_bahan_baku) + SUM(stok_produk_jadi) + SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_keseluruhan
+// FROM
+//   (
+//       SELECT
+//           nama_produk,
+//           no_part,
+//           CASE
+//               WHEN status_produk_jadi = 'masuk' THEN stok
+//               WHEN status_produk_jadi = 'keluar' THEN -stok
+//               ELSE 0
+//           END AS stok_produk_jadi,
+//           0 AS stok_bahan_baku
+//       FROM
+//           produk_jadi_transaksi
+
+//       UNION ALL
+
+//       SELECT
+//           NULL AS nama_produk,
+//           no_part,
+//           0 AS stok_produk_jadi,
+//           CASE
+//               WHEN status_bahan_baku = 'masuk' THEN stok
+//               WHEN status_bahan_baku = 'keluar' THEN -stok
+//               ELSE 0
+//           END AS stok_bahan_baku
+//       FROM
+//           bahan_baku_transaksi
+//   ) AS combined_data
+// GROUP BY
+//   no_part, nama_produk
+// ORDER BY
+//   no_part;
+// `;
+
+
+
+
+var q_ringkasan_produksi = `SELECT
+nama_produk,
+no_part,
+SUM(stok_produk_jadi) AS stok_produk_jadi,
+SUM(stok_bahan_baku) AS stok_bahan_baku,
+SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_produksi,
+SUM(stok_bahan_baku) + SUM(stok_produk_jadi) + SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_keseluruhan
 FROM
-  (
-      SELECT
-          nama_produk,
-          no_part,
-          CASE
-              WHEN status_produk_jadi = 'masuk' THEN stok
-              WHEN status_produk_jadi = 'keluar' THEN -stok
-              ELSE 0
-          END AS stok_produk_jadi,
-          0 AS stok_bahan_baku
-      FROM
-          produk_jadi_transaksi
+(
+    SELECT
+        nama_produk,
+        no_part,
+        CASE
+            WHEN status_produk_jadi = 'masuk' THEN stok
+            WHEN status_produk_jadi = 'keluar' THEN -stok
+            ELSE 0
+        END AS stok_produk_jadi,
+        0 AS stok_bahan_baku
+    FROM
+        produk_jadi_transaksi
 
-      UNION ALL
+    UNION ALL
 
-      SELECT
-          NULL AS nama_produk,
-          no_part,
-          0 AS stok_produk_jadi,
-          CASE
-              WHEN status_bahan_baku = 'masuk' THEN stok
-              WHEN status_bahan_baku = 'keluar' THEN -stok
-              ELSE 0
-          END AS stok_bahan_baku
-      FROM
-          bahan_baku_transaksi
-  ) AS combined_data
+    SELECT
+        NULL AS nama_produk,
+        no_part,
+        0 AS stok_produk_jadi,
+        CASE
+            WHEN status_bahan_baku = 'masuk' THEN stok
+            WHEN status_bahan_baku = 'keluar' THEN -stok
+            ELSE 0
+        END AS stok_bahan_baku
+    FROM
+        bahan_baku_transaksi
+) AS combined_data
 GROUP BY
-  no_part, nama_produk
+no_part
 ORDER BY
-  no_part;
-
-
+no_part;
 `;
-
-
 
 
 

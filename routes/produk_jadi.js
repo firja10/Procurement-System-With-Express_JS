@@ -184,6 +184,10 @@ router.get('/data_masuk/get_id/(:id)', function (req,res, ) {
 
         // conn.query('SELECT * FROM produk_jadi WHERE id = ?', id, function (err,results) {
 
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+
+    
+
 
     if (req.session.nama) {
         
@@ -195,13 +199,15 @@ router.get('/data_masuk/get_id/(:id)', function (req,res, ) {
         
         
         console.log(results);
-        res.render('produk_jadi/data_masuk_id', {title:`Produk Jadi ${results[0].nama_produk}`, data:results[0], user_name:req.session.nama});
+        res.render('produk_jadi/data_masuk_id', {title:`Produk Jadi ${results[0].nama_produk}`,jabatan:'store', data:results, user_name:req.session.nama});
 
     } else {
 
     }
 
     });
+
+});
    
 
 });
@@ -402,6 +408,13 @@ router.get('/data_masuk/get_id/(:id)', function (req,res, ) {
 
 
 
+
+
+ 
+
+
+
+
  // DATA MASUK PRODUK JADI
  router.get('/data_masuk', function (req,res) {
 
@@ -481,12 +494,51 @@ router.get('/data_masuk/get_id/(:id)', function (req,res, ) {
 // DATA MASUK PRODUK JADI ID 
 
 
+
+
+
+
+
+
+
+router.get('/data_masuk_transaksi/delete/(:id)', function (req, res) {
+    
+    var id = req.params.id;
+
+    conn.query(`DELETE FROM produk_jadi_transaksi WHERE id = ${id}`, function (err, results) {
+
+        if (err) {
+            
+            req.flash('Data tidak bisa dihapus');
+            res.redirect('/produk_jadi/data_masuk');
+
+        }
+
+        else {
+
+            req.flash('Data dapat dihapus');
+            res.redirect('/produk_jadi/data_masuk');
+
+        }
+
+    })
+
+ });
+
+
+
+
+
+
+
+
 router.get('/data_masuk/(:id)', function (req,res) {
 
     var id = req.params.id;
 
     conn.query(`SELECT * FROM produk_jadi_transaksi WHERE id = '${id}' AND status_produk = 'masuk'`, function (err,results) {
         
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (err, results2, fields) {
 
     if (req.session.nama) {
         
@@ -508,6 +560,8 @@ router.get('/data_masuk/(:id)', function (req,res) {
 
 
     
+})
+
 })
 
 
@@ -603,7 +657,24 @@ router.post('/data_masuk/store', function (req, res) {
 
     let data_1, jabatan, data_2;
 
-    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk_jadi = 'keluar'`, function (err,results1, fields) {
+
+
+
+    conn.query(`    SELECT 
+    id,
+    no_surat,
+    kode_transaksi,
+    bulan,
+    nama_produk,
+    id_produk,
+    no_part,
+    status_produk_jadi,
+    DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal, DATE_FORMAT(tanggal, "%M") as formatted_bulan, stok FROM produk_jadi_transaksi WHERE status_produk_jadi = 'keluar'
+`, function (err,results1, fields) {
+
+
+
+    // conn.query(`SELECT * FROM produk_jadi_transaksi WHERE status_produk_jadi = 'keluar'`, function (err,results1, fields) {
       conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (err, results2, fields) {
         conn.query("SELECT * FROM produk_jadi ", function (error, results3, fields) {
 
@@ -651,12 +722,14 @@ router.post('/data_masuk/store', function (req, res) {
 // DATA KELUAR PRODUK JADI ID 
 
 
-router.get('/data_keluar/(:id)', function (req,res) {
+router.get('/data_keluar/get_id/(:id)', function (req,res) {
 
     var id = req.params.id;
 
-    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE id = '${id}' AND status_produk = 'keluar'`, function (err,results) {
-        
+    // conn.query(`SELECT * FROM produk_jadi_transaksi WHERE id = '${id}' AND status_produk = 'keluar'`, function (err,results) {
+
+    conn.query(`SELECT * FROM produk_jadi_transaksi WHERE id = '${id}'`, function (err,results) {
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (err, results2, fields) {
 
     if (req.session.nama) {
         
@@ -668,17 +741,50 @@ router.get('/data_keluar/(:id)', function (req,res) {
             res.render('produk_jadi/data_keluar_id', {title:`Transaksi Data Keluar dengan Id = ${id} Error`, data:'', user_name:req.session.nama});
         }
 
-        res.render('produk_jadi/data_masuk_id', {title:`Transaksi Data Keluar ${results[0].nama_produk}`, data:results[0], user_name:req.session.nama});
+        res.render('produk_jadi/data_keluar_id', {title:`Transaksi Data Keluar ${results[0].nama_produk}`, jabatan:'store', data:results, user_name:req.session.nama});
 
     } else {
         res.redirect('/login');
     }
 
-    })
+    });
+
+});
 
 
     
-})
+});
+
+
+
+
+
+
+
+router.get('/data_keluar_transaksi/delete/(:id)', function (req, res) {
+    
+    var id = req.params.id;
+
+    conn.query(`DELETE FROM produk_jadi_transaksi WHERE id = ${id}`, function (err, results) {
+
+        if (err) {
+            
+            req.flash('Data tidak bisa dihapus');
+            res.redirect('/produk_jadi/data_keluar');
+
+        }
+
+        else {
+
+            req.flash('Data dapat dihapus');
+            res.redirect('/produk_jadi/data_keluar');
+
+        }
+
+    })
+
+ });
+
 
 
 
@@ -753,6 +859,54 @@ router.post('/data_keluar/store', function (req, res) {
         
     });
 
+
+
+
+
+
+
+    router.post('/data_keluar/update/(:id)', function (req, res) {
+    
+
+        var id = req.params.id;
+    
+        // const {nama_produk, no_part, stock} = req.body;
+        const {no_surat, kode_transaksi, tanggal, bulan, no_part, stok} = req.body;
+    
+        var form_data = {
+            no_surat, kode_transaksi, tanggal, bulan, no_part, stok
+        }
+    
+        conn.query(`UPDATE produk_jadi_transaksi SET ? WHERE id = ${id}`, form_data, function (err,results) {
+            
+            if (err) {
+                req.flash('Update Produk Error');
+    
+                res.redirect(`/produk_jadi/data_keluar/get_id/${id}`);   
+                // res.redirect(`/produk_jadi`);            
+    
+            }
+    
+            else {
+    
+                req.flash('Produk sudah ditambahkan');
+    
+                res.redirect(`/produk_jadi/data_keluar/get_id/${id}`);   
+                // res.redirect(`/produk_jadi`);              
+    
+    
+            }
+    
+    
+    
+    
+        })
+    
+    
+    
+     });
+    
+    
 
 
 
