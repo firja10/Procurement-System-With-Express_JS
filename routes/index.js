@@ -535,13 +535,18 @@ router.post('/login', function(request, response, next){
                   }
                   else
                   {
-                      response.send('Incorrect Password');
+                      // response.send('Incorrect Password');
+
+                      response.redirect("/login");
+
                   }
               }
           }
           else
           {
-              response.send('Incorrect Email Address');
+              // response.send('Incorrect Email Address');
+
+              response.redirect("/login");
           }
           response.end();
       });
