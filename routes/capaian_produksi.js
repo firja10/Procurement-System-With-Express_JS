@@ -177,6 +177,183 @@ router.get('/capaian', function (req,res, ) {
 
 
 
+
+// // Get Capaian Pesanan
+// router.get('/capaian_pesanan', function (req,res, ) {
+    
+
+//     let data_1, jabatan;
+    
+//     conn.query(`SELECT
+//     pa_schedule.id,
+//     pa_schedule.tanggal,
+//     pa_schedule.produk,
+//     pa_schedule.no_part,
+//     SUM(pa_schedule.plan_produksi) AS a,
+//     SUM(produk_jadi_transaksi.stok) AS b,
+//     (SUM(produk_jadi_transaksi.stok) / SUM(pa_schedule.plan_produksi)) * 100 AS c,
+//     produk_jadi_transaksi.status_produk_jadi
+// FROM
+//     pa_schedule
+// JOIN
+//     produk_jadi_transaksi
+// ON
+//     pa_schedule.no_part = produk_jadi_transaksi.no_part
+// WHERE
+//     produk_jadi_transaksi.status_produk_jadi = 'keluar'
+// GROUP BY
+//     pa_schedule.no_part,
+//     pa_schedule.tanggal;
+// `, function (err,results1, fields) {
+//         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+//         if (req.session.nama) {
+//         data_1 = results1;
+//         jabatan = results2[0].posisi;
+//         console.log(results1);
+//         res.render('capaian_produksi/capaian_pesanan', {title:'Capaian Produksi', data:results1, jabatan:jabatan, user_name:req.session.nama});
+//     } else {
+//         res.redirect('/login');
+//     }
+
+//         });
+//     });
+// });
+
+
+
+
+
+
+
+
+
+
+// Get Capaian Pesanan
+router.get('/capaian_pesanan', function (req,res, ) {
+    
+
+    let data_1, jabatan;
+    
+    conn.query(`SELECT
+    pa_schedule.id,
+    CONCAT(MONTHNAME(pa_schedule.tanggal), ' ', YEAR(pa_schedule.tanggal)) AS bulan_tahun,
+    pa_schedule.produk,
+    pa_schedule.no_part,
+    SUM(pa_schedule.plan_produksi) AS a,
+    SUM(produk_jadi_transaksi.stok) AS b,
+    ROUND((SUM(produk_jadi_transaksi.stok) / SUM(pa_schedule.plan_produksi)) * 100, 2) AS c,
+    produk_jadi_transaksi.status_produk_jadi
+FROM
+    pa_schedule
+JOIN
+    produk_jadi_transaksi
+ON
+    pa_schedule.no_part = produk_jadi_transaksi.no_part
+    AND MONTH(pa_schedule.tanggal) = MONTH(produk_jadi_transaksi.tanggal)
+    AND YEAR(pa_schedule.tanggal) = YEAR(produk_jadi_transaksi.tanggal)
+WHERE
+    produk_jadi_transaksi.status_produk_jadi = 'keluar'
+GROUP BY
+    pa_schedule.id,
+    MONTH(pa_schedule.tanggal),
+    YEAR(pa_schedule.tanggal),
+    pa_schedule.produk,
+    pa_schedule.no_part,
+    produk_jadi_transaksi.status_produk_jadi;
+
+
+`, function (err,results1, fields) {
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+        if (req.session.nama) {
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+        console.log(results1);
+        res.render('capaian_produksi/capaian_pesanan', {title:'Capaian Pesanan', data:results1, jabatan:jabatan, user_name:req.session.nama});
+    } else {
+        res.redirect('/login');
+    }
+
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Get Capaian Delivery
+router.get('/capaian_delivery', function (req,res, ) {
+    
+
+    let data_1, jabatan;
+    
+    conn.query(`SELECT
+    pa_schedule.id,
+    DATE_FORMAT(pa_schedule.tanggal, '%d %M %Y') AS formatted_tanggal,
+    pa_schedule.produk,
+    pa_schedule.no_part,
+    SUM(pa_schedule.plan_produksi) AS a,
+    SUM(produk_jadi_transaksi.stok) AS b,
+    ROUND((SUM(produk_jadi_transaksi.stok) / SUM(pa_schedule.plan_produksi)) * 100, 2) AS c,
+    produk_jadi_transaksi.status_produk_jadi
+FROM
+    pa_schedule
+JOIN
+    produk_jadi_transaksi
+ON
+    pa_schedule.no_part = produk_jadi_transaksi.no_part
+    AND MONTH(pa_schedule.tanggal) = MONTH(produk_jadi_transaksi.tanggal)
+    AND YEAR(pa_schedule.tanggal) = YEAR(produk_jadi_transaksi.tanggal)
+WHERE
+    produk_jadi_transaksi.status_produk_jadi = 'keluar'
+GROUP BY
+    pa_schedule.id,
+    DATE_FORMAT(pa_schedule.tanggal, '%d %M %Y'),
+    pa_schedule.produk,
+    pa_schedule.no_part,
+    produk_jadi_transaksi.status_produk_jadi;
+
+`, function (err,results1, fields) {
+        conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+        if (req.session.nama) {
+        data_1 = results1;
+        jabatan = results2[0].posisi;
+        console.log(results1);
+        res.render('capaian_produksi/capaian_delivery', {title:'Capaian Delivery', data:results1, jabatan:jabatan, user_name:req.session.nama});
+    } else {
+        res.redirect('/login');
+    }
+
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Get Capaian Produksi Jadi
 router.get('/quality', function (req,res, ) {
     
