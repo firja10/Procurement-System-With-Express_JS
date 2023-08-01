@@ -139,46 +139,74 @@ GROUP BY
 
 
 
-var q_ringkasan_produksi = `SELECT
-nama_produk,
-no_part,
-SUM(stok_produk_jadi) AS stok_produk_jadi,
-SUM(stok_bahan_baku) AS stok_bahan_baku,
-SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_produksi,
-SUM(stok_bahan_baku) + SUM(stok_produk_jadi) + SUM(stok_bahan_baku) - SUM(stok_produk_jadi) AS stok_keseluruhan
-FROM
-(
-    SELECT
-        nama_produk,
-        no_part,
-        CASE
-            WHEN status_produk_jadi = 'masuk' THEN stok
-            WHEN status_produk_jadi = 'keluar' THEN -stok
-            ELSE 0
-        END AS stok_produk_jadi,
-        0 AS stok_bahan_baku
-    FROM
-        produk_jadi_transaksi
+var q_ringkasan_produksi = `SELECT 
+pj.nama_produk AS nama_produk,
+pj.no_part AS no_part,
+pj.stok AS stok_produk_jadi,
+COALESCE(bb.stok, 0) AS stok_bahan_baku,
+COALESCE(stok_bahan_baku_keluar.stok_keluar, 0) - COALESCE(stok_produk_jadi_masuk.stok_masuk, 0) AS stok_produksi,
+COALESCE(pj.stok, 0) + COALESCE(bb.stok, 0) + (COALESCE(stok_bahan_baku_keluar.stok_keluar, 0) - COALESCE(stok_produk_jadi_masuk.stok_masuk, 0)) AS stok_keseluruhan
+FROM 
+produk_jadi_transaksi pj
+LEFT JOIN 
+bahan_baku_transaksi bb ON pj.no_part = bb.no_part
+LEFT JOIN
+(SELECT no_part, SUM(stok) AS stok_keluar FROM bahan_baku_transaksi WHERE status_bahan_baku = 'keluar' GROUP BY no_part) stok_bahan_baku_keluar ON pj.no_part = stok_bahan_baku_keluar.no_part
+LEFT JOIN
+(SELECT no_part, SUM(stok) AS stok_masuk FROM produk_jadi_transaksi WHERE status_produk_jadi = 'masuk' GROUP BY no_part) stok_produk_jadi_masuk ON pj.no_part = stok_produk_jadi_masuk.no_part;
 
-    UNION ALL
 
-    SELECT
-        NULL AS nama_produk,
-        no_part,
-        0 AS stok_produk_jadi,
-        CASE
-            WHEN status_bahan_baku = 'masuk' THEN stok
-            WHEN status_bahan_baku = 'keluar' THEN -stok
-            ELSE 0
-        END AS stok_bahan_baku
-    FROM
-        bahan_baku_transaksi
-) AS combined_data
-GROUP BY
-no_part
-ORDER BY
-no_part;
 `;
+
+
+
+
+
+
+
+
+
+// var q_ringkasan_produksi = `SELECT
+// nama_produk,
+// no_part,
+// SUM(stok_produk_jadi) AS stok_produk_jadi,
+// SUM(stok_bahan_baku) AS stok_bahan_baku,
+// SUM(CASE WHEN status_bahan_baku = 'keluar' THEN stok ELSE 0 END) - SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE 0 END) AS stok_produksi,
+// SUM(stok_bahan_baku) + SUM(stok_produk_jadi) + SUM(CASE WHEN status_bahan_baku = 'keluar' THEN stok ELSE 0 END) - SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE 0 END) AS stok_keseluruhan
+// FROM
+// (
+// SELECT
+//     nama_produk,
+//     no_part,
+//     CASE
+//         WHEN status_produk_jadi = 'masuk' THEN stok
+//         WHEN status_produk_jadi = 'keluar' THEN -stok
+//         ELSE 0
+//     END AS stok_produk_jadi,
+//     0 AS stok_bahan_baku
+// FROM
+//     produk_jadi_transaksi
+
+// UNION ALL
+
+// SELECT
+//     NULL AS nama_produk,
+//     no_part,
+//     0 AS stok_produk_jadi,
+//     CASE
+//         WHEN status_bahan_baku = 'masuk' THEN stok
+//         WHEN status_bahan_baku = 'keluar' THEN -stok
+//         ELSE 0
+//     END AS stok_bahan_baku
+// FROM
+//     bahan_baku_transaksi
+// ) AS combined_data
+// GROUP BY
+// no_part
+// ORDER BY
+// no_part;
+
+// `;
 
 
 
