@@ -235,7 +235,6 @@ router.get('/capaian_pesanan', function (req,res, ) {
     let data_1, jabatan;
     
     conn.query(`SELECT
-    pa_schedule.id,
     CONCAT(MONTHNAME(pa_schedule.tanggal), ' ', YEAR(pa_schedule.tanggal)) AS bulan_tahun,
     pa_schedule.produk,
     pa_schedule.no_part,
@@ -249,17 +248,15 @@ JOIN
     produk_jadi_transaksi
 ON
     pa_schedule.no_part = produk_jadi_transaksi.no_part
-    AND MONTH(pa_schedule.tanggal) = MONTH(produk_jadi_transaksi.tanggal)
-    AND YEAR(pa_schedule.tanggal) = YEAR(produk_jadi_transaksi.tanggal)
 WHERE
     produk_jadi_transaksi.status_produk_jadi = 'keluar'
 GROUP BY
-    pa_schedule.id,
-    MONTH(pa_schedule.tanggal),
-    YEAR(pa_schedule.tanggal),
+    bulan_tahun,
     pa_schedule.produk,
     pa_schedule.no_part,
     produk_jadi_transaksi.status_produk_jadi;
+
+
 
 
 `, function (err,results1, fields) {
@@ -297,30 +294,60 @@ router.get('/capaian_delivery', function (req,res, ) {
     let data_1, jabatan;
     
     conn.query(`SELECT
-    pa_schedule.id,
-    DATE_FORMAT(pa_schedule.tanggal, '%d %M %Y') AS formatted_tanggal,
-    pa_schedule.produk,
-    pa_schedule.no_part,
-    SUM(pa_schedule.plan_produksi) AS a,
-    SUM(produk_jadi_transaksi.stok) AS b,
-    ROUND((SUM(produk_jadi_transaksi.stok) / SUM(pa_schedule.plan_produksi)) * 100, 2) AS c,
-    produk_jadi_transaksi.status_produk_jadi
-FROM
-    pa_schedule
-JOIN
-    produk_jadi_transaksi
-ON
-    pa_schedule.no_part = produk_jadi_transaksi.no_part
-    AND MONTH(pa_schedule.tanggal) = MONTH(produk_jadi_transaksi.tanggal)
-    AND YEAR(pa_schedule.tanggal) = YEAR(produk_jadi_transaksi.tanggal)
-WHERE
-    produk_jadi_transaksi.status_produk_jadi = 'keluar'
+    id,
+    DATE_FORMAT(tanggal, '%d %M %Y') AS formatted_tanggal,
+    produk,
+    no_part,
+    SUM(a) AS a,
+    SUM(b) AS b,
+    ROUND((SUM(b) / SUM(a)) * 100, 2) AS c,
+    status_produk_jadi
+FROM (
+    SELECT
+        pa_schedule.id,
+        pa_schedule.tanggal,
+        pa_schedule.produk,
+        pa_schedule.no_part,
+        pa_schedule.plan_produksi AS a,
+        0 AS b,
+        produk_jadi_transaksi.status_produk_jadi
+    FROM
+        pa_schedule
+    JOIN
+        produk_jadi_transaksi
+    ON
+        pa_schedule.no_part = produk_jadi_transaksi.no_part
+        AND pa_schedule.tanggal = produk_jadi_transaksi.tanggal
+    WHERE
+        produk_jadi_transaksi.status_produk_jadi = 'keluar'
+    
+    UNION ALL
+    
+    SELECT
+        pa_schedule.id,
+        pa_schedule.tanggal,
+        pa_schedule.produk,
+        pa_schedule.no_part,
+        0 AS a,
+        produk_jadi_transaksi.stok AS b,
+        produk_jadi_transaksi.status_produk_jadi
+    FROM
+        pa_schedule
+    JOIN
+        produk_jadi_transaksi
+    ON
+        pa_schedule.no_part = produk_jadi_transaksi.no_part
+        AND pa_schedule.tanggal = produk_jadi_transaksi.tanggal
+    WHERE
+        produk_jadi_transaksi.status_produk_jadi = 'keluar'
+) AS subquery
 GROUP BY
-    pa_schedule.id,
-    DATE_FORMAT(pa_schedule.tanggal, '%d %M %Y'),
-    pa_schedule.produk,
-    pa_schedule.no_part,
-    produk_jadi_transaksi.status_produk_jadi;
+    id,
+    tanggal,
+    produk,
+    no_part,
+    status_produk_jadi;
+
 
 `, function (err,results1, fields) {
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
