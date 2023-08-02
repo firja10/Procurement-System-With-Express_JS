@@ -311,14 +311,17 @@ router.get('/capaian_pesanan', function (req,res, ) {
     ) AS pa 
     JOIN (
       SELECT 
-        produk, 
+        nama_produk, 
         no_part, 
         tanggal, 
-        SUM(hasil_produksi) AS jumlah_hasil_produksi 
+        SUM(stok) AS jumlah_hasil_produksi 
       FROM 
-        capaian_produksi 
+        produk_jadi_transaksi
+        
+      WHERE 
+        status_produk_jadi = 'keluar'
       GROUP BY 
-        produk, 
+        nama_produk, 
         no_part, 
         MONTH(tanggal), 
         YEAR(tanggal)
@@ -446,6 +449,72 @@ router.get('/capaian_pesanan', function (req,res, ) {
 
 
 
+// router.get('/capaian_delivery', function (req,res, ) {
+    
+
+//     let data_1, jabatan;
+    
+//     conn.query(`
+    
+//     SELECT
+//     pa.produk,
+//     pa.no_part,
+//     DATE_FORMAT(pa.tanggal, '%d %M %Y') AS formatted_tanggal,
+//     pa.jumlah_plan_produksi AS a,
+//     cp.jumlah_hasil_produksi AS b,
+//     (cp.jumlah_hasil_produksi / pa.jumlah_plan_produksi) * 100 AS c
+// FROM
+//     (
+//         SELECT
+//             produk,
+//             no_part,
+//             tanggal,
+//             SUM(plan_produksi) AS jumlah_plan_produksi
+//         FROM
+//             pa_schedule
+//         GROUP BY
+//             produk, no_part, tanggal
+//     ) AS pa
+// JOIN
+//     (
+//         SELECT
+//             produk,
+//             no_part,
+//             tanggal,
+//             SUM(hasil_produksi) AS jumlah_hasil_produksi
+//         FROM
+//             capaian_produksi
+//         GROUP BY
+//             produk, no_part, tanggal
+//     ) AS cp ON pa.no_part = cp.no_part AND pa.tanggal = cp.tanggal;
+
+
+
+
+
+
+
+// `, function (err,results1, fields) {
+//         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+//         if (req.session.nama) {
+//         data_1 = results1;
+//         jabatan = results2[0].posisi;
+//         console.log(results1);
+//         res.render('capaian_produksi/capaian_delivery', {title:'Capaian Delivery', data:results1, jabatan:jabatan, user_name:req.session.nama});
+//     } else {
+//         res.redirect('/login');
+//     }
+
+//         });
+//     });
+// });
+
+
+
+
+
+
+
 router.get('/capaian_delivery', function (req,res, ) {
     
 
@@ -475,21 +544,20 @@ FROM
 JOIN
     (
         SELECT
-            produk,
+            nama_produk,
             no_part,
             tanggal,
-            SUM(hasil_produksi) AS jumlah_hasil_produksi
+            SUM(stok) AS jumlah_hasil_produksi
         FROM
-            capaian_produksi
+            produk_jadi_transaksi
+
+        WHERE 
+            status_produk_jadi='keluar'
         GROUP BY
-            produk, no_part, tanggal
+            nama_produk, no_part, tanggal
+
+
     ) AS cp ON pa.no_part = cp.no_part AND pa.tanggal = cp.tanggal;
-
-
-
-
-
-
 
 `, function (err,results1, fields) {
         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
@@ -505,7 +573,6 @@ JOIN
         });
     });
 });
-
 
 
 
