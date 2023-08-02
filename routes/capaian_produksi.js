@@ -383,55 +383,37 @@ router.get('/capaian_delivery', function (req,res, ) {
     conn.query(`
     
     SELECT
-    formatted_tanggal,
-    produk,
-    no_part,
-    SUM(a) AS a,
-    SUM(b) AS b,
-    ROUND((SUM(b) / SUM(a)) * 100, 2) AS c,
-    status_produk_jadi
-FROM (
-    SELECT
-        DATE_FORMAT(pa_schedule.tanggal, '%d %M %Y') AS formatted_tanggal,
-        pa_schedule.produk,
-        pa_schedule.no_part,
-        pa_schedule.plan_produksi AS a,
-        0 AS b,
-        produk_jadi_transaksi.status_produk_jadi
-    FROM
-        pa_schedule
-    JOIN
-        produk_jadi_transaksi
-    ON
-        pa_schedule.no_part = produk_jadi_transaksi.no_part
-        AND pa_schedule.tanggal = produk_jadi_transaksi.tanggal
-    WHERE
-        produk_jadi_transaksi.status_produk_jadi = 'keluar'
-    
-    UNION ALL
-    
-    SELECT
-        DATE_FORMAT(pa_schedule.tanggal, '%d %M %Y') AS formatted_tanggal,
-        pa_schedule.produk,
-        pa_schedule.no_part,
-        0 AS a,
-        produk_jadi_transaksi.stok AS b,
-        produk_jadi_transaksi.status_produk_jadi
-    FROM
-        pa_schedule
-    JOIN
-        produk_jadi_transaksi
-    ON
-        pa_schedule.no_part = produk_jadi_transaksi.no_part
-        AND pa_schedule.tanggal = produk_jadi_transaksi.tanggal
-    WHERE
-        produk_jadi_transaksi.status_produk_jadi = 'keluar'
-) AS subquery
-GROUP BY
-    formatted_tanggal,
-    produk,
-    no_part,
-    status_produk_jadi;
+    sd.produk,
+    sd.no_part,
+    sd.tanggal,
+    sd.jumlah_plan_produksi AS a,
+    cp.jumlah_hasil_produksi AS b,
+    (cp.jumlah_hasil_produksi / sd.jumlah_plan_produksi) * 100 AS c
+FROM
+    (
+        SELECT
+            produk,
+            no_part,
+            tanggal,
+            SUM(plan_produksi) AS jumlah_plan_produksi
+        FROM
+            schedule_detail
+        GROUP BY
+            produk, no_part, tanggal
+    ) AS sd
+JOIN
+    (
+        SELECT
+            produk,
+            no_part,
+            tanggal,
+            SUM(hasil_produksi) AS jumlah_hasil_produksi
+        FROM
+            capaian_produksi
+        GROUP BY
+            produk, no_part, tanggal
+    ) AS cp ON sd.no_part = cp.no_part AND sd.tanggal = cp.tanggal;
+
 
 
 
