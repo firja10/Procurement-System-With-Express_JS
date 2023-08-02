@@ -254,55 +254,136 @@ JOIN
 
 
 
+// var q_ringkasan_produksi = `SELECT
+// pjt.nama_produk,
+// pjt.no_part,
+// COALESCE(bbt.stok, 0) AS stok_bahan_baku,
+// COALESCE(pjt.stok, 0) AS stok_produk_jadi,
+// COALESCE(bbk_keluar.stok, 0) AS stok_bahan_baku_keluar,
+// COALESCE(pjt_masuk.stok, 0) AS stok_produk_jadi_masuk,
+// COALESCE(bbt.stok, 0) + COALESCE(pjt.stok, 0) + COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) AS stok_produksi,
+// COALESCE(bbt.stok, 0) + COALESCE(pjt.stok, 0) + COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) + COALESCE(bbt.stok, 0) AS stok_keseluruhan
+// FROM
+// produk_jadi_transaksi pjt
+// LEFT JOIN (
+// SELECT
+//     no_part,
+//     SUM(stok) AS stok
+// FROM
+//     bahan_baku_transaksi
+// WHERE
+//     status_bahan_baku = 'masuk'
+// GROUP BY
+//     no_part
+// ) bbt ON pjt.no_part = bbt.no_part
+// LEFT JOIN (
+// SELECT
+//     no_part,
+//     SUM(stok) AS stok
+// FROM
+//     produk_jadi_transaksi
+// GROUP BY
+//     no_part
+// ) pjt_stok ON pjt.no_part = pjt_stok.no_part
+// LEFT JOIN (
+// SELECT
+//     no_part,
+//     SUM(CASE WHEN status_bahan_baku = 'keluar' THEN stok ELSE 0 END) AS stok
+// FROM
+//     bahan_baku_transaksi
+// GROUP BY
+//     no_part
+// ) bbk_keluar ON pjt.no_part = bbk_keluar.no_part
+// LEFT JOIN (
+// SELECT
+//     no_part,
+//     SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE 0 END) AS stok
+// FROM
+//     produk_jadi_transaksi
+// GROUP BY
+//     no_part
+// ) pjt_masuk ON pjt.no_part = pjt_masuk.no_part;
+
+
+// `;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 var q_ringkasan_produksi = `SELECT
 pjt.nama_produk,
 pjt.no_part,
-COALESCE(bbt.stok, 0) AS stok_bahan_baku,
-COALESCE(pjt.stok, 0) AS stok_produk_jadi,
-COALESCE(bbk_keluar.stok, 0) AS stok_bahan_baku_keluar,
-COALESCE(pjt_masuk.stok, 0) AS stok_produk_jadi_masuk,
-COALESCE(bbt.stok, 0) + COALESCE(pjt.stok, 0) + COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) AS stok_produksi,
-COALESCE(bbt.stok, 0) + COALESCE(pjt.stok, 0) + COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) + COALESCE(bbt.stok, 0) AS stok_keseluruhan
-FROM
-produk_jadi_transaksi pjt
-LEFT JOIN (
-SELECT
-    no_part,
-    SUM(stok) AS stok
-FROM
+pjt.stok_produk_jadi,
+bbt.stok_bahan_baku,
+(pjt_kl.stok_produk_jadi - bbt_kl.stok_bahan_baku) as stok_produksi,
+((pjt_kl.stok_produk_jadi - bbt_kl.stok_bahan_baku) + pjt.stok_produk_jadi + bbt.stok_bahan_baku) as total_keseluruhan
+FROM 
+(
+    SELECT 
+        nama_produk, 
+        no_part, 
+        SUM(stok) AS stok_produk_jadi
+    FROM 
+        produk_jadi_transaksi
+    GROUP BY 
+        nama_produk, 
+        no_part 
+) AS pjt
+JOIN (
+SELECT 
+    nama_bahan, 
+    no_part, 
+    SUM(stok) AS stok_bahan_baku 
+FROM 
     bahan_baku_transaksi
-WHERE
-    status_bahan_baku = 'masuk'
-GROUP BY
+GROUP BY 
+    nama_bahan, 
     no_part
-) bbt ON pjt.no_part = bbt.no_part
-LEFT JOIN (
-SELECT
-    no_part,
-    SUM(stok) AS stok
-FROM
+) AS bbt
+ON pjt.no_part = bbt.no_part 
+
+JOIN (
+SELECT 
+    nama_produk, 
+    no_part, 
+    SUM(stok) AS stok_produk_jadi 
+FROM 
     produk_jadi_transaksi
-GROUP BY
+WHERE 
+    status_produk_jadi = 'masuk'
+GROUP BY 
+    nama_produk, 
     no_part
-) pjt_stok ON pjt.no_part = pjt_stok.no_part
-LEFT JOIN (
-SELECT
-    no_part,
-    SUM(CASE WHEN status_bahan_baku = 'keluar' THEN stok ELSE 0 END) AS stok
-FROM
+) AS pjt_kl
+ON pjt.no_part = pjt_kl.no_part 
+
+JOIN (
+SELECT 
+    nama_bahan, 
+    no_part, 
+    SUM(stok) AS stok_bahan_baku 
+FROM 
     bahan_baku_transaksi
-GROUP BY
+WHERE 
+    status_bahan_baku = 'keluar'
+GROUP BY 
+    nama_bahan, 
     no_part
-) bbk_keluar ON pjt.no_part = bbk_keluar.no_part
-LEFT JOIN (
-SELECT
-    no_part,
-    SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE 0 END) AS stok
-FROM
-    produk_jadi_transaksi
-GROUP BY
-    no_part
-) pjt_masuk ON pjt.no_part = pjt_masuk.no_part;
+) AS bbt_kl
+ON pjt.no_part = bbt_kl.no_part;
 
 
 `;
