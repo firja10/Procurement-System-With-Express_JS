@@ -62,37 +62,129 @@ router.get('/', function(req, res, next) {
 
 
 var q_ppc_dashboard = `SELECT
-sche.produk AS produk,
-sche.no_part AS no_part,
-SUM(cp.hasil_produksi) AS total_hasil_produksi,
-SUM(sche.plan_produksi) AS total_plan_produksi,
-FORMAT((SUM(cp.hasil_produksi) / SUM(sche.plan_produksi)) * 100, 2) AS persentase
+sd.produk,
+sd.no_part,
+sd.jumlah_plan_produksi AS b,
+cp.jumlah_hasil_produksi AS a,
+ROUND((cp.jumlah_hasil_produksi / sd.jumlah_plan_produksi)*100, 2) AS c
 FROM
-schedule_detail AS sche
+(
+    SELECT
+        produk,
+        no_part,
+        SUM(plan_produksi) AS jumlah_plan_produksi
+    FROM
+        schedule_detail
+    GROUP BY
+        produk, no_part
+) AS sd
 JOIN
-capaian_produksi AS cp ON sche.no_part = cp.no_part
-GROUP BY
-sche.no_part;
+(
+    SELECT
+        no_part,
+        SUM(hasil_produksi) AS jumlah_hasil_produksi
+    FROM
+        capaian_produksi
+    GROUP BY
+        no_part
+) AS cp ON sd.no_part = cp.no_part;
+
 `;
+
+
+
+
+
+
+
+
+
+
+// var q_ppc_dashboard = `SELECT
+//     produk,
+//     no_part,
+//     SUM(plan_produksi) AS b,
+//     SUM(hasil_produksi) AS a,
+//     (SUM(plan_produksi) / SUM(hasil_produksi)) * 100 AS c
+// FROM
+//     (
+//         SELECT
+//             produk,
+//             no_part,
+//             plan_produksi,
+//             0 AS hasil_produksi
+//         FROM
+//             schedule_detail
+//         UNION ALL
+//         SELECT
+//             NULL AS produk,
+//             no_part,
+//             0 AS plan_produksi,
+//             hasil_produksi
+//         FROM
+//             capaian_produksi
+//     ) AS combined_data
+// GROUP BY
+//     produk, no_part;
+
+// `;
 
   
 
 
 
-  var q_hasil_quality = `SELECT
-  cp.produk,
-  cp.no_part,
-  SUM(cp.hasil_produksi) AS total_hasil_produksi,
-  SUM(q.kuantitas) AS total_kuantitas,
-  FORMAT((SUM(q.kuantitas) / SUM(cp.hasil_produksi)) * 100, 2) AS persentase_ng
+//   var q_hasil_quality = `SELECT
+//   cp.produk,
+//   cp.no_part,
+//   SUM(cp.hasil_produksi) AS total_hasil_produksi,
+//   SUM(q.kuantitas) AS total_kuantitas,
+//   FORMAT((SUM(q.kuantitas) / SUM(cp.hasil_produksi)) * 100, 2) AS persentase_ng
+// FROM
+//   capaian_produksi cp
+// JOIN
+//   quality q ON cp.no_part = q.no_part
+// GROUP BY
+//   cp.produk,
+//   cp.no_part;
+// `;
+
+
+
+
+
+
+var q_hasil_quality = `SELECT
+cp.produk,
+cp.no_part,
+cp.jumlah_hasil_produksi AS a,
+q.jumlah_kuantitas AS b,
+ROUND((q.jumlah_kuantitas / cp.jumlah_hasil_produksi)*100, 2) AS c
 FROM
-  capaian_produksi cp
+(
+    SELECT
+        produk,
+        no_part,
+        SUM(hasil_produksi) AS jumlah_hasil_produksi
+    FROM
+        capaian_produksi
+    GROUP BY
+        produk, no_part
+) AS cp
 JOIN
-  quality q ON cp.no_part = q.no_part
-GROUP BY
-  cp.produk,
-  cp.no_part;
+(
+    SELECT
+        no_part,
+        SUM(kuantitas) AS jumlah_kuantitas
+    FROM
+        quality
+    GROUP BY
+        no_part
+) AS q ON cp.no_part = q.no_part;
+
 `;
+
+
+
 
 
 //   var q_ringkasan_produksi = `SELECT
@@ -139,21 +231,74 @@ GROUP BY
 
 
 
-var q_ringkasan_produksi = `SELECT 
-pj.nama_produk AS nama_produk,
-pj.no_part AS no_part,
-pj.stok AS stok_produk_jadi,
-COALESCE(bb.stok, 0) AS stok_bahan_baku,
-COALESCE(stok_bahan_baku_keluar.stok_keluar, 0) - COALESCE(stok_produk_jadi_masuk.stok_masuk, 0) AS stok_produksi,
-COALESCE(pj.stok, 0) + COALESCE(bb.stok, 0) + (COALESCE(stok_bahan_baku_keluar.stok_keluar, 0) - COALESCE(stok_produk_jadi_masuk.stok_masuk, 0)) AS stok_keseluruhan
-FROM 
-produk_jadi_transaksi pj
-LEFT JOIN 
-bahan_baku_transaksi bb ON pj.no_part = bb.no_part
-LEFT JOIN
-(SELECT no_part, SUM(stok) AS stok_keluar FROM bahan_baku_transaksi WHERE status_bahan_baku = 'keluar' GROUP BY no_part) stok_bahan_baku_keluar ON pj.no_part = stok_bahan_baku_keluar.no_part
-LEFT JOIN
-(SELECT no_part, SUM(stok) AS stok_masuk FROM produk_jadi_transaksi WHERE status_produk_jadi = 'masuk' GROUP BY no_part) stok_produk_jadi_masuk ON pj.no_part = stok_produk_jadi_masuk.no_part;
+// var q_ringkasan_produksi = `SELECT 
+// pj.nama_produk AS nama_produk,
+// pj.no_part AS no_part,
+// pj.stok AS stok_produk_jadi,
+// COALESCE(bb.stok, 0) AS stok_bahan_baku,
+// COALESCE(stok_bahan_baku_keluar.stok_keluar, 0) - COALESCE(stok_produk_jadi_masuk.stok_masuk, 0) AS stok_produksi,
+// COALESCE(pj.stok, 0) + COALESCE(bb.stok, 0) + (COALESCE(stok_bahan_baku_keluar.stok_keluar, 0) - COALESCE(stok_produk_jadi_masuk.stok_masuk, 0)) AS stok_keseluruhan
+// FROM 
+// produk_jadi_transaksi pj
+// LEFT JOIN 
+// bahan_baku_transaksi bb ON pj.no_part = bb.no_part
+// LEFT JOIN
+// (SELECT no_part, SUM(stok) AS stok_keluar FROM bahan_baku_transaksi WHERE status_bahan_baku = 'keluar' GROUP BY no_part) stok_bahan_baku_keluar ON pj.no_part = stok_bahan_baku_keluar.no_part
+// LEFT JOIN
+// (SELECT no_part, SUM(stok) AS stok_masuk FROM produk_jadi_transaksi WHERE status_produk_jadi = 'masuk' GROUP BY no_part) stok_produk_jadi_masuk ON pj.no_part = stok_produk_jadi_masuk.no_part;
+
+
+// `;
+
+
+
+
+
+var q_ringkasan_produksi = `SELECT
+    pjt.nama_produk,
+    pjt.no_part,
+    COALESCE(bbt.stok, 0) AS stok_bahan_baku,
+    COALESCE(pjt.stok, 0) AS stok_produk_jadi,
+    COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) AS stok_produksi,
+    COALESCE(bbt.stok, 0) + COALESCE(pjt.stok, 0) + COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) AS stok_keseluruhan
+FROM
+    produk_jadi_transaksi pjt
+LEFT JOIN (
+    SELECT
+        no_part,
+        SUM(stok) AS stok
+    FROM
+        bahan_baku_transaksi
+    GROUP BY
+        no_part
+) bbt ON pjt.no_part = bbt.no_part
+LEFT JOIN (
+    SELECT
+        no_part,
+        SUM(stok) AS stok
+    FROM
+        produk_jadi_transaksi
+    GROUP BY
+        no_part
+) pjts ON pjt.no_part = pjts.no_part
+LEFT JOIN (
+    SELECT
+        no_part,
+        SUM(CASE WHEN status_bahan_baku = 'keluar' THEN stok ELSE 0 END) AS stok
+    FROM
+        bahan_baku_transaksi
+    GROUP BY
+        no_part
+) bbk_keluar ON pjt.no_part = bbk_keluar.no_part
+LEFT JOIN (
+    SELECT
+        no_part,
+        SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE 0 END) AS stok
+    FROM
+        produk_jadi_transaksi
+    GROUP BY
+        no_part
+) pjt_masuk ON pjt.no_part = pjt_masuk.no_part;
 
 
 `;
