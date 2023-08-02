@@ -176,22 +176,19 @@ router.get('/capaian', function (req,res, ) {
 
 
 
-
-
-// // Get Capaian Pesanan
+// Get Capaian Pesanan
 // router.get('/capaian_pesanan', function (req,res, ) {
     
 
 //     let data_1, jabatan;
     
 //     conn.query(`SELECT
-//     pa_schedule.id,
-//     pa_schedule.tanggal,
+//     CONCAT(MONTHNAME(pa_schedule.tanggal), ' ', YEAR(pa_schedule.tanggal)) AS bulan_tahun,
 //     pa_schedule.produk,
 //     pa_schedule.no_part,
 //     SUM(pa_schedule.plan_produksi) AS a,
 //     SUM(produk_jadi_transaksi.stok) AS b,
-//     (SUM(produk_jadi_transaksi.stok) / SUM(pa_schedule.plan_produksi)) * 100 AS c,
+//     ROUND((SUM(produk_jadi_transaksi.stok) / SUM(pa_schedule.plan_produksi)) * 100, 2) AS c,
 //     produk_jadi_transaksi.status_produk_jadi
 // FROM
 //     pa_schedule
@@ -202,15 +199,21 @@ router.get('/capaian', function (req,res, ) {
 // WHERE
 //     produk_jadi_transaksi.status_produk_jadi = 'keluar'
 // GROUP BY
+//     bulan_tahun,
+//     pa_schedule.produk,
 //     pa_schedule.no_part,
-//     pa_schedule.tanggal;
+//     produk_jadi_transaksi.status_produk_jadi;
+
+
+
+
 // `, function (err,results1, fields) {
 //         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
 //         if (req.session.nama) {
 //         data_1 = results1;
 //         jabatan = results2[0].posisi;
 //         console.log(results1);
-//         res.render('capaian_produksi/capaian_pesanan', {title:'Capaian Produksi', data:results1, jabatan:jabatan, user_name:req.session.nama});
+//         res.render('capaian_produksi/capaian_pesanan', {title:'Capaian Pesanan', data:results1, jabatan:jabatan, user_name:req.session.nama});
 //     } else {
 //         res.redirect('/login');
 //     }
@@ -227,34 +230,102 @@ router.get('/capaian', function (req,res, ) {
 
 
 
+// router.get('/capaian_pesanan', function (req,res, ) {
+    
 
-// Get Capaian Pesanan
+//     let data_1, jabatan;
+    
+//     conn.query(`
+    
+//     SELECT
+//     sd.produk,
+//     sd.no_part,
+//     DATE_FORMAT(sd.tanggal, '%Y-%m') AS bulan_tahun,
+//     SUM(sd.plan_produksi) AS a,
+//     SUM(cp.hasil_produksi) AS b,
+//     (SUM(cp.hasil_produksi) / SUM(sd.plan_produksi)) * 100 AS c
+// FROM
+//     schedule_detail sd
+// JOIN
+//     capaian_produksi cp ON sd.no_part = cp.no_part AND MONTH(sd.tanggal) = MONTH(cp.tanggal) AND YEAR(sd.tanggal) = YEAR(cp.tanggal)
+// GROUP BY
+//     sd.produk, sd.no_part, DATE_FORMAT(sd.tanggal, '%Y-%m');
+
+
+
+
+
+// `, function (err,results1, fields) {
+//         conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
+//         if (req.session.nama) {
+//         data_1 = results1;
+//         jabatan = results2[0].posisi;
+//         console.log(results1);
+//         res.render('capaian_produksi/capaian_pesanan', {title:'Capaian Pesanan', data:results1, jabatan:jabatan, user_name:req.session.nama});
+//     } else {
+//         res.redirect('/login');
+//     }
+
+//         });
+//     });
+// });
+
+
+
+
+
+
+
+
+
 router.get('/capaian_pesanan', function (req,res, ) {
     
 
     let data_1, jabatan;
     
-    conn.query(`SELECT
-    CONCAT(MONTHNAME(pa_schedule.tanggal), ' ', YEAR(pa_schedule.tanggal)) AS bulan_tahun,
-    pa_schedule.produk,
-    pa_schedule.no_part,
-    SUM(pa_schedule.plan_produksi) AS a,
-    SUM(produk_jadi_transaksi.stok) AS b,
-    ROUND((SUM(produk_jadi_transaksi.stok) / SUM(pa_schedule.plan_produksi)) * 100, 2) AS c,
-    produk_jadi_transaksi.status_produk_jadi
-FROM
-    pa_schedule
-JOIN
-    produk_jadi_transaksi
-ON
-    pa_schedule.no_part = produk_jadi_transaksi.no_part
-WHERE
-    produk_jadi_transaksi.status_produk_jadi = 'keluar'
-GROUP BY
-    bulan_tahun,
-    pa_schedule.produk,
-    pa_schedule.no_part,
-    produk_jadi_transaksi.status_produk_jadi;
+    conn.query(`
+    
+    SELECT 
+    sd.produk, 
+    sd.no_part, 
+    DATE_FORMAT(sd.tanggal, '%M %Y') AS bulan_tahun, 
+    sd.jumlah_plan_produksi AS a, 
+    cp.jumlah_hasil_produksi AS b, 
+    ROUND((
+      cp.jumlah_hasil_produksi / sd.jumlah_plan_produksi
+    ) * 100, 2) AS c 
+  FROM 
+    (
+      SELECT 
+        produk, 
+        no_part, 
+        tanggal, 
+        SUM(plan_produksi) AS jumlah_plan_produksi 
+      FROM 
+        schedule_detail 
+      GROUP BY 
+        produk, 
+        no_part, 
+        MONTH(tanggal), 
+        YEAR(tanggal)
+    ) AS sd 
+    JOIN (
+      SELECT 
+        produk, 
+        no_part, 
+        tanggal, 
+        SUM(hasil_produksi) AS jumlah_hasil_produksi 
+      FROM 
+        capaian_produksi 
+      GROUP BY 
+        produk, 
+        no_part, 
+        MONTH(tanggal), 
+        YEAR(tanggal)
+    ) AS cp ON sd.no_part = cp.no_part 
+    AND MONTH(sd.tanggal) = MONTH(cp.tanggal) 
+    AND YEAR(sd.tanggal) = YEAR(cp.tanggal);
+  
 
 
 
@@ -385,7 +456,7 @@ router.get('/capaian_delivery', function (req,res, ) {
     SELECT
     sd.produk,
     sd.no_part,
-    sd.tanggal,
+    DATE_FORMAT(sd.tanggal, '%d %M %Y') AS formatted_tanggal,
     sd.jumlah_plan_produksi AS a,
     cp.jumlah_hasil_produksi AS b,
     (cp.jumlah_hasil_produksi / sd.jumlah_plan_produksi) * 100 AS c
