@@ -332,26 +332,16 @@ bbt.stok_bahan_baku,
 ((pjt_kl.stok_produk_jadi - bbt_kl.stok_bahan_baku) + pjt.stok_produk_jadi + bbt.stok_bahan_baku) as total_keseluruhan
 FROM 
 (
-    SELECT 
-        nama_produk, 
-        no_part, 
-        SUM(stok) AS stok_produk_jadi
-    FROM 
-        produk_jadi_transaksi
-    GROUP BY 
-        nama_produk, 
-        no_part 
+  SELECT nama_produk, no_part, 
+  SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE -stok END) AS stok_produk_jadi
+FROM produk_jadi_transaksi
+GROUP BY nama_produk, no_part
 ) AS pjt
 JOIN (
-SELECT 
-    nama_bahan, 
-    no_part, 
-    SUM(stok) AS stok_bahan_baku 
-FROM 
-    bahan_baku_transaksi
-GROUP BY 
-    nama_bahan, 
-    no_part
+  SELECT nama_bahan, no_part, 
+  SUM(CASE WHEN status_bahan_baku = 'masuk' THEN stok ELSE -stok END) AS stok_bahan_baku
+FROM bahan_baku_transaksi
+GROUP BY nama_bahan, no_part
 ) AS bbt
 ON pjt.no_part = bbt.no_part 
 
