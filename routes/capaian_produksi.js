@@ -286,13 +286,13 @@ router.get('/capaian_pesanan', function (req,res, ) {
     conn.query(`
     
     SELECT 
-    sd.produk, 
-    sd.no_part, 
-    DATE_FORMAT(sd.tanggal, '%M %Y') AS bulan_tahun, 
-    sd.jumlah_plan_produksi AS a, 
+    pa.produk, 
+    pa.no_part, 
+    DATE_FORMAT(pa.tanggal, '%M %Y') AS bulan_tahun, 
+    pa.jumlah_plan_produksi AS a, 
     cp.jumlah_hasil_produksi AS b, 
     ROUND((
-      cp.jumlah_hasil_produksi / sd.jumlah_plan_produksi
+      cp.jumlah_hasil_produksi / pa.jumlah_plan_produksi
     ) * 100, 2) AS c 
   FROM 
     (
@@ -302,13 +302,13 @@ router.get('/capaian_pesanan', function (req,res, ) {
         tanggal, 
         SUM(plan_produksi) AS jumlah_plan_produksi 
       FROM 
-        schedule_detail 
+        pa_schedule
       GROUP BY 
         produk, 
         no_part, 
         MONTH(tanggal), 
         YEAR(tanggal)
-    ) AS sd 
+    ) AS pa 
     JOIN (
       SELECT 
         produk, 
@@ -322,9 +322,9 @@ router.get('/capaian_pesanan', function (req,res, ) {
         no_part, 
         MONTH(tanggal), 
         YEAR(tanggal)
-    ) AS cp ON sd.no_part = cp.no_part 
-    AND MONTH(sd.tanggal) = MONTH(cp.tanggal) 
-    AND YEAR(sd.tanggal) = YEAR(cp.tanggal);
+    ) AS cp ON pa.no_part = cp.no_part 
+    AND MONTH(pa.tanggal) = MONTH(cp.tanggal) 
+    AND YEAR(pa.tanggal) = YEAR(cp.tanggal);
   
 
 
@@ -454,12 +454,12 @@ router.get('/capaian_delivery', function (req,res, ) {
     conn.query(`
     
     SELECT
-    sd.produk,
-    sd.no_part,
-    DATE_FORMAT(sd.tanggal, '%d %M %Y') AS formatted_tanggal,
-    sd.jumlah_plan_produksi AS a,
+    pa.produk,
+    pa.no_part,
+    DATE_FORMAT(pa.tanggal, '%d %M %Y') AS formatted_tanggal,
+    pa.jumlah_plan_produksi AS a,
     cp.jumlah_hasil_produksi AS b,
-    (cp.jumlah_hasil_produksi / sd.jumlah_plan_produksi) * 100 AS c
+    (cp.jumlah_hasil_produksi / pa.jumlah_plan_produksi) * 100 AS c
 FROM
     (
         SELECT
@@ -468,10 +468,10 @@ FROM
             tanggal,
             SUM(plan_produksi) AS jumlah_plan_produksi
         FROM
-            schedule_detail
+            pa_schedule
         GROUP BY
             produk, no_part, tanggal
-    ) AS sd
+    ) AS pa
 JOIN
     (
         SELECT
@@ -483,7 +483,7 @@ JOIN
             capaian_produksi
         GROUP BY
             produk, no_part, tanggal
-    ) AS cp ON sd.no_part = cp.no_part AND sd.tanggal = cp.tanggal;
+    ) AS cp ON pa.no_part = cp.no_part AND pa.tanggal = cp.tanggal;
 
 
 

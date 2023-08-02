@@ -255,49 +255,53 @@ JOIN
 
 
 var q_ringkasan_produksi = `SELECT
-    pjt.nama_produk,
-    pjt.no_part,
-    COALESCE(bbt.stok, 0) AS stok_bahan_baku,
-    COALESCE(pjt.stok, 0) AS stok_produk_jadi,
-    COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) AS stok_produksi,
-    COALESCE(bbt.stok, 0) + COALESCE(pjt.stok, 0) + COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) AS stok_keseluruhan
+pjt.nama_produk,
+pjt.no_part,
+COALESCE(bbt.stok, 0) AS stok_bahan_baku,
+COALESCE(pjt.stok, 0) AS stok_produk_jadi,
+COALESCE(bbk_keluar.stok, 0) AS stok_bahan_baku_keluar,
+COALESCE(pjt_masuk.stok, 0) AS stok_produk_jadi_masuk,
+COALESCE(bbt.stok, 0) + COALESCE(pjt.stok, 0) + COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) AS stok_produksi,
+COALESCE(bbt.stok, 0) + COALESCE(pjt.stok, 0) + COALESCE(bbk_keluar.stok, 0) - COALESCE(pjt_masuk.stok, 0) + COALESCE(bbt.stok, 0) AS stok_keseluruhan
 FROM
-    produk_jadi_transaksi pjt
+produk_jadi_transaksi pjt
 LEFT JOIN (
-    SELECT
-        no_part,
-        SUM(stok) AS stok
-    FROM
-        bahan_baku_transaksi
-    GROUP BY
-        no_part
+SELECT
+    no_part,
+    SUM(stok) AS stok
+FROM
+    bahan_baku_transaksi
+WHERE
+    status_bahan_baku = 'masuk'
+GROUP BY
+    no_part
 ) bbt ON pjt.no_part = bbt.no_part
 LEFT JOIN (
-    SELECT
-        no_part,
-        SUM(stok) AS stok
-    FROM
-        produk_jadi_transaksi
-    GROUP BY
-        no_part
-) pjts ON pjt.no_part = pjts.no_part
+SELECT
+    no_part,
+    SUM(stok) AS stok
+FROM
+    produk_jadi_transaksi
+GROUP BY
+    no_part
+) pjt_stok ON pjt.no_part = pjt_stok.no_part
 LEFT JOIN (
-    SELECT
-        no_part,
-        SUM(CASE WHEN status_bahan_baku = 'keluar' THEN stok ELSE 0 END) AS stok
-    FROM
-        bahan_baku_transaksi
-    GROUP BY
-        no_part
+SELECT
+    no_part,
+    SUM(CASE WHEN status_bahan_baku = 'keluar' THEN stok ELSE 0 END) AS stok
+FROM
+    bahan_baku_transaksi
+GROUP BY
+    no_part
 ) bbk_keluar ON pjt.no_part = bbk_keluar.no_part
 LEFT JOIN (
-    SELECT
-        no_part,
-        SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE 0 END) AS stok
-    FROM
-        produk_jadi_transaksi
-    GROUP BY
-        no_part
+SELECT
+    no_part,
+    SUM(CASE WHEN status_produk_jadi = 'masuk' THEN stok ELSE 0 END) AS stok
+FROM
+    produk_jadi_transaksi
+GROUP BY
+    no_part
 ) pjt_masuk ON pjt.no_part = pjt_masuk.no_part;
 
 
