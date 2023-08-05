@@ -650,6 +650,61 @@ router.get('/register',function(req,res,next){
 
 
 
+
+router.get('/jumlah_notifikasi',function(req,res,next){
+
+  conn.query(`SELECT COUNT(*) as jumlah_pesan FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
+
+    if (err){
+
+      // res.redirect('/register');
+
+      res.send('0');
+
+    } else {
+      res.json(results);
+    }
+
+  // res.render('register',{title:'Registrasi', message:''});
+
+  });
+
+});
+
+
+
+
+
+
+
+
+router.get('/data_notifikasi',function(req,res,next){
+
+  // conn.query(`SELECT * FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
+
+  conn.query(`SELECT *, COUNT(*) as total_pesan FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
+
+    if (err){
+
+      // res.redirect('/register');
+
+      res.send('0');
+
+    } else {
+      res.json(results);
+    }
+
+  // res.render('register',{title:'Registrasi', message:''});
+
+  });
+
+});
+
+
+
+
+
+
 router.post('/register', function (req, res, next) {
   
   inputData = {

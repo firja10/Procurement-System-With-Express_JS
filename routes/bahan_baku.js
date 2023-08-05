@@ -90,34 +90,22 @@ GROUP BY nama_bahan, no_part;
     conn.query("SELECT posisi FROM users WHERE nama = '" + req.session.nama + "'", function (error, results2, fields) {
     if (req.session.nama) {
 
-
         let jabatan, data_1;
     
         if (err) {
-
             req.flash('Tidak Dapat menampilkan Data Bahan Baku');
             res.render('bahan_baku/data', {title:'Error Bahan Baku', data:'', jabatan:'', user_name:req.session.nama});
             // next();
-
-
         }
-
 
         data_1 = results1;
         jabatan = results2[0].posisi;
-
         res.render('bahan_baku/data', {title:'Data Bahan Baku', data:data_1, jabatan:jabatan, user_name:req.session.nama});
-
         // next();
-
-
     }
 
-
     else {
-    
         res.redirect('/login');
-    
     }
         
     });
@@ -219,6 +207,9 @@ router.get('/data_masuk', function (req,res, next) {
 
         conn.query("SELECT * FROM bahan_baku ", function (error, results3, fields) {
 
+
+
+
     if (req.session.nama) {
 
 
@@ -250,10 +241,11 @@ router.get('/data_masuk', function (req,res, next) {
     
     }
         
-         });
+
 
         });
 
+    });
 
     });
 
@@ -278,7 +270,10 @@ router.post('/data_masuk/store', function (req, res) {
 
     // const {no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok, status_bahan_baku} = req.body;
 
-    const {no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok} = req.body;
+    const {no_surat, kode_transaksi, tanggal, bulan, nama_bahan, id_bahan, no_part, stok
+    } = req.body;
+
+
 
     const status_bahan_baku = 'masuk';
 
@@ -288,20 +283,29 @@ router.post('/data_masuk/store', function (req, res) {
         // no_surat, kode_transaksi, tanggal, nama_bahan, id_bahan_baku, no_part, stok, status_bahan_baku
     }
 
+
+    const nama_pengirim =  req.session.nama;
+    const status_pesan = 0;
+    const subjek_pesan = 'Data Bahan Baku Masuk Bertambah';
+    const isi_pesan = 'Silakan Cek Data Masuk Pada Bahan Baku';
+    const nama_penerima = 'sales;ppc;store;manajerial;';
+
+
+    var form_pesan = {subjek_pesan, isi_pesan, nama_pengirim, nama_penerima, status_pesan}
+
+
+
     conn.query(`INSERT INTO bahan_baku_transaksi SET ?`, form_data, function (err, results) {
-
-
-        // conn.query(`SELECT * bahan_baku_transaksi ORDER BY id DESC LIMIT 1`, function (err, results1) {
-
-        //     const hasil = results1[0];
-
-        // `SELECT * bahan_baku_transaksi ORDER BY id DESC LIMIT 1`
 
 
         const update_bahan_baku = {stock:req.body.stok, no_part:req.body.no_part}
 
 
-        conn.query(`UPDATE bahan_baku SET stock = stock + ? WHERE no_part = ? `, [req.body.stok, req.body.no_part], function (err, results) {
+
+        conn.query(`UPDATE bahan_baku SET stock = stock + ? WHERE no_part = ? `, [req.body.stok, req.body.no_part], function (err, results1) {
+
+
+            conn.query(`INSERT INTO pesan_notifikasi SET ?`, form_pesan, function (err, results2) {
 
         if (err) {
             req.flash('Pertambahan Data Masuk Bahan Baku Error');
@@ -323,6 +327,15 @@ router.post('/data_masuk/store', function (req, res) {
 
 
             });
+
+
+        });
+
+
+
+
+
+
 
         });
 

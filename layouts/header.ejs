@@ -32,6 +32,7 @@
       <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
       <!-- scrollbar.css -->
       <link rel="stylesheet" type="text/css" href="/assets/css/jquery.mCustomScrollbar.css">
+      
         <!-- am chart export.css -->
         <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
       <!-- Style.css -->
@@ -42,6 +43,8 @@
 
       <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
   
+
+
 
 
 
@@ -174,28 +177,52 @@
                       <ul class="nav-right">
                           <li class="header-notification">
                               <a href="#!" class="waves-effect waves-light">
+                              
                                   <i class="ti-bell"></i>
-                                  <span class="badge bg-c-red"></span>
-                              </a>
+
+                                  <span class="badge bg-c-red" id="pesan_notifikasi"></span>
+                              
+                                </a>
                               <ul class="show-notification">
                                   <li>
                                       <h6>Notifications</h6>
                                       <label class="label label-danger">New</label>
                                   </li>
 
+
+
+                                  <!-- <li class="waves-effect waves-light">
+                                    <div class="media">
+                                        <img class="d-flex align-self-center img-radius" src="/assets/images/avatar-3.jpg" alt="Generic placeholder image">
+                                        <div class="media-body">
+                                            <h5 class="notification-user">Sara Soudein</h5>
+                                            <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                            <span class="notification-time">30 minutes ago</span>
+                                        </div>
+                                    </div>
+                                </li> -->
+
+
+
+
+                                  <div id="data_notifikasi">
+<!-- 
+                                    <li class="waves-effect waves-light">
+                                        <div class="media">
+                                            <img class="d-flex align-self-center img-radius" src="/assets/images/avatar-3.jpg" alt="Generic placeholder image">
+                                            <div class="media-body">
+                                                <h5 class="notification-user">Sara Soudein</h5>
+                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                                                <span class="notification-time">30 minutes ago</span>
+                                            </div>
+                                        </div>
+                                    </li> -->
+  
+
+                                  </div>
+
                                   
 
-                                  <li class="waves-effect waves-light">
-                                      <div class="media">
-                                          <!-- <img class="d-flex align-self-center img-radius" src="/assets/images/avatar-3.jpg" alt="Generic placeholder image"> -->
-                                          <img class="d-flex align-self-center img-radius" src="/assets/images/avatar-3.jpg" alt="Generic placeholder image">
-                                          <div class="media-body">
-                                              <h5 class="notification-user">Sara Soudein</h5>
-                                              <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                              <span class="notification-time">30 minutes ago</span>
-                                          </div>
-                                      </div>
-                                  </li>
 
 
 
@@ -207,7 +234,10 @@
                                   <!-- <img src="/assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image"> -->
                                   <img src="/assets/images/ava.png" class="img-radius" alt="User-Profile-Image">
                                   <!-- <span>fairuz</span> -->
-                                  <span><%= user_name %></span> 
+                                  <span id="user_name_text"><%= user_name %> ( <span id="jabatan_text"><%= jabatan %></span> ) </span> 
+
+                                  <!-- <span id="jabatan_text"><%= jabatan %></span> -->
+                                  
                 
                              
                                   <i class="ti-angle-down"></i>
@@ -255,8 +285,8 @@
                                   <img class="img-80 img-radius" src="/assets/images/ava.png" alt="User-Profile-Image">
                                   <div class="user-details">
                                       <!-- <span id="more-details">fairuz<i class="fa fa-caret-down"></i></span> -->
-                                      <span id="more-details"><%= user_name %><i class="fa fa-caret-down"></i></span>
-                                      <p id="more-details"><%= jabatan %></p>
+                                      <span id="more-details" id="nama_user"><%= user_name %><i class="fa fa-caret-down"></i></span>
+                                      <p id="more-details" id="jabatan"><%= jabatan %></p>
                                   
                                   </div>
                               </div>
