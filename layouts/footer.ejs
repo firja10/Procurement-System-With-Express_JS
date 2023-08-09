@@ -255,18 +255,9 @@ console.log('pa_schedule');
     });
 });
 
-
-
 </script>
 
-
-
-
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-
-
-
-
 
                                    <script>
 
@@ -487,6 +478,50 @@ $.ajax({
 
 
 
+
+<script>
+  document.getElementById('exportBtn_BahanBakuMasuk').addEventListener('click', () => {
+    fetch('/export_excel_bahan_baku_masuk', {
+      method: 'GET'
+    })
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Data Bahan Baku Masuk.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    })
+    .catch(error => {
+      console.error('Error exporting data:', error);
+    });
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
   $(document).ready(function() {
       $.ajax({
@@ -494,9 +529,6 @@ $.ajax({
           method: 'GET',
           success: function(data) {
               console.log('Data diterima:', data);
-  
-              // $('#pesan_notifikasi').text(data[0].total_pesan);
-              // console.log(data[0].jumlah_pesan);
             
               data.forEach(item_jumlah => {
 
@@ -504,10 +536,6 @@ $.ajax({
                 // Check if loggedInUsername is in the recipients list
 
                 const jabatan_jumlah = $('#jabatan_text').text();
-               
-                // console.log(recipients_jumlah);
-
-                // console.log(item_jumlah.total_pesan);
 
                 if(recipients_jumlah.includes(jabatan_jumlah)) {
 
@@ -543,7 +571,6 @@ $.ajax({
 <script>
   function fetchData() {
 
-
     const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
 
       $.ajax({
@@ -551,28 +578,15 @@ $.ajax({
           method: 'GET',
           success: function(newData) {
 
-            // const jumlah_pesan_deteksi = newData[0].total_pesan;
-
-            // console.log(newData);
-
-
-            // console.log(newData[0].total_pesan);
-            
-            // console.log(newData[0]);
-
               $('#data_notifikasi').empty();
 
               newData.forEach(item => {
 
                 const recipients = item.nama_penerima.split(';');
-                // Check if loggedInUsername is in the recipients list
 
                 const jabatan = $('#jabatan_text').text();
-                // console.log(recipients);
-
                 
                 if(recipients.includes(jabatan)) {
-
 
                   $('#data_notifikasi').append(`<li class="waves-effect waves-light">
                                         <div class="media">
@@ -585,7 +599,6 @@ $.ajax({
                                             </div>
                                         </div>
                                     </li>`);
-
 
                                   } else {
                                     console.log(jabatan);
@@ -605,8 +618,8 @@ $.ajax({
   }
 
   $(document).ready(function() {
-      fetchData(); // Fetch initial data
-      setInterval(fetchData, 5000); // Fetch data every 5 seconds (for example)
+      fetchData(); 
+      setInterval(fetchData, 5000);
   });
 
 

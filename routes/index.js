@@ -5,6 +5,8 @@ var conn = require('../database');
 var session = require('express-session');
 var bodyParser = require('body-parser'); 
 
+const excel = require('exceljs');
+
 
 
 /* GET home page. */
@@ -614,6 +616,86 @@ router.get('/dashboard', function(req, res, next) {
 
 
 // });
+
+
+
+
+
+
+
+
+
+router.get('/export_excel_bahan_baku_masuk', (req, res) => {
+  const query = `
+    SELECT 
+      id,
+      no_surat,
+      kode_transaksi,
+      bulan,
+      nama_bahan,
+      id_bahan,
+      no_part,
+      status_bahan_baku,
+      DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal,
+      DATE_FORMAT(tanggal, "%M") as formatted_bulan,
+      stok 
+    FROM bahan_baku_transaksi WHERE status_bahan_baku = 'masuk'
+  `;
+
+  conn.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+      return res.status(500).json({ error: 'Error fetching data' });
+    }
+
+    const workbook = new excel.Workbook();
+    const worksheet = workbook.addWorksheet('Data Transaksi Bahan Baku');
+
+    // Menambahkan header
+    const headerRow = worksheet.addRow([
+      'ID', 'No Surat', 'Kode Transaksi', 'Bulan', 'Nama Bahan', 'ID Bahan',
+      'No Part', 'Status Bahan Baku', 'Tanggal', 'Bulan Formatted', 'Stok'
+    ]);
+    headerRow.eachCell((cell, index) => {
+      cell.font = { bold: true };
+    });
+
+    // Menambahkan data
+    results.forEach(rowData => {
+      const dataRow = [
+        rowData.id, rowData.no_surat, rowData.kode_transaksi, rowData.bulan,
+        rowData.nama_bahan, rowData.id_bahan, rowData.no_part,
+        rowData.status_bahan_baku, rowData.formatted_tanggal,
+        rowData.formatted_bulan, rowData.stok
+      ];
+      worksheet.addRow(dataRow);
+    });
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=data.xlsx');
+
+    workbook.xlsx.write(res)
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch(err => {
+        res.status(500).json({ error: 'Error creating Excel file' });
+      });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
