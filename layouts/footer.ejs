@@ -487,23 +487,51 @@ $.ajax({
 
 
 
-<!-- <script>
+<script>
   $(document).ready(function() {
       $.ajax({
           url: '/jumlah_notifikasi', // Ganti dengan URL Anda
           method: 'GET',
           success: function(data) {
               console.log('Data diterima:', data);
-              // Di sini Anda dapat melakukan manipulasi data atau tampilan jika diperlukan
-              $('#pesan_notifikasi').text(data[0].jumlah_pesan);
+  
+              // $('#pesan_notifikasi').text(data[0].total_pesan);
               // console.log(data[0].jumlah_pesan);
+            
+              data.forEach(item_jumlah => {
+
+                const recipients_jumlah = item_jumlah.nama_penerima.split(';');
+                // Check if loggedInUsername is in the recipients list
+
+                const jabatan_jumlah = $('#jabatan_text').text();
+               
+                // console.log(recipients_jumlah);
+
+                // console.log(item_jumlah.total_pesan);
+
+                if(recipients_jumlah.includes(jabatan_jumlah)) {
+
+                $('#pesan_notifikasi').text(item_jumlah.total_pesan);
+
+                } else {
+               
+                  console.log('Bukan');
+               
+                }
+
+
+
+
+
+              });
+
           },
           error: function(error) {
               console.error('Terjadi kesalahan:', error);
           }
       });
   });
-</script> -->
+</script>
 
 
 
@@ -523,20 +551,16 @@ $.ajax({
           method: 'GET',
           success: function(newData) {
 
-            const jumlah_pesan_deteksi = newData[0].total_pesan;
+            // const jumlah_pesan_deteksi = newData[0].total_pesan;
+
+            // console.log(newData);
 
 
             // console.log(newData[0].total_pesan);
             
             // console.log(newData[0]);
 
-
-
-              $('#data_notifikasi').empty(); // Clear previous data
-
-
-              
-
+              $('#data_notifikasi').empty();
 
               newData.forEach(item => {
 
@@ -544,14 +568,11 @@ $.ajax({
                 // Check if loggedInUsername is in the recipients list
 
                 const jabatan = $('#jabatan_text').text();
-                console.log(recipients);
+                // console.log(recipients);
 
                 
-                if (recipients.includes(jabatan)) {
+                if(recipients.includes(jabatan)) {
 
-                  $('#pesan_notifikasi').text(jumlah_pesan_deteksi);
-
-                  // console.log(jumlah_pesan_deteksi);
 
                   $('#data_notifikasi').append(`<li class="waves-effect waves-light">
                                         <div class="media">
@@ -571,13 +592,6 @@ $.ajax({
                                   }
         
               });
-
-
-
-            
-
-
-
 
 
 

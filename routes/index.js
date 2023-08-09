@@ -653,7 +653,7 @@ router.get('/register',function(req,res,next){
 
 router.get('/jumlah_notifikasi',function(req,res,next){
 
-  conn.query(`SELECT COUNT(*) as jumlah_pesan FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
+  conn.query(`SELECT *, COUNT(*) as total_pesan FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
 
     if (err){
 
@@ -682,7 +682,9 @@ router.get('/data_notifikasi',function(req,res,next){
 
   // conn.query(`SELECT * FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
 
-  conn.query(`SELECT *, COUNT(*) as total_pesan FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
+  // conn.query(`SELECT *, COUNT(*) as total_pesan FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
+
+  conn.query(`SELECT * FROM pesan_notifikasi WHERE status_pesan='0'`, function (err, results, fields) {
 
     if (err){
 

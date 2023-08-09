@@ -332,11 +332,6 @@ router.post('/data_masuk/store', function (req, res) {
         });
 
 
-
-
-
-
-
         });
 
         
@@ -562,6 +557,20 @@ router.post('/data_keluar/store', function (req,res) {
 
     const status_bahan_baku = 'keluar';
 
+
+
+    const nama_pengirim =  req.session.nama;
+    const status_pesan = 0;
+    const subjek_pesan = 'Data Bahan Baku Keluar Bertambah';
+    const isi_pesan = 'Silakan Cek Data Keluar Pada Bahan Baku';
+    const nama_penerima = 'sales;ppc;store;manajerial;';
+
+
+
+
+    var form_pesan = {subjek_pesan, isi_pesan, nama_pengirim, nama_penerima, status_pesan}
+
+
     var form_data = {
         no_surat, kode_transaksi, tanggal, nama_bahan, bulan, id_bahan, no_part, stok, status_bahan_baku
     }
@@ -573,7 +582,10 @@ router.post('/data_keluar/store', function (req,res) {
 
         
 
-        conn.query(`UPDATE bahan_baku SET stock = stock - ? WHERE no_part = ? `, [req.body.stok, req.body.no_part], function (err, results) {
+        conn.query(`UPDATE bahan_baku SET stock = stock - ? WHERE no_part = ? `, [req.body.stok, req.body.no_part], function (err, results1) {
+
+
+            conn.query(`INSERT INTO pesan_notifikasi SET ?`, form_pesan, function (err, results2) {
 
     if (err) {
         req.flash('Pertambahan Data Masuk Bahan Baku Error');
@@ -591,6 +603,8 @@ router.post('/data_keluar/store', function (req,res) {
         res.redirect('/bahan_baku/data_keluar');    
 
         }
+
+    });
 
 
 
