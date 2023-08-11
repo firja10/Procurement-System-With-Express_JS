@@ -506,6 +506,86 @@ $.ajax({
 
 
 
+<script>
+  document.getElementById('exportBtn_BahanBakuKeluar').addEventListener('click', () => {
+    fetch('/export_excel_bahan_baku_keluar', {
+      method: 'GET'
+    })
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Data Bahan Baku Keluar.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    })
+    .catch(error => {
+      console.error('Error exporting data:', error);
+    });
+  });
+  </script>
+
+
+
+
+
+
+
+
+
+<script>
+  document.getElementById('exportBtn_ProdukJadiMasuk').addEventListener('click', () => {
+    fetch('/export_excel_produk_jadi_masuk', {
+      method: 'GET'
+    })
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Data Produk Jadi Masuk.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    })
+    .catch(error => {
+      console.error('Error exporting data:', error);
+    });
+  });
+  </script>
+
+
+
+
+
+
+<script>
+  document.getElementById('exportBtn_ProdukJadiKeluar').addEventListener('click', () => {
+    fetch('/export_excel_produk_jadi_keluar', {
+      method: 'GET'
+    })
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Data Produk Jadi Keluar.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    })
+    .catch(error => {
+      console.error('Error exporting data:', error);
+    });
+  });
+  </script>
+
+
+
+
+
 
 
 

@@ -700,6 +700,252 @@ router.get('/export_excel_bahan_baku_masuk', (req, res) => {
 
 
 
+router.get('/export_excel_bahan_baku_keluar', (req, res) => {
+
+  const status = req.headers['data-type']; // Membaca header untuk mengetahui jenis data
+
+  const query = `
+    SELECT 
+      id,
+      no_surat,
+      kode_transaksi,
+      bulan,
+      nama_bahan,
+      id_bahan,
+      no_part,
+      status_bahan_baku,
+      DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal,
+      DATE_FORMAT(tanggal, "%M") as formatted_bulan,
+      stok 
+    FROM bahan_baku_transaksi WHERE status_bahan_baku = 'keluar'
+  `;
+
+  conn.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+      return res.status(500).json({ error: 'Error fetching data' });
+    }
+
+    const workbook = new excel.Workbook();
+    const worksheet = workbook.addWorksheet('Data Transaksi Bahan Baku');
+
+    // Menambahkan header
+    const headerRow = worksheet.addRow([
+      'ID', 'No Surat', 'Kode Transaksi', 'Bulan', 'Nama Bahan', 'ID Bahan',
+      'No Part', 'Status Bahan Baku', 'Tanggal', 'Bulan Formatted', 'Stok'
+    ]);
+    headerRow.eachCell((cell, index) => {
+      cell.font = { bold: true };
+    });
+
+    // Menambahkan data
+    results.forEach(rowData => {
+      const dataRow = [
+        rowData.id, rowData.no_surat, rowData.kode_transaksi, rowData.bulan,
+        rowData.nama_bahan, rowData.id_bahan, rowData.no_part,
+        rowData.status_bahan_baku, rowData.formatted_tanggal,
+        rowData.formatted_bulan, rowData.stok
+      ];
+      worksheet.addRow(dataRow);
+    });
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=data.xlsx');
+
+    workbook.xlsx.write(res)
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch(err => {
+        res.status(500).json({ error: 'Error creating Excel file' });
+      });
+  });
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/export_excel_produk_jadi_masuk', (req, res) => {
+  const status = req.headers['data-type']; // Membaca header untuk mengetahui jenis data
+
+  const query = `
+    SELECT 
+      id,
+      no_surat,
+      kode_transaksi,
+      bulan,
+      nama_produk,
+      id_produk,
+      no_part,
+      status_produk_jadi,
+      DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal,
+      DATE_FORMAT(tanggal, "%M") as formatted_bulan,
+      stok 
+    FROM produk_jadi_transaksi WHERE status_produk_jadi = 'masuk'
+  `;
+
+ conn.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+      return res.status(500).json({ error: 'Error fetching data' });
+    }
+
+    const workbook = new excel.Workbook();
+    const worksheet = workbook.addWorksheet('Data Transaksi Produk Jadi');
+
+    // Menambahkan header
+    const headerRow = worksheet.addRow([
+      'ID', 'No Surat', 'Kode Transaksi', 'Bulan', 'Nama Produk', 'ID Produk',
+      'No Part', 'Status Produk Jadi', 'Tanggal', 'Bulan Formatted', 'Stok'
+    ]);
+    headerRow.eachCell((cell, index) => {
+      cell.font = { bold: true };
+    });
+
+    // Menambahkan data
+    results.forEach(rowData => {
+      const dataRow = [
+        rowData.id, rowData.no_surat, rowData.kode_transaksi, rowData.bulan,
+        rowData.nama_produk, rowData.id_produk, rowData.no_part,
+        rowData.status_produk_jadi, rowData.formatted_tanggal,
+        rowData.formatted_bulan, rowData.stok
+      ];
+      worksheet.addRow(dataRow);
+    });
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=data.xlsx');
+
+    workbook.xlsx.write(res)
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch(err => {
+        res.status(500).json({ error: 'Error creating Excel file' });
+      });
+  });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/export_excel_produk_jadi_keluar', (req, res) => {
+  const status = req.headers['data-type']; // Membaca header untuk mengetahui jenis data
+
+  const query = `
+    SELECT 
+      id,
+      no_surat,
+      kode_transaksi,
+      bulan,
+      nama_produk,
+      id_produk,
+      no_part,
+      status_produk_jadi,
+      DATE_FORMAT(tanggal, "%d %M %Y") as formatted_tanggal,
+      DATE_FORMAT(tanggal, "%M") as formatted_bulan,
+      stok 
+    FROM produk_jadi_transaksi WHERE status_produk_jadi = 'keluar'
+  `;
+
+ conn.query(query, (error, results) => {
+    if (error) {
+      console.error('Error fetching data:', error);
+      return res.status(500).json({ error: 'Error fetching data' });
+    }
+
+    const workbook = new excel.Workbook();
+    const worksheet = workbook.addWorksheet('Data Transaksi Produk Jadi');
+
+    // Menambahkan header
+    const headerRow = worksheet.addRow([
+      'ID', 'No Surat', 'Kode Transaksi', 'Bulan', 'Nama Produk', 'ID Produk',
+      'No Part', 'Status Produk Jadi', 'Tanggal', 'Bulan Formatted', 'Stok'
+    ]);
+    headerRow.eachCell((cell, index) => {
+      cell.font = { bold: true };
+    });
+
+    // Menambahkan data
+    results.forEach(rowData => {
+      const dataRow = [
+        rowData.id, rowData.no_surat, rowData.kode_transaksi, rowData.bulan,
+        rowData.nama_produk, rowData.id_produk, rowData.no_part,
+        rowData.status_produk_jadi, rowData.formatted_tanggal,
+        rowData.formatted_bulan, rowData.stok
+      ];
+      worksheet.addRow(dataRow);
+    });
+
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=data.xlsx');
+
+    workbook.xlsx.write(res)
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch(err => {
+        res.status(500).json({ error: 'Error creating Excel file' });
+      });
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
